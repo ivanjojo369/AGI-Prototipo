@@ -1,0 +1,8 @@
+{
+  "remember":  { "next": "memory.update" },
+  "recall":    { "next": "memory.report" },
+  "math":      { "next": "tool.calculator" },
+  "datetime":  { "next": "tool.datetime" },
+  "tasklist":  { "next": "tool.tasklist_stub" },
+  "smalltalk": { "next": "llm.reply" }
+}

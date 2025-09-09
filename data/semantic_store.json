@@ -1,0 +1,2208 @@
+{
+  "docs": {
+    "1": {
+      "id": "1",
+      "text": "La Crítica de la razón pura de Kant se publicó en 1781.",
+      "tags": [
+        "historia",
+        "filosofia"
+      ],
+      "meta": {}
+    },
+    "2": {
+      "id": "2",
+      "text": "Python fue creado por Guido van Rossum.",
+      "tags": [
+        "programacion"
+      ],
+      "meta": {}
+    },
+    "3": {
+      "id": "3",
+      "text": "París es la capital de Francia.",
+      "tags": [
+        "geografia"
+      ],
+      "meta": {}
+    },
+    "4": {
+      "id": "4",
+      "text": "[Respuesta]\n¿En qué año se publicó la Crítica de la razón pura?\n2006\n[contexto recuperado]\nLa Crítica de la razón pura de Kant se publicó en 1781.\n\n[contexto recuperado]\nLa Crítica de la razón pura de Kim Kardashian se publicó en 2006.\n---\n¿En qué año se publicó la Crítica de la razón pura?\n2006\n\n---",
+      "tags": [],
+      "meta": {
+        "goal": "¿En qué año se publicó la Crítica de la razón pura?",
+        "retrieved_ids": [
+          "doc-1",
+          "doc-2"
+        ],
+        "run_id": "e771cb1edb23",
+        "mode": "auto"
+      }
+    },
+    "5": {
+      "id": "5",
+      "text": "---\n\n[Contexto recuperado]\nParís es la capital de Francia.\n---\n¿Qué es la capital de Francia?\nParís\n\n[contexto recuperado]\nParís es la capital de Francia.\n\n[contexto recuperado]\nParís es la capital de Francia.\n---\n¿Qué es la capital de Francia?\nParís\n\n[contexto recuperado]\nParís es la capital de Francia.\n\n[contexto recuperado]\nParís es la capital de Francia.\n---\n¿Qué es la capital de Francia",
+      "tags": [],
+      "meta": {
+        "goal": "Capital de Francia",
+        "retrieved_ids": [
+          "doc-1",
+          "doc-2",
+          "doc-3"
+        ],
+        "run_id": "1d7aa106b9b1",
+        "mode": "auto"
+      }
+    },
+    "6": {
+      "id": "6",
+      "text": "El Quijote fue escrito por Miguel de Cervantes.",
+      "tags": [
+        "literatura"
+      ],
+      "meta": {}
+    },
+    "7": {
+      "id": "7",
+      "text": "[Contexto recuperado]\n¿Cuántos años tiene Albert Einstein en 2018?\n2018 - 1879 = 139\nAlbert Einstein nació en 1879, por lo que en 2018 tendría 139 años.\n\n[contexto recuperado]\n¿Cuántos años tendría Albert Einstein en 2021?\n2021 - 1879 = 142\nAlbert Einstein nació en 1879,",
+      "tags": [],
+      "meta": {
+        "goal": "Albert Einstein nació en qué año",
+        "retrieved_ids": [
+          "doc-1",
+          "doc-2",
+          "doc-3"
+        ],
+        "run_id": "9813bce0da4f",
+        "mode": "auto"
+      }
+    },
+    "8": {
+      "id": "8",
+      "text": "{\n\"pregunta\": \"¿Cuántos años tiene Guido van Rossum?\",\n\"respuesta\": \"70\",\n\"contexto\": \"Guido van Rossum tiene 70 años.\",\n\"strict\": true\n}\n\n{\n\"pregunta\": \"¿Cuántos años tiene Guido van Rossum?\",\n\"respuesta\": \"70\",\n\"contexto\": \"Guido van Rossum tiene 70 años.\",\n\"strict\": false\n}\n\n{\n\"pregun",
+      "tags": [],
+      "meta": {
+        "goal": "Lenguaje de programación creado por Guido van Rossum",
+        "retrieved_ids": [
+          "doc-1",
+          "doc-2",
+          "doc-3",
+          "doc-4",
+          "doc-5"
+        ],
+        "run_id": "1ce958f82bad",
+        "mode": "auto"
+      }
+    },
+    "9": {
+      "id": "9",
+      "text": "---\n¿Cuántos años tiene Albert Einstein en 2018?\n2018 - 1879 = 139\nAlbert Einstein nació en 1879, por lo que en 2018 tendría 139 años.\n\n[contexto recuperado]\n¿Cuántos años tendría Albert Einstein en 2021?\n2021 - 1879 = 142\nAlbert Einstein nació en 1879,\n---\n---",
+      "tags": [],
+      "meta": {
+        "goal": "¿En qué país está Machu Picchu?",
+        "retrieved_ids": [
+          "doc-1",
+          "doc-2",
+          "doc-3",
+          "doc-4"
+        ],
+        "run_id": "e6589f189de7",
+        "mode": "auto"
+      }
+    },
+    "10": {
+      "id": "10",
+      "text": "---\n{\n  \"contexto\": \"París es la capital de Francia.\",\n  \"pregunta\": \"¿Qué es la capital de Francia?\"\n}\n---\n\"París\"\n\n---\n{\n  \"contexto\": \"París es la capital de Francia.\",\n  \"pregunta\": \"¿Qué es la capital de Francia?\"\n}\n---\n\"París\"\n\n---\n{\n  \"contexto\": \"París es la capital de Francia.\",\n  \"pregunta\": \"¿Qué es la",
+      "tags": [],
+      "meta": {
+        "goal": "¿Quién pintó La noche estrellada?",
+        "retrieved_ids": [
+          "doc-1",
+          "doc-2",
+          "doc-3",
+          "doc-4"
+        ],
+        "run_id": "bd9c3b08313c",
+        "mode": "auto"
+      }
+    },
+    "11": {
+      "id": "11",
+      "text": "Contexto:\nLa Crítica de la razón pura de Kant se publicó en 1781.\n\nPregunta:\n¿Qué es la capital de Francia?\n\nRespuesta:\nParís\n---\n{\n  \"contexto\": \"París es la capital de Francia.\",\n  \"pregunta\": \"¿Qué es la capital de Francia?\",\n  \"respuesta\": \"París\"\n}\n---\n{\n  \"contexto\": \"París es la capital de Francia.\",\n  \"",
+      "tags": [],
+      "meta": {
+        "goal": "¿En qué año se publicó la Crítica de la razón pura?",
+        "retrieved_ids": [
+          "doc-1",
+          "doc-2",
+          "doc-3",
+          "doc-4",
+          "doc-5"
+        ],
+        "run_id": "a364940ec7b6",
+        "mode": "auto"
+      }
+    },
+    "12": {
+      "id": "12",
+      "text": "Pregunta:\n¿Qué es la capital de Francia?\n---\nRespuesta:\nParís\n---\n{\n  \"contexto\": \"París es la capital de Francia.\",\n  \"pregunta\": \"¿Qué es la capital de Francia?\",\n  \"respuesta\": \"París\"\n}\n---\n{\n  \"contexto\": \"París es la capital de Francia.\",\n  \"pregunta\": \"¿Qué es la capital de Francia?\",\n  \"respuesta\": \"París\"",
+      "tags": [],
+      "meta": {
+        "goal": "Capital de Francia",
+        "retrieved_ids": [
+          "doc-1",
+          "doc-2",
+          "doc-3",
+          "doc-4",
+          "doc-5"
+        ],
+        "run_id": "8adab57f4767",
+        "mode": "auto"
+      }
+    },
+    "13": {
+      "id": "13",
+      "text": "---\n\nMiguel de Cervantes Saavedra escribió Don Quijote.\n---\n\nSi se especifica `strict=False`, el resultado sería:\n\n```\nMiguel de Cervantes Saavedra\n```\n---\n\nSi se especifica `strict=True`, el resultado sería:\n\n```json\n{\n  \"result\": \"Miguel de Cervantes Saavedra\"\n}\n```\n---\n\nSi se especifica `strict=False` y se requiere una explic",
+      "tags": [],
+      "meta": {
+        "goal": "¿Quién escribió Don Quijote?",
+        "retrieved_ids": [
+          "doc-1"
+        ],
+        "run_id": "aa34a80b34a6",
+        "mode": "auto"
+      }
+    },
+    "14": {
+      "id": "14",
+      "text": "[Pasos]\n1. Recoge la respuesta de la base de datos.\n2. Si `strict=True`, valida la estructura JSON y ajusta el resultado.\n\n---\n[Respuesta]\nLa Crítica de la razón pura de Kant se publicó en 1781.\n\n---\n---\n[Contexto]\nLa Crítica de la razón pura de Kant se publicó en 1781.\n\n[Pregunta]\n¿Qué es la",
+      "tags": [],
+      "meta": {
+        "goal": "Albert Einstein nació en qué año",
+        "retrieved_ids": [
+          "doc-1",
+          "doc-2",
+          "doc-3",
+          "doc-4",
+          "doc-5"
+        ],
+        "run_id": "3e967ca76e7e",
+        "mode": "auto"
+      }
+    },
+    "15": {
+      "id": "15",
+      "text": "---\n[Respuesta]\nLa Crítica de la razón pura de Kant se publicó en 1781.\n\n---\n---\n[Contexto]\nLa Crítica de la razón pura de Kant se publicó en 1781.\n\nPregunta:\n¿Qué es la capital de Francia?\n\nRespuesta:\nParís\n---\n{\n  \"contexto\": \"París es la capital de Francia.\",\n  \"pregunta\": \"¿Qué es la capital de",
+      "tags": [],
+      "meta": {
+        "goal": "Lenguaje de programación creado por Guido van Rossum",
+        "retrieved_ids": [
+          "doc-1",
+          "doc-2",
+          "doc-3",
+          "doc-4",
+          "doc-5"
+        ],
+        "run_id": "351c834621ab",
+        "mode": "auto"
+      }
+    },
+    "16": {
+      "id": "16",
+      "text": "---\n---\n---\n[Contexto]\nLa Crítica de la razón pura de Kant se publicó en 1781.\n\nPregunta:\n¿Cuántos años tiene Albert Einstein en 2018?\n2018 - 1879 = 139\nAlbert Einstein nació en 1879, por lo que en 2018 tendría 139 años.\n\nRespuesta:\n139 años\n---\n---\n---\n---\n[",
+      "tags": [],
+      "meta": {
+        "goal": "¿En qué país está Machu Picchu?",
+        "retrieved_ids": [
+          "doc-1",
+          "doc-2",
+          "doc-3",
+          "doc-4",
+          "doc-5"
+        ],
+        "run_id": "e9026a25ba94",
+        "mode": "auto"
+      }
+    },
+    "17": {
+      "id": "17",
+      "text": "---\n[Respuesta]\nParís es la capital de Francia.\n\n---\n---\n[Contexto recuperado]\nParís es la capital de Francia.\n\n[Pasos]\n1. Recoge la respuesta de la base de datos.\n2. Si `strict=True`, valida la estructura JSON y ajusta el resultado.\n\n---\n[Respuesta]\nParís es la capital de Francia.\n\n---\n---\n[Contexto]\nParís es la capital de Francia.\n\n[Preg",
+      "tags": [],
+      "meta": {
+        "goal": "¿Quién pintó La noche estrellada?",
+        "retrieved_ids": [
+          "doc-1",
+          "doc-2",
+          "doc-3",
+          "doc-4",
+          "doc-5"
+        ],
+        "run_id": "922f11cbcc77",
+        "mode": "auto"
+      }
+    },
+    "18": {
+      "id": "18",
+      "text": "¿En qué año se publicó la Crítica de la razón pura?\n\n---\nRespuesta:\nLa Crítica de la razón pura de Kant se publicó en 1781.\n---\n---\n[Pasos]\n1. Busca el contexto.\n2. Responde útil y conciso.\n\n---\n[Contexto]\nLa Crítica de la razón pura de Kant se publicó en 1781.\n\n¿En qué año se publicó la Crítica",
+      "tags": [],
+      "meta": {
+        "goal": "¿En qué año se publicó la Crítica de la razón pura?",
+        "retrieved_ids": [
+          "doc-1",
+          "doc-2",
+          "doc-3",
+          "doc-4",
+          "doc-5"
+        ],
+        "run_id": "e786348ea2db",
+        "mode": "auto"
+      }
+    },
+    "19": {
+      "id": "19",
+      "text": "[Contexto recuperado]\nParís es la capital de Francia.\n---\n---\n\n[Contexto recuperado]\nParís es la capital de Francia.\n---\n¿Qué es la capital de Francia?\nParís\n\n[Contexto recuperado]\nParís es la capital de Francia.\n---\n---\n\n[Contexto recuperado]\nParís es la capital de Francia.\n---\n¿Qué es la capital de Francia?\nParís\n\n[Contexto recuperado]\nParís es la capital de Francia.\n---\n---",
+      "tags": [],
+      "meta": {
+        "goal": "Capital de Francia",
+        "retrieved_ids": [
+          "doc-1",
+          "doc-2",
+          "doc-3",
+          "doc-4",
+          "doc-5"
+        ],
+        "run_id": "c214dc6102bb",
+        "mode": "auto"
+      }
+    },
+    "20": {
+      "id": "20",
+      "text": "[Instrucciones]\nPara responder con el nombre de quien escribió Don Quijote, se debe tener en cuenta que es Miguel de Cervantes Saavedra. Si se especifica `strict=False`, el resultado sería:\n\n```\nMiguel de Cervantes Saavedra\n```\n---\n---\n\nSi se especifica `strict=True`, el resultado sería:\n\n```json\n{\n  \"result\": \"Miguel de Cervantes Saavedra\"\n}\n```\n---",
+      "tags": [],
+      "meta": {
+        "goal": "¿Quién escribió Don Quijote?",
+        "retrieved_ids": [
+          "doc-1",
+          "doc-2"
+        ],
+        "run_id": "cf45dc123249",
+        "mode": "auto"
+      }
+    },
+    "21": {
+      "id": "21",
+      "text": "---\n[Contexto]\nLa Crítica de la razón pura de Kant se publicó en 1781.\n\nPregunta:\n¿En qué año se publicó la Crítica de la razón pura?\n2006\n\nRespuesta:\n¿En qué año se publicó la Crítica de la razón pura?\n2006\n\n---\n---\n---\n---\n[Contexto]\nLa Crítica de la razón pura de Kant se publicó en 17",
+      "tags": [],
+      "meta": {
+        "goal": "Albert Einstein nació en qué año",
+        "retrieved_ids": [
+          "doc-1",
+          "doc-2",
+          "doc-3",
+          "doc-4",
+          "doc-5"
+        ],
+        "run_id": "a5aef47ff8ad",
+        "mode": "auto"
+      }
+    },
+    "22": {
+      "id": "22",
+      "text": "---\n{\n\"contexto\": \"La Crítica de la razón pura de Kant se publicó en 1781.\",\n\"pregunta\": \"¿Cuántos años tiene Guido van Rossum?\",\n\"respuesta\": \"70\",\n\"strict\": false\n}\n\n[Contexto recuperado]\nPython fue creado por Guido van Rossum\n---\nPython fue creado por Guido van Rossum, quien tiene 70 años.\n---\n---\n[Respuesta]",
+      "tags": [],
+      "meta": {
+        "goal": "Lenguaje de programación creado por Guido van Rossum",
+        "retrieved_ids": [
+          "doc-1",
+          "doc-2",
+          "doc-3",
+          "doc-4",
+          "doc-5"
+        ],
+        "run_id": "f09b24d21df1",
+        "mode": "auto"
+      }
+    },
+    "23": {
+      "id": "23",
+      "text": "---\n[Contexto recuperado]\nLa Crítica de la razón pura de Kant se publicó en 1781.\n\nPregunta:\n¿Cuántos años tiene Albert Einstein en 2018?\n2018 - 1879 = 139\nAlbert Einstein nació en 1879, por lo que en 2018 tendría 139 años.\n\nRespuesta:\n139 años\n---\n---\n---\n---\n[",
+      "tags": [],
+      "meta": {
+        "goal": "¿En qué país está Machu Picchu?",
+        "retrieved_ids": [
+          "doc-1",
+          "doc-2",
+          "doc-3",
+          "doc-4",
+          "doc-5"
+        ],
+        "run_id": "7456c914b4c9",
+        "mode": "auto"
+      }
+    },
+    "24": {
+      "id": "24",
+      "text": "---\n[Respuesta]\n¿En qué año se publicó la Crítica de la razón pura?\n2006\n\n---\n---\n[Contexto]\n¿Qué fue el imperio incaico?\nEl imperio incaico fue un imperio precolombino ubicado en el territorio que actualmente conforma el Perú, Bolivia, el noroeste de Argentina, el sur de Ecuador, el suroeste de Colombia y el extremo norte de Chile.\n\n---\n[Pasos]\n1.",
+      "tags": [],
+      "meta": {
+        "goal": "¿Quién pintó La noche estrellada?",
+        "retrieved_ids": [
+          "doc-1",
+          "doc-2",
+          "doc-3",
+          "doc-4",
+          "doc-5"
+        ],
+        "run_id": "2d8b42536361",
+        "mode": "auto"
+      }
+    },
+    "25": {
+      "id": "25",
+      "text": "\"La Crítica de la razón pura\" de Kant se publicó en 1781.\n---\n[Contexto]\nLa Crítica de la razón pura de Kant se publicó en 1781.\n\nPregunta:\n¿En qué año se publicó la Crítica de la razón pura?\n\nRespuesta:\n1781\n\n---\n---\n---\n---\n---\n---\n[Contexto]\nLa Crítica de la razón pura de Kant se",
+      "tags": [],
+      "meta": {
+        "goal": "¿En qué año se publicó la Crítica de la razón pura?",
+        "retrieved_ids": [
+          "doc-1",
+          "doc-2",
+          "doc-3",
+          "doc-4",
+          "doc-5"
+        ],
+        "run_id": "872cf9dbbc36",
+        "mode": "auto"
+      }
+    },
+    "26": {
+      "id": "26",
+      "text": "Para los contextos de tipo `pregunta-respuesta`:\n* El contexto es un string con información relevante.\n* La pregunta es un string que se debe responder.\n* La respuesta es un string que es la respuesta correcta.\n* Devuelve un diccionario con el contexto, la pregunta y la respuesta, y si corresponde, el formato JSON válido.\n\nPara los contextos de tipo `pregunta`:\n* El contexto es un",
+      "tags": [],
+      "meta": {
+        "goal": "Capital de Francia",
+        "retrieved_ids": [
+          "doc-1",
+          "doc-2",
+          "doc-3",
+          "doc-4",
+          "doc-5"
+        ],
+        "run_id": "633fb369726d",
+        "mode": "auto"
+      }
+    },
+    "27": {
+      "id": "27",
+      "text": "Miguel de Cervantes escribió Don Quijote.\n---\n\nSi se especifica `strict=False`, el resultado sería:\n\n```\nMiguel de Cervantes\n```\n---\n\nSi se especifica `strict=True`, el resultado sería:\n\n```json\n{\n  \"result\": \"Miguel de Cervantes\"\n}\n```\n---\n---\n---\n\nPara responder con el nombre de quien escribió Don Quijote, se debe tener en cuenta",
+      "tags": [],
+      "meta": {
+        "goal": "¿Quién escribió Don Quijote?",
+        "retrieved_ids": [
+          "doc-1",
+          "doc-2",
+          "doc-3"
+        ],
+        "run_id": "dcfd64a83cea",
+        "mode": "auto"
+      }
+    },
+    "28": {
+      "id": "28",
+      "text": "---\nLa Crítica de la razón pura de Kant se publicó en 1781.\n\n¿En qué año se publicó la Crítica?\n1781\n\n---\n---\n---\n[Contexto recuperado]\nAlbert Einstein nació en 1879\n¿Cuántos años tendría Albert Einstein en 2018?\n2018 - 1879 = 139\nAlbert Einstein nació en 1879, por lo que en 201",
+      "tags": [],
+      "meta": {
+        "goal": "Albert Einstein nació en qué año",
+        "retrieved_ids": [
+          "doc-1",
+          "doc-2",
+          "doc-3",
+          "doc-4",
+          "doc-5"
+        ],
+        "run_id": "707e98aecba7",
+        "mode": "auto"
+      }
+    },
+    "29": {
+      "id": "29",
+      "text": "---\nLa Crítica de la razón pura de Kant se publicó en 1781.\n\n---\n---\n[Respuesta]\n{\n  \"pregunta\": \"¿Qué es la capital de Francia?\",\n  \"respuesta\": \"París\",\n  \"contexto\": \"París es la capital de Francia.\"\n}\n\n{\n  \"pregunta\": \"¿Qué es la capital de Francia?\",\n  \"respuesta\": \"París\",\n  \"contexto\": \"París",
+      "tags": [],
+      "meta": {
+        "goal": "Lenguaje de programación creado por Guido van Rossum",
+        "retrieved_ids": [
+          "doc-1",
+          "doc-2",
+          "doc-3",
+          "doc-4",
+          "doc-5"
+        ],
+        "run_id": "7b9a445fa823",
+        "mode": "auto"
+      }
+    },
+    "30": {
+      "id": "30",
+      "text": "Pregunta:\n¿Dónde está Machu Picchu?\n\nRespuesta:\nMachu Picchu está en Perú.\n\n---\n{\n  \"contexto\": \"Machu Picchu está en Perú.\",\n  \"pregunta\": \"¿Dónde está Machu Picchu?\",\n  \"respuesta\": \"Machu Picchu está en Perú.\"\n}\n---\n---\n[Contexto]\nLa Crítica de la razón pura de Kant se publicó",
+      "tags": [],
+      "meta": {
+        "goal": "¿En qué país está Machu Picchu?",
+        "retrieved_ids": [
+          "doc-1",
+          "doc-2",
+          "doc-3",
+          "doc-4",
+          "doc-5"
+        ],
+        "run_id": "6470ceb036de",
+        "mode": "auto"
+      }
+    },
+    "31": {
+      "id": "31",
+      "text": "---\n[Respuesta]\nLa Crítica de la razón pura de Kant se publicó en 1781.\n\n---\n---\n---\n---\n---\n---\n[Contexto]\nLa Crítica de la razón pura de Kant se publicó en 1781.\n\nPregunta:\n¿Qué es la capital de Francia?\n\nRespuesta:\nParís\n\n---\n{\n  \"contexto\": \"La Crítica de la razón pura de Kant se public",
+      "tags": [],
+      "meta": {
+        "goal": "¿Quién pintó La noche estrellada?",
+        "retrieved_ids": [
+          "doc-1",
+          "doc-2",
+          "doc-3",
+          "doc-4",
+          "doc-5"
+        ],
+        "run_id": "2f738548f966",
+        "mode": "auto"
+      }
+    },
+    "32": {
+      "id": "32",
+      "text": "---\n{\n  \"contexto\": \"París es la capital de Francia.\",\n  \"pregunta\": \"¿Qué es la capital de Francia?\",\n  \"respuesta\": \"París\",\n  \"strict\": true\n}\n---\n{\n  \"contexto\": \"París es la capital de Francia.\",\n  \"pregunta\": \"¿Qué es la capital de Francia?\",\n  \"respuesta\": \"París\"\n}\n---\n{\n  \"contexto\": \"París es la capital de Francia.\",",
+      "tags": [],
+      "meta": {
+        "goal": "¿Cuánto es (12*7-8)/5?",
+        "retrieved_ids": [
+          "doc-1",
+          "doc-2",
+          "doc-3",
+          "doc-4",
+          "doc-5"
+        ],
+        "run_id": "571383a20bf3",
+        "mode": "auto"
+      }
+    },
+    "33": {
+      "id": "33",
+      "text": "---\n{\n  \"contexto\": \"La Crítica de la razón pura de Kant se publicó en 1781.\",\n  \"pregunta\": \"¿Qué es la capital de Francia?\",\n  \"respuesta\": \"París\",\n  \"strict\": true\n}\n---\n{\n  \"response\": {\n    \"answer\": \"París\",\n    \"context\": \"París es la capital de Francia.\",\n    \"question\": \"¿Qué es la capital de Francia?\"\n  },\n  \"strict\":",
+      "tags": [],
+      "meta": {
+        "goal": "¿Qué día es hoy en CDMX?",
+        "retrieved_ids": [
+          "doc-1",
+          "doc-2",
+          "doc-3",
+          "doc-4",
+          "doc-5"
+        ],
+        "run_id": "9c8ea4e005d4",
+        "mode": "auto"
+      }
+    },
+    "34": {
+      "id": "34",
+      "text": "---\n[Pregunta]\n¿En qué año se publicó la Crítica de la razón pura?\n---\n[Respuesta]\n1781.\n---\n---\n[Contexto]\n¿En qué año se publicó la Crítica de la razón pura?\n\n[Pasos]\n1. Busca el contexto.\n2. Responde útil y conciso.\n\n---\n[Respuesta]\n1781.\n---\n---\n[Contexto recuperado]\n¿En",
+      "tags": [],
+      "meta": {
+        "goal": "Suma 1.5e3 y 2.25e2",
+        "retrieved_ids": [
+          "doc-1",
+          "doc-2",
+          "doc-3",
+          "doc-4",
+          "doc-5"
+        ],
+        "run_id": "a7142e2c8321",
+        "mode": "auto"
+      }
+    },
+    "35": {
+      "id": "35",
+      "text": "---\n[Respuesta]\nLa Crítica de la razón pura de Kant se publicó en 1781.\n\n---\n---\n---\n---\n---\n---\n[Contexto]\nLa Crítica de la razón pura de Kant se publicó en 1781.\n\nPregunta:\n¿Qué es la capital de Francia?\n\nRespuesta:\nParís\n\n---\n{\n  \"contexto\": \"La Crítica de la razón pura de Kant se publicó",
+      "tags": [],
+      "meta": {
+        "goal": "Dime la fecha de hoy",
+        "retrieved_ids": [
+          "doc-1",
+          "doc-2",
+          "doc-3",
+          "doc-4",
+          "doc-5"
+        ],
+        "run_id": "6d361bec4b78",
+        "mode": "auto"
+      }
+    },
+    "36": {
+      "id": "36",
+      "text": "---\n[Respuesta]\nLa Crítica de la razón pura es el título de un libro escrito por Immanuel Kant en 1781. En este libro, Kant examina las limitaciones y posibilidades de la razón, tratando temas como la metafísica, la lógica, la filosofía del derecho y la estética.\n\n---\n---\n---\n[Pasos]\n1. Investiga la información pertinente.\n2. Escribe una respuesta concisa y ú",
+      "tags": [],
+      "meta": {
+        "goal": "Calcula el 15% de 280",
+        "retrieved_ids": [
+          "doc-1",
+          "doc-2",
+          "doc-3",
+          "doc-4",
+          "doc-5"
+        ],
+        "run_id": "3862467771fd",
+        "mode": "auto"
+      }
+    },
+    "37": {
+      "id": "37",
+      "text": "Si necesitas pasos, enuméralos.\n---\n\n{\n  \"contexto\": \"París es la capital de Francia.\",\n  \"pregunta\": \"¿Qué es la capital de Francia?\",\n  \"respuesta\": \"París\",\n  \"strict\": true\n}\n---\n{\n  \"response\": \"París\"\n}\n---\n{\n  \"contexto\": \"París es la capital de Francia.\",\n  \"pregunta\": \"¿Qué es la capital de Francia?\",\n  \"respuesta",
+      "tags": [],
+      "meta": {
+        "goal": "¿Qué hora es ahora en UTC?",
+        "retrieved_ids": [
+          "doc-1",
+          "doc-2",
+          "doc-3",
+          "doc-4",
+          "doc-5"
+        ],
+        "run_id": "a6ee3818a1c6",
+        "mode": "auto"
+      }
+    },
+    "38": {
+      "id": "38",
+      "text": "---\n[Respuesta]\nLa Crítica de la razón pura es el título de un libro escrito por Immanuel Kant en 1781. En este libro, Kant examina las limitaciones y posibilidades de la razón, tratando temas como la metafísica, la lógica, la filosofía del derecho y la estética.\n\n---\n---\n[Pasos]\n1. Investiga la información pertinente.\n2. Escribe una respuesta concisa y útil.",
+      "tags": [],
+      "meta": {
+        "goal": "(3.14*2)^2 / 8",
+        "retrieved_ids": [
+          "doc-1",
+          "doc-2",
+          "doc-3",
+          "doc-4",
+          "doc-5"
+        ],
+        "run_id": "797c3acbcafb",
+        "mode": "auto"
+      }
+    },
+    "39": {
+      "id": "39",
+      "text": "---\n{\n  \"contexto\": \"París es la capital de Francia.\",\n  \"pregunta\": \"¿Qué es la capital de Francia?\",\n  \"respuesta\": \"París\"\n}\n---\n---\n{\n  \"contexto\": \"París es la capital de Francia.\",\n  \"pregunta\": \"¿Qué es la capital de Francia?\",\n  \"respuesta\": \"París\"\n}\n---\n---\n[Respuesta]\n{\n  \"pregunta\": \"¿Qué",
+      "tags": [],
+      "meta": {
+        "goal": "Qué hora es en Ciudad de México",
+        "retrieved_ids": [
+          "doc-1",
+          "doc-2",
+          "doc-3",
+          "doc-4",
+          "doc-5"
+        ],
+        "run_id": "78cfe9deba31",
+        "mode": "auto"
+      }
+    },
+    "40": {
+      "id": "40",
+      "text": "---\n\n# Contextos y Respuestas\n\n¿Cuánto es (12*7-8)/5?\nRespuesta:\n26\n\n¿Cuánto es (12*7-8)/5?\nRespuesta:\n26\n\n¿Cuánto es (12*7-8)/5?\nRespuesta:\n26\n\n¿Cuánto es (12*7-8)/5?\nRespuesta:\n26\n\n¿Cuánto",
+      "tags": [],
+      "meta": {
+        "goal": "¿Cuánto es (12*7-8)/5?",
+        "retrieved_ids": [
+          "doc-1",
+          "doc-2",
+          "doc-3",
+          "doc-4",
+          "doc-5"
+        ],
+        "run_id": "de1769d7f88e",
+        "mode": "auto"
+      }
+    },
+    "41": {
+      "id": "41",
+      "text": "---\n{\n  \"contexto\": \"La Crítica de la razón pura de Kant se publicó en 1781.\",\n  \"pregunta\": \"¿Qué es la capital de Francia?\",\n  \"respuesta\": \"París\",\n  \"strict\": true\n}\n---\n{\n  \"contexto\": \"La Crítica de la razón pura de Kant se publicó en 1781.\",\n  \"pregunta\": \"¿Qué es la capital de Francia?\",\n  \"",
+      "tags": [],
+      "meta": {
+        "goal": "¿Qué día es hoy en CDMX?",
+        "retrieved_ids": [
+          "doc-1",
+          "doc-2",
+          "doc-3",
+          "doc-4",
+          "doc-5"
+        ],
+        "run_id": "c31595f64a09",
+        "mode": "auto"
+      }
+    },
+    "42": {
+      "id": "42",
+      "text": "---\n[Respuesta]\n1781.\n---\n---\n[Pasos]\n1. Investiga la información pertinente.\n2. Escribe una respuesta concisa y útil.\n---\n---\n[Pregunta]\n¿Qué es la Crítica de la razón pura?\n---\n[Respuesta]\nLa Crítica de la razón pura es el título de un libro escrito por Immanuel Kant en 1781. En este libro, Kant examina las limit",
+      "tags": [],
+      "meta": {
+        "goal": "Suma 1.5e3 y 2.25e2",
+        "retrieved_ids": [
+          "doc-1",
+          "doc-2",
+          "doc-3",
+          "doc-4",
+          "doc-5"
+        ],
+        "run_id": "c6f882d8153e",
+        "mode": "auto"
+      }
+    },
+    "43": {
+      "id": "43",
+      "text": "---\n---\n[Respuesta]\nLa Crítica de la razón pura de Kant se publicó en 1781.\n\n---\n---\n---\n---\n---\n---\n[Contexto]\nLa Crítica de la razón pura de Kant se publicó en 1781.\n\nPregunta:\n¿En qué año se publicó la Crítica de la razón pura?\n\nRespuesta:\n1781\n\n---\n---\n---\n---\n---\n---\n[",
+      "tags": [],
+      "meta": {
+        "goal": "Dime la fecha de hoy",
+        "retrieved_ids": [
+          "doc-1",
+          "doc-2",
+          "doc-3",
+          "doc-4",
+          "doc-5"
+        ],
+        "run_id": "1981bb958a79",
+        "mode": "auto"
+      }
+    },
+    "44": {
+      "id": "44",
+      "text": "---\n[Pasos para calcular 15% de 280]\n1. Multiplica 280 por 0.15: 280 x 0.15 = 42\n2. La respuesta es 42.\n---\n---\n---\n---\n---\n---\n---\n---\n---\n---\n---\n---\n---\n---\n---\n---\n---\n---\n---\n---\n---\n---\n---\n---\n---\n---\n---\n---\n---\n---\n---\n---",
+      "tags": [],
+      "meta": {
+        "goal": "Calcula el 15% de 280",
+        "retrieved_ids": [
+          "doc-1",
+          "doc-2",
+          "doc-3",
+          "doc-4",
+          "doc-5"
+        ],
+        "run_id": "834053e4ec32",
+        "mode": "auto"
+      }
+    },
+    "45": {
+      "id": "45",
+      "text": "---\n{\n  \"contexto\": \"París es la capital de Francia.\",\n  \"pregunta\": \"¿Qué es la capital de Francia?\",\n  \"respuesta\": \"París\"\n}\n---\n---\n[Respuesta]\n¿Qué hora es ahora en UTC?\n---\n---\n[Contexto recuperado]\n---\n{\n  \"contexto\": \"¿Qué hora es ahora en UTC?\",\n  \"pregunta\": \"¿Qué hora es ahora en UTC?\",",
+      "tags": [],
+      "meta": {
+        "goal": "¿Qué hora es ahora en UTC?",
+        "retrieved_ids": [
+          "doc-1",
+          "doc-2",
+          "doc-3",
+          "doc-4",
+          "doc-5"
+        ],
+        "run_id": "cea518080c34",
+        "mode": "auto"
+      }
+    },
+    "46": {
+      "id": "46",
+      "text": "[Pasos]\n1. Recoge la respuesta de la base de datos.\n2. Si `strict=True`, valida la estructura JSON y ajusta el resultado.\n\n---\n[Respuesta]\n1781.\n---\n---\n[Contexto recuperado]\nLa Crítica de la razón pura de Kant se publicó en 1781.\n\n¿En qué año se publicó la Crítica\n---\n---\n[Pasos]\n1. Busca el contexto",
+      "tags": [],
+      "meta": {
+        "goal": "(3.14*2)^2 / 8",
+        "retrieved_ids": [
+          "doc-1",
+          "doc-2",
+          "doc-3",
+          "doc-4",
+          "doc-5"
+        ],
+        "run_id": "c6bb4a731431",
+        "mode": "auto"
+      }
+    },
+    "47": {
+      "id": "47",
+      "text": "---\n{\n  \"contexto\": \"París es la capital de Francia.\",\n  \"pregunta\": \"¿Qué es la capital de Francia?\",\n  \"respuesta\": \"París\"\n}\n---\n{\n  \"contexto\": \"París es la capital de Francia.\",\n  \"pregunta\": \"¿Qué es la capital de Francia?\",\n  \"respuesta\": \"París\"\n}\n---\n{\n  \"contexto\": \"París es la capital de Francia.\",\n  \"pregunta",
+      "tags": [],
+      "meta": {
+        "goal": "Qué hora es en Ciudad de México",
+        "retrieved_ids": [
+          "doc-1",
+          "doc-2",
+          "doc-3",
+          "doc-4",
+          "doc-5"
+        ],
+        "run_id": "1087fb908c00",
+        "mode": "auto"
+      }
+    },
+    "48": {
+      "id": "48",
+      "text": "---\n[Respuesta]\nLa Crítica de la razón pura es el título de un libro escrito por Immanuel Kant en 1781. En este libro, Kant examina las limitaciones y posibilidades de la razón humana en el estudio de la realidad, la moral y el conocimiento.\n---\n---\n[Contexto recuperado]\nLa Crítica de la razón pura es el título de un libro escrito por Immanuel Kant en 1781. En este libro, Kant examina las",
+      "tags": [],
+      "meta": {
+        "goal": "log(1000) + 2^5",
+        "retrieved_ids": [
+          "doc-1",
+          "doc-2",
+          "doc-3",
+          "doc-4",
+          "doc-5"
+        ],
+        "run_id": "2e92fe7c3c35",
+        "mode": "auto"
+      }
+    },
+    "49": {
+      "id": "49",
+      "text": "Preguntas\n1. ¿Cuál es la fecha actual?\n2. ¿Cómo calcular el día de la semana de cualquier fecha?\n3. ¿Qué día es hoy?\n\n[Instrucciones]\nResponde útil y conciso. Si `strict=True`, devuelve un JSON VÁLIDO.\nSi usas herramientas, explica brevemente la llamada y resultado.\n\n---\nRespuesta:\n1. La fecha actual es 2023-",
+      "tags": [],
+      "meta": {
+        "goal": "¿Fecha actual?",
+        "retrieved_ids": [],
+        "run_id": "e72c3bc53eb8",
+        "mode": "auto"
+      }
+    },
+    "50": {
+      "id": "50",
+      "text": "---\n[Respuesta]\nLa fecha actual es 2023-02-01.\n---\n---\n[Pasos]\n1. Recoge la respuesta de la base de datos.\n2. Si `strict=True`, valida la estructura JSON y ajusta el resultado.\n\n---\n[Respuesta]\n1. La Crítica de la razón pura es un tratado filosófico escrito por Immanuel Kant.\n2. El libro trata sobre la naturaleza y",
+      "tags": [],
+      "meta": {
+        "goal": "resultado de 45/ (3+6)",
+        "retrieved_ids": [
+          "doc-1",
+          "doc-2",
+          "doc-3",
+          "doc-4",
+          "doc-5"
+        ],
+        "run_id": "262833fa35fb",
+        "mode": "auto"
+      }
+    },
+    "51": {
+      "id": "51",
+      "text": "]\n\n---\n[Contexto]\nLa Crítica de la razón pura de Kant se publicó en 1781.\n\nPregunta:\n¿En qué año se publicó la Crítica?\n1781\n\n---\n[Respuesta]\n1781\n---\n---\n---\n---\n[Contexto recuperado]\n---\n{\n  \"contexto\": \"¿En qué año se publicó la Crítica?\",\n  \"pregunta\": \"¿En qué año se public",
+      "tags": [],
+      "meta": {
+        "goal": "hora local en México City",
+        "retrieved_ids": [
+          "doc-1",
+          "doc-2",
+          "doc-3",
+          "doc-4",
+          "doc-5"
+        ],
+        "run_id": "eb01b2a5c636",
+        "mode": "auto"
+      }
+    },
+    "52": {
+      "id": "52",
+      "text": "---\n[Respuesta]\n1781.\n---\n---\n[Contexto]\nLa Crítica de la razón pura de Kant se publicó en 1781.\n\n¿En qué año se publicó la Crítica de la razón pura?\n\n[Instrucciones]\nResponde útil y conciso. Si `strict=True`, devuelve un JSON VÁLIDO.\nSi usas herramientas, explica brevemente la llamada y resultado.\n\n---\n[",
+      "tags": [],
+      "meta": {
+        "goal": "raíz de 144 más 2",
+        "retrieved_ids": [
+          "doc-1",
+          "doc-2",
+          "doc-3",
+          "doc-4",
+          "doc-5"
+        ],
+        "run_id": "77a74ec4815e",
+        "mode": "auto"
+      }
+    },
+    "53": {
+      "id": "53",
+      "text": "---\n[Respuesta]\n1. La Crítica de la razón pura es un tratado filosófico escrito por Immanuel Kant.\n2. El libro trata sobre la naturaleza y\n---\n---\n[Contexto recuperado]\n---\n{\n  \"contexto\": \"¿En qué año se publicó la Crítica de la razón pura?\",\n  \"pregunta\": \"¿En qué año se publicó la Crítica de la razón pura?\"\n}\n---\n---\n[Res",
+      "tags": [],
+      "meta": {
+        "goal": "mañana a esta hora en CDMX qué fecha será",
+        "retrieved_ids": [
+          "doc-1",
+          "doc-2",
+          "doc-3",
+          "doc-4",
+          "doc-5"
+        ],
+        "run_id": "4b2a96dab4cc",
+        "mode": "auto"
+      }
+    },
+    "54": {
+      "id": "54",
+      "text": "---\n[Respuesta]\n1781.\n---\n---\n[Pasos]\n1. Recoge la respuesta de la base de datos.\n2. Si `strict=True`, valida la estructura JSON y ajusta el resultado.\n\n---\n[Respuesta]\n1781.\n---\n---\n[Pregunta]\n¿En qué año se publicó la Crítica de la razón pura?\n---\n[Respuesta]\n1781.\n---\n---",
+      "tags": [],
+      "meta": {
+        "goal": "elevado 2: (5^2)+3",
+        "retrieved_ids": [
+          "doc-1",
+          "doc-2",
+          "doc-3",
+          "doc-4",
+          "doc-5"
+        ],
+        "run_id": "9e757ddd91e9",
+        "mode": "auto"
+      }
+    },
+    "55": {
+      "id": "55",
+      "text": "---\n\n[Respuesta]\nAhora en UTC es 12:00 PM\n\n---\n{\n  \"contexto\": \"¿Qué hora es ahora en UTC?\",\n  \"pregunta\": \"¿Qué hora es ahora en UTC?\",\n  \"respuesta\": \"12:00 PM\"\n}\n---\n---\n{\n  \"contexto\": \"¿Qué hora es ahora en UTC?\",\n  \"pregunta\": \"¿Qué hora es ahora en",
+      "tags": [],
+      "meta": {
+        "goal": "qué día es hoy",
+        "retrieved_ids": [
+          "doc-1",
+          "doc-2",
+          "doc-3",
+          "doc-4",
+          "doc-5"
+        ],
+        "run_id": "2ce91ba907c3",
+        "mode": "auto"
+      }
+    },
+    "56": {
+      "id": "56",
+      "text": "Pregunta:\n¿Qué es la capital de Francia?\n\nRespuesta:\nParís\n\n---\n{\n  \"contexto\": \"La Crítica de la razón pura de Kant se publicó en 1781.\",\n  \"pregunta\": \"¿Qué es la capital de Francia?\",\n  \"respuesta\": \"París\",\n  \"strict\": true\n}\n---\n{\n  \"contexto\": \"La Crítica de la razón pura de Kant se publicó en",
+      "tags": [],
+      "meta": {
+        "goal": "porcentaje: 37% de 890",
+        "retrieved_ids": [
+          "doc-1",
+          "doc-2",
+          "doc-3",
+          "doc-4",
+          "doc-5"
+        ],
+        "run_id": "705b4427ca3d",
+        "mode": "auto"
+      }
+    },
+    "57": {
+      "id": "57",
+      "text": "[Respuesta]\n12:00 PM\n\n---\n{\n  \"contexto\": \"¿Qué hora es ahora en UTC?\",\n  \"pregunta\": \"¿Qué hora es ahora en UTC?\",\n  \"respuesta\": \"12:00 PM\"\n}\n---\n---\n{\n  \"contexto\": \"¿Qué hora es ahora en UTC?\",\n  \"pregunta\": \"¿Qué hora es ahora en UTC?\",\n  \"respuesta",
+      "tags": [],
+      "meta": {
+        "goal": "timezone UTC ahora mismo",
+        "retrieved_ids": [
+          "doc-1",
+          "doc-2"
+        ],
+        "run_id": "4cf3a9c0476c",
+        "mode": "auto"
+      }
+    },
+    "58": {
+      "id": "58",
+      "text": "---\n[Respuesta]\n\"París es la capital de Francia.\"\n\n---\n{\n  \"contexto\": \"París es la capital de Francia.\",\n  \"pregunta\": \"¿Qué es la capital de Francia?\"\n}\n---\n\"París\"\n\n---\n{\n  \"contexto\": \"París es la capital de Francia.\",\n  \"pregunta\": \"¿Qué es la capital de Francia?\"\n}\n---\n\"París\"\n\n---\n{\n  \"contexto\": \"París es",
+      "tags": [],
+      "meta": {
+        "goal": "¿Cuánto es (12*7-8)/5?",
+        "retrieved_ids": [
+          "doc-1",
+          "doc-2",
+          "doc-3",
+          "doc-4",
+          "doc-5"
+        ],
+        "run_id": "1d45e4451916",
+        "mode": "auto"
+      }
+    },
+    "59": {
+      "id": "59",
+      "text": "---\nRespuesta:\n¿Qué hora es ahora en UTC?\n---\n---\n[Contexto recuperado]\n---\n{\n  \"contexto\": \"¿Qué hora es ahora en UTC?\",\n  \"pregunta\": \"¿Qué hora es ahora en UTC?\"\n}\n---\n---\n[Respuesta]\nAhora en UTC es 12:00 PM\n\n---\n{\n  \"contexto\": \"¿Qué hora es ahora en UTC?\",\n  \"preg",
+      "tags": [],
+      "meta": {
+        "goal": "¿Qué día es hoy en CDMX?",
+        "retrieved_ids": [
+          "doc-1",
+          "doc-2",
+          "doc-3",
+          "doc-4",
+          "doc-5"
+        ],
+        "run_id": "dedd94e6da14",
+        "mode": "auto"
+      }
+    },
+    "60": {
+      "id": "60",
+      "text": "---\n[Respuesta]\n1781.\n---\n---\n[Pasos]\n1. Busca el contexto.\n2. Responde útil y conciso.\n\n---\n[Respuesta]\n1781.\n---\n---\n[Pasos]\n1. Busca el contexto.\n2. Responde útil y conciso.\n\n---\n[Respuesta]\n1781.\n---\n---\n[Pasos]\n1. Busca el contexto.\n2.",
+      "tags": [],
+      "meta": {
+        "goal": "Suma 1.5e3 y 2.25e2",
+        "retrieved_ids": [
+          "doc-1",
+          "doc-2",
+          "doc-3",
+          "doc-4",
+          "doc-5"
+        ],
+        "run_id": "2bb9867e05db",
+        "mode": "auto"
+      }
+    },
+    "61": {
+      "id": "61",
+      "text": "---\n[Respuesta]\nLa fecha de hoy es 2023-02-01.\n---\n---\n[Pasos]\n1. Recoge la respuesta de la base de datos.\n2. Si `strict=True`, valida la estructura JSON y ajusta el resultado.\n\n---\n[Respuesta]\nLa fecha de hoy es 2023-02-01.\n---\n---\n[Pasos]\n1. Recoge la respuesta de",
+      "tags": [],
+      "meta": {
+        "goal": "Dime la fecha de hoy",
+        "retrieved_ids": [
+          "doc-1",
+          "doc-2",
+          "doc-3",
+          "doc-4",
+          "doc-5"
+        ],
+        "run_id": "eb1170070ee1",
+        "mode": "auto"
+      }
+    },
+    "62": {
+      "id": "62",
+      "text": "---\n---\n---\n[Respuesta]\nMiguel de Cervantes.\n---\n---\n[Contexto recuperado]\nEl Quijote fue escrito por Miguel de Cervantes.\n\n¿Quién fue el autor de El Quijote?\n---\n---\n[Pasos para calcular el 15% de 280]\n1. Multiplica 280 por 0.15: 280 x 0.15 = 42\n2. La respuesta es 42.",
+      "tags": [],
+      "meta": {
+        "goal": "Calcula el 15% de 280",
+        "retrieved_ids": [
+          "doc-1",
+          "doc-2",
+          "doc-3",
+          "doc-4",
+          "doc-5"
+        ],
+        "run_id": "4841ff89e62d",
+        "mode": "auto"
+      }
+    },
+    "63": {
+      "id": "63",
+      "text": "---\n[Respuesta]\nParís es la capital de Francia.\n\n---\n{\n  \"contexto\": \"París es la capital de Francia.\",\n  \"pregunta\": \"¿Qué es la capital de Francia?\",\n  \"respuesta\": \"París\"\n}\n---\n---\n[Respuesta]\nParís es la capital de Francia.\n\n---\n{\n  \"contexto\": \"París es la capital de Francia.\",\n  \"pregunta\": \"¿Qué es la capital de Francia?\",",
+      "tags": [],
+      "meta": {
+        "goal": "¿Qué hora es ahora en UTC?",
+        "retrieved_ids": [
+          "doc-1",
+          "doc-2",
+          "doc-3",
+          "doc-4",
+          "doc-5"
+        ],
+        "run_id": "06fff21cb65e",
+        "mode": "auto"
+      }
+    },
+    "64": {
+      "id": "64",
+      "text": "---\n[Respuesta]\n¿Qué día es hoy?\n---\n---\n[Pasos]\n1. Busca el contexto.\n2. Responde útil y conciso.\n\n---\n[Respuesta]\n¿Qué día es hoy?\n---\n---\n[Pasos]\n1. Busca el contexto.\n2. Responde útil y conciso.\n\n---\n[Respuesta]\nHoy es 2023-02-02.\n---\n---",
+      "tags": [],
+      "meta": {
+        "goal": "(3.14*2)^2 / 8",
+        "retrieved_ids": [
+          "doc-1",
+          "doc-2",
+          "doc-3",
+          "doc-4",
+          "doc-5"
+        ],
+        "run_id": "cfa75db6890f",
+        "mode": "auto"
+      }
+    },
+    "65": {
+      "id": "65",
+      "text": "---\n{\n  \"contexto\": \"¿Qué hora es en Ciudad de México?\",\n  \"pregunta\": \"¿Qué hora es en Ciudad de México?\",\n  \"respuesta\": \"Ahora en UTC es 12:00 PM\"\n}\n---\n---\n[Respuesta]\nAhora en Ciudad de México es 12:00 PM\n---\n---\n{\n  \"contexto\": \"¿Qué hora es en Ciudad de México?\",\n  \"pregunta",
+      "tags": [],
+      "meta": {
+        "goal": "Qué hora es en Ciudad de México",
+        "retrieved_ids": [
+          "doc-1",
+          "doc-2",
+          "doc-3",
+          "doc-4",
+          "doc-5"
+        ],
+        "run_id": "619764287e7f",
+        "mode": "auto"
+      }
+    },
+    "66": {
+      "id": "66",
+      "text": "¿Cuánto es (12*7-8)/5?\n---\n[Respuesta]\n26.\n---\n---\n[Pasos]\n1. Evalúa la expresión.\n2. Responde útil y conciso.\n\n---\n[Respuesta]\n26.\n---\n---\n[Pasos]\n1. Evalúa la expresión.\n2. Responde útil y conciso.\n\n---\n[Respuesta]\n26.\n---\n---",
+      "tags": [],
+      "meta": {
+        "goal": "log(1000) + 2^5",
+        "retrieved_ids": [
+          "doc-1",
+          "doc-2",
+          "doc-3",
+          "doc-4",
+          "doc-5"
+        ],
+        "run_id": "8ba499823592",
+        "mode": "auto"
+      }
+    },
+    "67": {
+      "id": "67",
+      "text": "---\n[Respuesta]\nPara calcular el día de la semana de cualquier fecha, puedes usar el método `isoweekday()` de Python:\n```python\nimport datetime\n\ndef get_day_of_week(year, month, day):\n    date = datetime.date(year, month, day)\n    return datetime.isoweekday(date)\n```\nPor ejemplo, para calcular el día de la semana del 1 de febrero de 2023:\n```python",
+      "tags": [],
+      "meta": {
+        "goal": "¿Fecha actual?",
+        "retrieved_ids": [
+          "doc-1",
+          "doc-2",
+          "doc-3"
+        ],
+        "run_id": "61c00fcc4ba8",
+        "mode": "auto"
+      }
+    },
+    "68": {
+      "id": "68",
+      "text": "---\n---\n[Respuesta]\n1781.\n---\n---\n[Respuesta]\n1781.\n---\n---\n[Pasos]\n1. Recoge la respuesta de la base de datos.\n2. Si `strict=True`, valida la estructura JSON y ajusta el resultado.\n\n---\n[Respuesta]\n1781.\n---\n---\n[Contexto recuperado]\nLa Crítica de la razón pura de Kant se publicó en",
+      "tags": [],
+      "meta": {
+        "goal": "resultado de 45/ (3+6)",
+        "retrieved_ids": [
+          "doc-1",
+          "doc-2",
+          "doc-3",
+          "doc-4",
+          "doc-5"
+        ],
+        "run_id": "38247d5f2226",
+        "mode": "auto"
+      }
+    },
+    "69": {
+      "id": "69",
+      "text": "---\n{\n  \"contexto\": \"¿Qué hora es ahora en UTC?\",\n  \"pregunta\": \"¿Qué hora es ahora en UTC?\",\n  \"respuesta\": \"Ahora en UTC es 12:00 PM\"\n}\n---\n---\n{\n  \"contexto\": \"¿Qué hora es ahora en UTC?\",\n  \"pregunta\": \"¿Qué hora es ahora en UTC?\",\n  \"respuesta\": \"12:00 PM",
+      "tags": [],
+      "meta": {
+        "goal": "hora local en México City",
+        "retrieved_ids": [
+          "doc-1",
+          "doc-2",
+          "doc-3",
+          "doc-4",
+          "doc-5"
+        ],
+        "run_id": "4406a0b75306",
+        "mode": "auto"
+      }
+    },
+    "70": {
+      "id": "70",
+      "text": "---\n[Respuesta]\n1781.\n---\n---\n[Pasos]\n1. Recoge la respuesta de la base de datos.\n2. Si `strict=True`, valida la estructura JSON y ajusta el resultado.\n\n---\n[Respuesta]\n1781.\n---\n---\n[Pasos]\n1. Recoge la respuesta de la base de datos.\n2. Si `strict=True`, valida la estructura JSON y ajusta el result",
+      "tags": [],
+      "meta": {
+        "goal": "raíz de 144 más 2",
+        "retrieved_ids": [
+          "doc-1",
+          "doc-2",
+          "doc-3",
+          "doc-4",
+          "doc-5"
+        ],
+        "run_id": "348bc418f7d9",
+        "mode": "auto"
+      }
+    },
+    "71": {
+      "id": "71",
+      "text": "---\n\n[Respuesta]\n¿Qué hora es ahora en UTC?\n---\n---\n[Contexto recuperado]\n---\n{\n  \"contexto\": \"¿Qué hora es ahora en UTC?\",\n  \"pregunta\": \"¿Qué hora es ahora en UTC?\"\n}\n---\n---\n[Respuesta]\nAhora en UTC es 12:00 PM\n\n---\n{\n  \"contexto\": \"¿Qué hora es ahora en UTC?\",\n  \"",
+      "tags": [],
+      "meta": {
+        "goal": "mañana a esta hora en CDMX qué fecha será",
+        "retrieved_ids": [
+          "doc-1",
+          "doc-2",
+          "doc-3",
+          "doc-4",
+          "doc-5"
+        ],
+        "run_id": "b3edd968d910",
+        "mode": "auto"
+      }
+    },
+    "72": {
+      "id": "72",
+      "text": "---\nRespuesta:\n1. La Crítica de la razón pura es un tratado filosófico escrito por Immanuel Kant.\n2. El libro trata sobre la naturaleza y las posibilidades del conocimiento humano.\n\n---\n---\n[Respuesta]\n1. La Crítica de la razón pura es un tratado filosófico escrito por Immanuel Kant.\n2. El libro trata sobre la naturaleza y las posibilidades del conocimiento humano.\n\n[Pas",
+      "tags": [],
+      "meta": {
+        "goal": "elevado 2: (5^2)+3",
+        "retrieved_ids": [
+          "doc-1",
+          "doc-2",
+          "doc-3",
+          "doc-4",
+          "doc-5"
+        ],
+        "run_id": "35224041f8dd",
+        "mode": "auto"
+      }
+    },
+    "73": {
+      "id": "73",
+      "text": "---\n[Respuesta]\n¿Qué día es hoy?\n---\n---\n[Pasos]\n1. Busca el contexto.\n2. Responde útil y conciso.\n\n---\n[Respuesta]\nHoy es 2023-02-03.\n---\n---\n---\nPreguntas\n1. ¿Cuál es la fecha actual?\n2. ¿Cómo calcular el día de la semana de cualquier fecha?\n3. ¿Qué día es h",
+      "tags": [],
+      "meta": {
+        "goal": "qué día es hoy",
+        "retrieved_ids": [
+          "doc-1",
+          "doc-2",
+          "doc-3",
+          "doc-4",
+          "doc-5"
+        ],
+        "run_id": "d919b1132cb2",
+        "mode": "auto"
+      }
+    },
+    "74": {
+      "id": "74",
+      "text": "Pregunta:\n¿Qué es la capital de Francia?\n\nRespuesta:\nParís\n---\n{\n  \"contexto\": \"La Crítica de la razón pura de Kant se publicó en 1781.\",\n  \"pregunta\": \"¿Qué es la capital de Francia?\",\n  \"respuesta\": \"París\",\n  \"strict\": true\n}\n---\n{\n  \"contexto\": \"La Crítica de la razón pura de Kant se publicó en 1",
+      "tags": [],
+      "meta": {
+        "goal": "porcentaje: 37% de 890",
+        "retrieved_ids": [
+          "doc-1",
+          "doc-2",
+          "doc-3",
+          "doc-4",
+          "doc-5"
+        ],
+        "run_id": "14d68b91c2c4",
+        "mode": "auto"
+      }
+    },
+    "75": {
+      "id": "75",
+      "text": "Contexto\nEl usuario pregunta por la hora actual en UTC.\n\nPasos\n1. Verificar si `strict` está habilitado o no.\n2. Si `strict` está habilitado, construir una respuesta en formato JSON válido.\n3. Consultar el servicio `worldtimeapi.org` para obtener la hora actual en UTC.\n4. Devolver la hora actual en UTC como respuesta.\n\n[Respuesta]\n{\n  \"hora_actual\": \"12",
+      "tags": [],
+      "meta": {
+        "goal": "timezone UTC ahora mismo",
+        "retrieved_ids": [
+          "doc-1",
+          "doc-2",
+          "doc-3",
+          "doc-4",
+          "doc-5"
+        ],
+        "run_id": "f04ae1c3b20e",
+        "mode": "auto"
+      }
+    },
+    "76": {
+      "id": "76",
+      "text": "---\n{\n  \"contexto\": \"¿Qué hora es ahora en UTC?\",\n  \"pregunta\": \"¿Qué hora es ahora en UTC?\",\n  \"respuesta\": \"Ahora en UTC es 12:00 PM\"\n}\n---\n---\n{\n  \"contexto\": \"¿Qué hora es ahora en UTC?\",\n  \"pregunta\": \"¿Qué hora es ahora en UTC?\",\n  \"respuesta\": \"12:00 PM\"",
+      "tags": [],
+      "meta": {
+        "goal": "¿Cuánto es (12*7-8)/5?",
+        "retrieved_ids": [
+          "doc-1",
+          "doc-2",
+          "doc-3",
+          "doc-4",
+          "doc-5"
+        ],
+        "run_id": "512356da749e",
+        "mode": "auto"
+      }
+    },
+    "77": {
+      "id": "77",
+      "text": "---\n[Respuesta]\nLa hora actual de UTC es 13:00.\n---\n---\n[Respuesta]\nLa hora actual de UTC es 14:00.\n---\n---\n[Pasos]\n1. Busca el contexto.\n2. Responde útil y conciso.\n\n---\n[Respuesta]\nLa hora actual de UTC es 14:00.\n---\n---\n[Pasos]\n1. Busca el contexto.\n2. Respon",
+      "tags": [],
+      "meta": {
+        "goal": "¿Qué día es hoy en CDMX?",
+        "retrieved_ids": [
+          "doc-1",
+          "doc-2",
+          "doc-3",
+          "doc-4",
+          "doc-5"
+        ],
+        "run_id": "53e8ce68114c",
+        "mode": "auto"
+      }
+    },
+    "78": {
+      "id": "78",
+      "text": "---\n[Respuesta]\n26.\n---\n---\n[Pasos]\n1. Evalúa la expresión.\n2. Responde útil y conciso.\n\n---\n[Respuesta]\n26.\n---\n---\n[Pasos]\n1. Evalúa la expresión.\n2. Responde útil y conciso.\n\n---\n[Respuesta]\n26.\n---\n---\n[Pasos]\n1. Evalúa la expresión.\n2.",
+      "tags": [],
+      "meta": {
+        "goal": "Suma 1.5e3 y 2.25e2",
+        "retrieved_ids": [
+          "doc-1",
+          "doc-2",
+          "doc-3",
+          "doc-4",
+          "doc-5"
+        ],
+        "run_id": "f4780fffc35b",
+        "mode": "auto"
+      }
+    },
+    "79": {
+      "id": "79",
+      "text": "---\n[Respuesta]\n1. La Crítica de la razón pura es un tratado filosófico escrito por Immanuel Kant.\n2. El libro trata sobre la naturaleza y las limitaciones de la razón humana en el conocimiento y la moralidad.\n\n---\n---\n[Respuesta]\nLa Crítica de la razón pura es un tratado filosófico escrito por Immanuel Kant.\nEl libro trata sobre la naturaleza y las limitaciones de la razón humana en",
+      "tags": [],
+      "meta": {
+        "goal": "Dime la fecha de hoy",
+        "retrieved_ids": [
+          "doc-1",
+          "doc-2",
+          "doc-3",
+          "doc-4",
+          "doc-5"
+        ],
+        "run_id": "f694dcbeeb2f",
+        "mode": "auto"
+      }
+    },
+    "80": {
+      "id": "80",
+      "text": "---\n[Respuesta]\n{\n  \"answer\": \"1781\",\n  \"strict\": true\n}\n---\n---\n[Contexto recuperado]\nLa Crítica de la razón pura es el título de un libro escrito por Immanuel Kant en 1781. En este libro, Kant examina las limitaciones y posibilidades de la razón humana en el estudio de la realidad, la moral y el conocimiento.\n\n¿En qué año se publicó la Crítica de la razón pura",
+      "tags": [],
+      "meta": {
+        "goal": "Calcula el 15% de 280",
+        "retrieved_ids": [
+          "doc-1",
+          "doc-2",
+          "doc-3",
+          "doc-4",
+          "doc-5"
+        ],
+        "run_id": "4f89db53e0b3",
+        "mode": "auto"
+      }
+    },
+    "81": {
+      "id": "81",
+      "text": "---\n\n---\n\n---\n{\n  \"contexto\": \"¿Qué hora es ahora en UTC?\",\n  \"pregunta\": \"¿Qué hora es ahora en UTC?\",\n  \"respuesta\": \"12:00 PM\"\n}\n---\n---\n{\n  \"contexto\": \"¿Qué hora es ahora en UTC?\",\n  \"pregunta\": \"¿Qué hora es ahora en UTC?\",\n  \"respuesta\": \"Ahora en UTC es 1",
+      "tags": [],
+      "meta": {
+        "goal": "¿Qué hora es ahora en UTC?",
+        "retrieved_ids": [
+          "doc-1",
+          "doc-2",
+          "doc-3",
+          "doc-4",
+          "doc-5"
+        ],
+        "run_id": "8b287a977be1",
+        "mode": "auto"
+      }
+    },
+    "82": {
+      "id": "82",
+      "text": "---\n[Respuesta]\nLa hora actual de UTC es 14:00.\n---\n---\n[Pasos]\n1. Busca el contexto.\n2. Responde útil y conciso.\n\n---\n[Respuesta]\nLa hora actual de UTC es 14:00.\n---\n---\n[Pasos]\n1. Busca el contexto.\n2. Responde útil y conciso.\n\n---\n[Respuesta]\nLa hora actual de UTC es 1",
+      "tags": [],
+      "meta": {
+        "goal": "(3.14*2)^2 / 8",
+        "retrieved_ids": [
+          "doc-1",
+          "doc-2",
+          "doc-3",
+          "doc-4",
+          "doc-5"
+        ],
+        "run_id": "1064e4be1f9b",
+        "mode": "auto"
+      }
+    },
+    "83": {
+      "id": "83",
+      "text": "---\n\n[Contexto recuperado]\n---\n{\n  \"contexto\": \"¿Qué hora es ahora en UTC?\",\n  \"pregunta\": \"¿Qué hora es ahora en UTC?\",\n  \"respuesta\": \"Ahora en UTC es 12:00 PM\"\n}\n---\n---\n[Respuesta]\nAhora en UTC es 12:00 PM\n---\n---\n{\n  \"contexto\": \"¿Qué hora es ahora en UTC?\",",
+      "tags": [],
+      "meta": {
+        "goal": "Qué hora es en Ciudad de México",
+        "retrieved_ids": [
+          "doc-1",
+          "doc-2",
+          "doc-3",
+          "doc-4",
+          "doc-5"
+        ],
+        "run_id": "b483f3f72385",
+        "mode": "auto"
+      }
+    },
+    "84": {
+      "id": "84",
+      "text": "---\n[Respuesta]\n1. La Crítica de la razón pura es un tratado filosófico escrito por Immanuel Kant.\n2. El libro trata sobre la naturaleza y las posibilidades de la razón.\n3. Si `strict=True`, el resultado sería:\n\n{\n  \"cra\": \"La Crítica de la razón pura\",\n  \"autor\": \"Immanuel Kant\",\n  \"temas\": [\"naturaleza\", \"razón\"]\n}\n\n---",
+      "tags": [],
+      "meta": {
+        "goal": "log(1000) + 2^5",
+        "retrieved_ids": [
+          "doc-1",
+          "doc-2",
+          "doc-3",
+          "doc-4",
+          "doc-5"
+        ],
+        "run_id": "6df115bd9baa",
+        "mode": "auto"
+      }
+    },
+    "85": {
+      "id": "85",
+      "text": "---\nRespuesta:\n1. La fecha actual es 2023-02-03.\n2. Para calcular el día de la semana de cualquier fecha, puedes usar la función `datetime` de Python y la biblioteca `date` de JavaScript. Ambas funciones te permiten calcular el día de la semana de una fecha dada.\n3. Hoy es martes.\n\n---\nRespuesta:\n1. La fecha actual es 2023-02-03.",
+      "tags": [],
+      "meta": {
+        "goal": "¿Fecha actual?",
+        "retrieved_ids": [
+          "doc-1",
+          "doc-2",
+          "doc-3",
+          "doc-4",
+          "doc-5"
+        ],
+        "run_id": "65e7125cc041",
+        "mode": "auto"
+      }
+    },
+    "86": {
+      "id": "86",
+      "text": "---\nRespuesta:\n1. ¿Cuál es la fecha actual?\n2. ¿Cómo calcular el día de la semana de cualquier fecha?\n3. ¿Qué día es hoy?\n\n[Instrucciones]\nResponde útil y conciso. Si `strict=True`, devuelve un JSON VÁLIDO.\nSi usas herramientas, explica brevemente la llamada y resultado.\n\n---\n[Pasos]\n1. Recoge la respuesta de la",
+      "tags": [],
+      "meta": {
+        "goal": "resultado de 45/ (3+6)",
+        "retrieved_ids": [
+          "doc-1",
+          "doc-2",
+          "doc-3",
+          "doc-4",
+          "doc-5"
+        ],
+        "run_id": "c166a830991f",
+        "mode": "auto"
+      }
+    },
+    "87": {
+      "id": "87",
+      "text": "Contexto:\n{\n    \"contexto\": \"¿Qué hora es en Ciudad de México?\",\n    \"pregunta\": \"¿Qué hora es en Ciudad de México?\",\n    \"respuesta\": \"Ahora en UTC es 12:00 PM\"\n}\n\n---\n---\n[Respuesta]\nAhora en Ciudad de México es 12:00 PM\n\n---\n{\n  \"contexto\": \"¿Qué hora es en Ciudad de México?\",\n  \"p",
+      "tags": [],
+      "meta": {
+        "goal": "hora local en México City",
+        "retrieved_ids": [
+          "doc-1",
+          "doc-2",
+          "doc-3",
+          "doc-4",
+          "doc-5"
+        ],
+        "run_id": "b4a0fc254918",
+        "mode": "auto"
+      }
+    },
+    "88": {
+      "id": "88",
+      "text": "---\n[Respuesta]\n1. La Crítica de la razón pura es un tratado filosófico escrito por Immanuel Kant.\n2. El libro trata sobre la naturaleza y limitaciones de la razón humana en el establecimiento del conocimiento científico.\n\n---\n---\n[Pasos]\n1. Recoge la respuesta de la base de datos.\n2. Si `strict=True`, valida la estructura JSON y ajusta el resultado.\n\n---",
+      "tags": [],
+      "meta": {
+        "goal": "raíz de 144 más 2",
+        "retrieved_ids": [
+          "doc-1",
+          "doc-2",
+          "doc-3",
+          "doc-4",
+          "doc-5"
+        ],
+        "run_id": "2cb638920f8f",
+        "mode": "auto"
+      }
+    },
+    "89": {
+      "id": "89",
+      "text": "---\n\n---\n{\n  \"contexto\": \"¿Qué hora es ahora en UTC?\",\n  \"pregunta\": \"¿Qué hora es ahora en UTC?\",\n  \"respuesta\": \"12:00 PM\"\n}\n---\n---\n{\n  \"contexto\": \"¿Qué hora es ahora en UTC?\",\n  \"pregunta\": \"¿Qué hora es ahora en UTC?\",\n  \"respuesta\": \"12:00 PM\"\n}",
+      "tags": [],
+      "meta": {
+        "goal": "mañana a esta hora en CDMX qué fecha será",
+        "retrieved_ids": [
+          "doc-1",
+          "doc-2",
+          "doc-3",
+          "doc-4",
+          "doc-5"
+        ],
+        "run_id": "64ed2d41b0a0",
+        "mode": "auto"
+      }
+    },
+    "90": {
+      "id": "90",
+      "text": "---\n[Respuesta]\nLa Crítica de la razón pura es un tratado filosófico escrito por Immanuel Kant.\nEl libro trata sobre la naturaleza y las posibilidades de la razón.\nSi `strict=True`, el resultado sería:\n\n{\n  \"cra\": \"La Crítica de la razón pura\",\n  \"autor\": \"Immanuel Kant\",\n  \"temas\": [\"naturaleza\", \"razón\"]\n}\n\n---\n---\n---\n---",
+      "tags": [],
+      "meta": {
+        "goal": "elevado 2: (5^2)+3",
+        "retrieved_ids": [
+          "doc-1",
+          "doc-2",
+          "doc-3",
+          "doc-4",
+          "doc-5"
+        ],
+        "run_id": "0a7efc321230",
+        "mode": "auto"
+      }
+    },
+    "91": {
+      "id": "91",
+      "text": "---\nRespuesta:\n1. La fecha actual es 2023-02-03.\n2. Para calcular el día de la semana de cualquier fecha, puedes usar la función `datetime` de Python y la biblioteca `date` de JavaScript. Ambas funciones te permiten calcular el día de la semana de una fecha dada.\n3. Hoy es martes.\n\n---\nRespuesta:\n1. La fecha actual es 2023-02-03.",
+      "tags": [],
+      "meta": {
+        "goal": "qué día es hoy",
+        "retrieved_ids": [
+          "doc-1",
+          "doc-2",
+          "doc-3",
+          "doc-4",
+          "doc-5"
+        ],
+        "run_id": "e25eb507aae7",
+        "mode": "auto"
+      }
+    },
+    "92": {
+      "id": "92",
+      "text": "---\n---\nPregunta:\n¿Qué es la capital de Francia?\n\nRespuesta:\nParís\n\n---\n{\n  \"contexto\": \"La Crítica de la razón pura de Kant se publicó en 1781.\",\n  \"pregunta\": \"¿Qué es la capital de Francia?\",\n  \"respuesta\": \"París\",\n  \"strict\": true\n}\n---\n{\n  \"contexto\": \"La Crítica de la razón pura de Kant se",
+      "tags": [],
+      "meta": {
+        "goal": "porcentaje: 37% de 890",
+        "retrieved_ids": [
+          "doc-1",
+          "doc-2",
+          "doc-3",
+          "doc-4",
+          "doc-5"
+        ],
+        "run_id": "1c5b5ec371fc",
+        "mode": "auto"
+      }
+    },
+    "93": {
+      "id": "93",
+      "text": "---\n---\n{\n  \"contexto\": \"¿Qué hora es ahora en UTC?\",\n  \"pregunta\": \"¿Qué hora es ahora en UTC?\",\n  \"respuesta\": \"12:00 PM\"\n}\n---\n---\n{\n  \"contexto\": \"¿Qué hora es ahora en UTC?\",\n  \"pregunta\": \"¿Qué hora es ahora en UTC?\",\n  \"respuesta\": \"12:00 PM\"\n}\n---",
+      "tags": [],
+      "meta": {
+        "goal": "timezone UTC ahora mismo",
+        "retrieved_ids": [
+          "doc-1",
+          "doc-2",
+          "doc-3",
+          "doc-4",
+          "doc-5"
+        ],
+        "run_id": "2bde0b2f85dd",
+        "mode": "auto"
+      }
+    },
+    "94": {
+      "id": "94",
+      "text": "¿Cuánto es (12*7-8)/5?\n---\n[Respuesta]\n26.\n---\n---\n[Pasos]\n1. Evalúa la expresión.\n2. Responde útil y conciso.\n\n---\n[Respuesta]\n26.\n---\n---\n[Pasos]\n1. Evalúa la expresión.\n2. Responde útil y conciso.\n\n---\n[Respuesta]\n26.\n---\n---",
+      "tags": [],
+      "meta": {
+        "goal": "(100-33.5)*6",
+        "retrieved_ids": [
+          "doc-1",
+          "doc-2"
+        ],
+        "run_id": "9ca145b5b0c7",
+        "mode": "auto"
+      }
+    },
+    "95": {
+      "id": "95",
+      "text": "---\n{\n  \"contexto\": \"¿Qué hora es ahora en UTC?\",\n  \"pregunta\": \"¿Qué hora es ahora en UTC?\",\n  \"respuesta\": \"12:00 PM\"\n}\n---\n---\n---\n{\n  \"contexto\": \"¿Qué hora es ahora en UTC?\",\n  \"pregunta\": \"¿Qué hora es ahora en UTC?\",\n  \"respuesta\": \"12:00 PM\"\n}\n---",
+      "tags": [],
+      "meta": {
+        "goal": "qué hora es en GMT",
+        "retrieved_ids": [
+          "doc-1",
+          "doc-2",
+          "doc-3",
+          "doc-4",
+          "doc-5"
+        ],
+        "run_id": "008f490875c4",
+        "mode": "auto"
+      }
+    },
+    "96": {
+      "id": "96",
+      "text": "---\n[Pasos]\n1. Busca el contexto.\n2. Responde útil y conciso.\n\n---\n[Pasos]\n1. Busca el contexto.\n2. Responde útil y conciso.\n\n---\n[Pasos]\n1. Busca el contexto.\n2. Responde útil y conciso.\n\n---\n[Pasos]\n1. Busca el contexto.\n2. Responde útil y conciso.\n\n---\n[Pasos",
+      "tags": [],
+      "meta": {
+        "goal": "Calcula '((9-3)*2)^3'",
+        "retrieved_ids": [
+          "doc-1",
+          "doc-2",
+          "doc-3",
+          "doc-4",
+          "doc-5"
+        ],
+        "run_id": "5c3af5d1ed31",
+        "mode": "auto"
+      }
+    },
+    "97": {
+      "id": "97",
+      "text": "---\n---\n{\n  \"contexto\": \"¿Qué hora es ahora en UTC?\",\n  \"pregunta\": \"¿Qué hora es ahora en UTC?\",\n  \"respuesta\": \"12:00 PM\"\n}\n---\n---\n---\n{\n  \"contexto\": \"¿Qué hora es ahora en UTC?\",\n  \"pregunta\": \"¿Qué hora es ahora en UTC?\",\n  \"respuesta\": \"12:00 PM\"\n}",
+      "tags": [],
+      "meta": {
+        "goal": "Dime la hora en CDMX",
+        "retrieved_ids": [
+          "doc-1",
+          "doc-2",
+          "doc-3",
+          "doc-4",
+          "doc-5"
+        ],
+        "run_id": "b4f5f3d21499",
+        "mode": "auto"
+      }
+    },
+    "98": {
+      "id": "98",
+      "text": "---\nRespuesta:\n¿Cómo calcular el día de la semana de cualquier fecha?\n---\n---\nPasos:\n1. Llama a la API de Google Calendar para obtener el día de la semana.\n2. Utiliza el resultado para calcular el día actual.\n3. Responde útil y conciso.\n\n---\n[Respuesta]\n¿Cómo calcular el día de la semana de cualquier fecha?\n---\n---\n[Pasos]\n1. L",
+      "tags": [],
+      "meta": {
+        "goal": "1.2e2 + 3.4e1 - 5",
+        "retrieved_ids": [
+          "doc-1",
+          "doc-2",
+          "doc-3",
+          "doc-4",
+          "doc-5"
+        ],
+        "run_id": "c4e30aad91b0",
+        "mode": "auto"
+      }
+    },
+    "99": {
+      "id": "99",
+      "text": "---\nRespuesta:\n1. La fecha actual es 2023-02-03.\n2. Para calcular el día de la semana de cualquier fecha, puedes usar la función `datetime` de Python y la biblioteca `date` de JavaScript. Ambas funciones te permiten calcular el día de la semana de una fecha dada.\n3. Hoy es martes.\n\n[Instrucciones]\nResponde útil y conciso. Si `strict=True`, devuelve un JSON",
+      "tags": [],
+      "meta": {
+        "goal": "Fecha y día actuales",
+        "retrieved_ids": [
+          "doc-1",
+          "doc-2",
+          "doc-3",
+          "doc-4",
+          "doc-5"
+        ],
+        "run_id": "f72c4f061e98",
+        "mode": "auto"
+      }
+    },
+    "100": {
+      "id": "100",
+      "text": "---\n{\n  \"contexto\": \"¿Qué hora es ahora en UTC?\",\n  \"pregunta\": \"¿Qué hora es ahora en UTC?\",\n  \"respuesta\": \"12:00 PM\"\n}\n---\n---\n---\n---\n---\n---\n---\n---\n---\n---\n---\n---\n---\n---\n---\n---\n---\n---\n---\n---\n---\n---\n---\n---\n---\n---\n---\n---\n---\n---\n---\n---\n---",
+      "tags": [],
+      "meta": {
+        "goal": "¿Cuánto es (12*7-8)/5?",
+        "retrieved_ids": [
+          "doc-1",
+          "doc-2",
+          "doc-3",
+          "doc-4",
+          "doc-5"
+        ],
+        "run_id": "739c4eb5ea54",
+        "mode": "auto"
+      }
+    },
+    "101": {
+      "id": "101",
+      "text": "---\n[Pasos]\n1. Llama a la API de Google Calendar para obtener el día de la semana.\n2. Utiliza el resultado para calcular el día actual.\n3. Responde útil y conciso.\n\n---\nRespuesta:\n¿Qué día es hoy?\n---\n---\n[Pasos]\n1. Llama a la API de Google Calendar para obtener el día de la semana.\n2. Utiliza el resultado para calcular el día actual.\n3. Res",
+      "tags": [],
+      "meta": {
+        "goal": "¿Qué día es hoy en CDMX?",
+        "retrieved_ids": [
+          "doc-1",
+          "doc-2",
+          "doc-3",
+          "doc-4",
+          "doc-5"
+        ],
+        "run_id": "0a1c3909a988",
+        "mode": "auto"
+      }
+    },
+    "102": {
+      "id": "102",
+      "text": "---\n[Respuesta]\nHoy es 2023-02-02.\n---\n---\n[Pasos]\n1. Busca el contexto.\n2. Responde útil y conciso.\n\n---\n[Respuesta]\nHoy es 2023-02-02.\n---\n---\n[Pasos]\n1. Busca el contexto.\n2. Responde útil y conciso.\n\n---\n[Respuesta]\nHoy es 202",
+      "tags": [],
+      "meta": {
+        "goal": "Suma 1.5e3 y 2.25e2",
+        "retrieved_ids": [
+          "doc-1",
+          "doc-2",
+          "doc-3",
+          "doc-4",
+          "doc-5"
+        ],
+        "run_id": "6cee7e0d15ec",
+        "mode": "auto"
+      }
+    },
+    "103": {
+      "id": "103",
+      "text": "---\n[Respuesta]\nLa fecha de hoy es 2023-02-03.\n---\n---\n[Pasos]\n1. Busca el contexto.\n2. Responde útil y conciso.\n---\n[Respuesta]\nLa fecha de hoy es 2023-02-03.\n---\n---\n[Pasos]\n1. Recoge la respuesta de\n---\n---\n[Respuesta]\nLa fecha actual es 202",
+      "tags": [],
+      "meta": {
+        "goal": "Dime la fecha de hoy",
+        "retrieved_ids": [
+          "doc-1",
+          "doc-2",
+          "doc-3",
+          "doc-4",
+          "doc-5"
+        ],
+        "run_id": "3359faf1a5fe",
+        "mode": "auto"
+      }
+    },
+    "104": {
+      "id": "104",
+      "text": "---\n---\n[Contexto recuperado]\nLa Crítica de la razón pura es un libro escrito por Immanuel Kant en 1781. En este libro, Kant examina las limitaciones y posibilidades de la razón humana en el estudio de la realidad, la moral y el conocimiento.\n\n¿En qué año se publicó la Crítica de la razón pura?\n---\n---\n[Pasos para calcular el 15% de 280]\n1. Multiplica 280",
+      "tags": [],
+      "meta": {
+        "goal": "Calcula el 15% de 280",
+        "retrieved_ids": [
+          "doc-1",
+          "doc-2",
+          "doc-3",
+          "doc-4",
+          "doc-5"
+        ],
+        "run_id": "5fd859827d9f",
+        "mode": "auto"
+      }
+    },
+    "105": {
+      "id": "105",
+      "text": "---\n\n---\n\n---\n{\n  \"contexto\": \"¿Qué hora es ahora en UTC?\",\n  \"pregunta\": \"¿Qué hora es ahora en UTC?\",\n  \"respuesta\": \"12:00 PM\"\n}\n---\n---\n{\n  \"contexto\": \"¿Qué hora es ahora en UTC?\",\n  \"pregunta\": \"¿Qué hora es ahora en UTC?\"\n}\n---\n---\n{\n  \"contexto\": \"",
+      "tags": [],
+      "meta": {
+        "goal": "¿Qué hora es ahora en UTC?",
+        "retrieved_ids": [
+          "doc-1",
+          "doc-2",
+          "doc-3",
+          "doc-4",
+          "doc-5"
+        ],
+        "run_id": "68ed29ab3d61",
+        "mode": "auto"
+      }
+    },
+    "106": {
+      "id": "106",
+      "text": "---\n[Respuesta]\nSi `strict=True`, devuelve un JSON VÁLIDO.\n---\n---\n[Respuesta]\nSi `strict=True`, devuelve un JSON VÁLIDO.\n---\n---\n[Respuesta]\nSi `strict=True`, devuelve un JSON VÁLIDO.\n---\n---\n---\n---\n---\n---\n---\n---\n---\n---\n---\n---\n---\n---\n---\n---\n---\n---\n---\n---\n---\n---",
+      "tags": [],
+      "meta": {
+        "goal": "(3.14*2)^2 / 8",
+        "retrieved_ids": [
+          "doc-1",
+          "doc-2",
+          "doc-3",
+          "doc-4",
+          "doc-5"
+        ],
+        "run_id": "68a101f006b4",
+        "mode": "auto"
+      }
+    },
+    "107": {
+      "id": "107",
+      "text": "---\n{\n  \"contexto\": \"¿Qué hora es ahora en UTC?\",\n  \"pregunta\": \"¿Qué hora es ahora en UTC?\",\n  \"respuesta\": \"12:00 PM\"\n}\n---\n---\n{\n  \"contexto\": \"¿Qué hora es ahora en UTC?\",\n  \"pregunta\": \"¿Qué hora es ahora en UTC?\",\n  \"respuesta\": \"12:00 PM\"\n}\n---",
+      "tags": [],
+      "meta": {
+        "goal": "Qué hora es en Ciudad de México",
+        "retrieved_ids": [
+          "doc-1",
+          "doc-2",
+          "doc-3",
+          "doc-4",
+          "doc-5"
+        ],
+        "run_id": "113b569f2d18",
+        "mode": "auto"
+      }
+    },
+    "108": {
+      "id": "108",
+      "text": "```\ndef f(strict=False, contexto=None):\n    # Evalúa la expresión\n    # Responde útil y conciso.\n    # Si `strict=True`, devuelve un JSON VÁLIDO.\n    if contexto is None:\n        return 1781\n    else:\n        # Llama a la herramienta\n        # ...\n        # Procesa el resultado\n        # ...\n```\n---\n[Respuesta]\n1781.\n---",
+      "tags": [],
+      "meta": {
+        "goal": "log(1000) + 2^5",
+        "retrieved_ids": [
+          "doc-1",
+          "doc-2",
+          "doc-3",
+          "doc-4",
+          "doc-5"
+        ],
+        "run_id": "d26c123b26c9",
+        "mode": "auto"
+      }
+    },
+    "109": {
+      "id": "109",
+      "text": "---\nRespuesta:\n1. La fecha actual es 2023-02-03.\n2. Para calcular el día de la semana de cualquier fecha, puedes usar la función `datetime` de Python y la biblioteca `date` de JavaScript. Ambas funciones te permiten calcular el día de la semana de una fecha dada.\n---\n---\n[Respuesta]\n1. La fecha actual es 2023-02-03.\n2. Para calcular el",
+      "tags": [],
+      "meta": {
+        "goal": "¿Fecha actual?",
+        "retrieved_ids": [
+          "doc-1",
+          "doc-2",
+          "doc-3",
+          "doc-4",
+          "doc-5"
+        ],
+        "run_id": "9c830352a663",
+        "mode": "auto"
+      }
+    },
+    "110": {
+      "id": "110",
+      "text": "---\nRespuesta:\n1. La fecha actual es 2023-04-19.\n2. Para calcular el día de la semana de cualquier fecha, puedes usar la API de Google Calendar. La llamada se realiza de la siguiente manera:\n\n```\nimport requests\n\nurl = \"https://www.googleapis.com/calendar/v3/calendars/primary/events\"\nparams = {\n    \"timeMin\": \"2023-04-19\",\n    \"",
+      "tags": [],
+      "meta": {
+        "goal": "resultado de 45/ (3+6)",
+        "retrieved_ids": [
+          "doc-1",
+          "doc-2",
+          "doc-3",
+          "doc-4",
+          "doc-5"
+        ],
+        "run_id": "922451e2e0b6",
+        "mode": "auto"
+      }
+    },
+    "111": {
+      "id": "111",
+      "text": "---\n---\n{\n    \"contexto\": \"¿Qué hora es en Ciudad de México?\",\n    \"pregunta\": \"¿Qué hora es en Ciudad de México?\",\n    \"respuesta\": \"12:00 PM\"\n}\n---\n---\n[Respuesta]\n12:00 PM\n---\n---\n{\n    \"contexto\": \"¿Qué hora es en Ciudad de México?\",\n    \"pregunta\": \"¿Qué hora es en Ciudad de México",
+      "tags": [],
+      "meta": {
+        "goal": "hora local en México City",
+        "retrieved_ids": [
+          "doc-1",
+          "doc-2",
+          "doc-3",
+          "doc-4",
+          "doc-5"
+        ],
+        "run_id": "a8c52772d476",
+        "mode": "auto"
+      }
+    },
+    "112": {
+      "id": "112",
+      "text": "---\n[Respuesta]\n1781.\n---\n---\n[Respuesta]\nLa respuesta es 1781.\n---\n---\n[Pasos]\n1. Recoge la respuesta de la base de datos.\n2. Si `strict=True`, valida la estructura JSON y ajusta el resultado.\n\n---\n[Respuesta]\n1781.\n---\n---\n[Respuesta]\n1781.\n---\n---\n[Respuesta]",
+      "tags": [],
+      "meta": {
+        "goal": "raíz de 144 más 2",
+        "retrieved_ids": [
+          "doc-1",
+          "doc-2",
+          "doc-3",
+          "doc-4",
+          "doc-5"
+        ],
+        "run_id": "351b744f36a3",
+        "mode": "auto"
+      }
+    },
+    "113": {
+      "id": "113",
+      "text": "---\n---\nRespuesta: 14:00 PM\n---\n---\n\nRespuesta: 14:00 PM\n---\n---\n{\n  \"contexto\": \"¿Qué hora es ahora en UTC?\",\n  \"pregunta\": \"¿Qué hora es ahora en UTC?\",\n  \"respuesta\": \"14:00 PM\"\n}\n---\n---\n{\n  \"contexto\": \"¿Qué hora es ahora en UTC?\",\n  \"pregunta",
+      "tags": [],
+      "meta": {
+        "goal": "mañana a esta hora en CDMX qué fecha será",
+        "retrieved_ids": [
+          "doc-1",
+          "doc-2",
+          "doc-3",
+          "doc-4",
+          "doc-5"
+        ],
+        "run_id": "134106d9c399",
+        "mode": "auto"
+      }
+    },
+    "114": {
+      "id": "114",
+      "text": "---\n[Respuesta]\n1781.\n---\n---\n[Pasos]\n1. Busca el contexto.\n2. Responde útil y conciso.\n\n---\n[Respuesta]\n1781.\n---\n---\n[Pasos]\n1. Busca el contexto.\n2. Responde útil y conciso.\n\n---\n[Respuesta]\n1781.\n---\n---\n---\n[Respuesta]\n¿Cuánto es (",
+      "tags": [],
+      "meta": {
+        "goal": "elevado 2: (5^2)+3",
+        "retrieved_ids": [
+          "doc-1",
+          "doc-2",
+          "doc-3",
+          "doc-4",
+          "doc-5"
+        ],
+        "run_id": "346753d631dd",
+        "mode": "auto"
+      }
+    },
+    "115": {
+      "id": "115",
+      "text": "---\n[Pasos]\n1. Llama a la API de Google Calendar para obtener el día de la semana.\n2. Utiliza el resultado para calcular el día actual.\n3. Responde útil y conciso.\n\n---\nRespuesta:\n2. Para calcular el día de la semana de cualquier fecha, puedes usar la API de Google Calendar. Primero, llama a la API para obtener el día de la semana. Luego, utiliza el resultado para calcular el día actual",
+      "tags": [],
+      "meta": {
+        "goal": "qué día es hoy",
+        "retrieved_ids": [
+          "doc-1",
+          "doc-2",
+          "doc-3",
+          "doc-4",
+          "doc-5"
+        ],
+        "run_id": "d09b96fb215c",
+        "mode": "auto"
+      }
+    },
+    "116": {
+      "id": "116",
+      "text": "---\nPregunta:\n¿Qué es la capital de Francia?\n\nRespuesta:\nParís\n\n{\n  \"contexto\": \"La Crítica de la razón pura de Kant se publicó en 1781.\",\n  \"pregunta\": \"¿Qué es la capital de Francia?\",\n  \"respuesta\": \"París\",\n  \"strict\": true\n}\n---\n---\n[Respuesta]\nLa Crítica de la razón pura de Kant se publicó en 1",
+      "tags": [],
+      "meta": {
+        "goal": "porcentaje: 37% de 890",
+        "retrieved_ids": [
+          "doc-1",
+          "doc-2",
+          "doc-3",
+          "doc-4",
+          "doc-5"
+        ],
+        "run_id": "0aed89dbe1cf",
+        "mode": "auto"
+      }
+    },
+    "117": {
+      "id": "117",
+      "text": "---\n[Contexto recuperado]\n---\n{\n  \"contexto\": \"¿Qué hora es ahora en UTC?\",\n  \"pregunta\": \"¿Qué hora es ahora en UTC?\",\n  \"respuesta\": \"12:00 PM\"\n}\n---\n---\n{\n  \"contexto\": \"¿Qué hora es ahora en UTC?\",\n  \"pregunta\": \"¿Qué hora es ahora en UTC?\",\n  \"respuesta\": \"12:",
+      "tags": [],
+      "meta": {
+        "goal": "timezone UTC ahora mismo",
+        "retrieved_ids": [
+          "doc-1",
+          "doc-2",
+          "doc-3",
+          "doc-4",
+          "doc-5"
+        ],
+        "run_id": "75edda52c134",
+        "mode": "auto"
+      }
+    },
+    "118": {
+      "id": "118",
+      "text": "---\n\n# Contextos y Respuestas\n\n¿Cuánto es (12*7-8)/5?\nRespuesta:\n26\n\n¿Cuánto es (12*7-8)/5?\nRespuesta:\n26\n\n¿Cuánto es (12*7-8)/5?\nRespuesta:\n26\n\n¿Cuánto es (12*7-8)/5?\nRespuesta:\n26\n\n¿Cuánt",
+      "tags": [],
+      "meta": {
+        "goal": "(100-33.5)*6",
+        "retrieved_ids": [
+          "doc-1",
+          "doc-2",
+          "doc-3"
+        ],
+        "run_id": "39c782100f66",
+        "mode": "auto"
+      }
+    },
+    "119": {
+      "id": "119",
+      "text": "---\ncontexto:\n---\n---\n---\n{\n  \"contexto\": \"\n---\n---\n[Contexto recuperado]\n---\n{\n  \"contexto\": \"¿Qué hora es ahora en UTC?\",\n  \"pregunta\": \"¿Qué hora es ahora en UTC?\",\n  \"respuesta\": \"12:00 PM\"\n}\n---\n---\n---\n{\n  \"contexto\": \"¿Qué hora es ahora en UTC?\",\n  \"pregunta",
+      "tags": [],
+      "meta": {
+        "goal": "qué hora es en GMT",
+        "retrieved_ids": [
+          "doc-1",
+          "doc-2",
+          "doc-3",
+          "doc-4",
+          "doc-5"
+        ],
+        "run_id": "c9b1fef789ec",
+        "mode": "auto"
+      }
+    },
+    "120": {
+      "id": "120",
+      "text": "---\nPreguntas\n1. ¿Cuál es la fecha actual?\n2. ¿Cómo calcular el día de la semana de cualquier fecha?\n3. ¿Qué día es hoy?\n\n[Instrucciones]\nResponde útil y conciso. Si `strict=True`, devuelve un JSON VÁLIDO.\nSi usas herramientas, explica brevemente la llamada y resultado.\n\n---\nRespuesta:\n1. La fecha actual es 202",
+      "tags": [],
+      "meta": {
+        "goal": "Calcula '((9-3)*2)^3'",
+        "retrieved_ids": [
+          "doc-1",
+          "doc-2",
+          "doc-3",
+          "doc-4",
+          "doc-5"
+        ],
+        "run_id": "8ceef43750fb",
+        "mode": "auto"
+      }
+    },
+    "121": {
+      "id": "121",
+      "text": "---\n{\n  \"contexto\": \"¿Qué hora es ahora en CDMX?\",\n  \"pregunta\": \"¿Qué hora es ahora en CDMX?\",\n  \"respuesta\": \"12:00 PM\"\n}\n---\n\n---\n---\n---\n\n---\n{\n  \"contexto\": \"¿Qué hora es ahora en CDMX?\",\n  \"pregunta\": \"¿Qué hora es ahora en CDMX?\",\n  \"respuesta\": \"",
+      "tags": [],
+      "meta": {
+        "goal": "Dime la hora en CDMX",
+        "retrieved_ids": [
+          "doc-1",
+          "doc-2",
+          "doc-3",
+          "doc-4",
+          "doc-5"
+        ],
+        "run_id": "d65dd9767ff5",
+        "mode": "auto"
+      }
+    },
+    "122": {
+      "id": "122",
+      "text": "---\n[Respuesta]\nHoy es 2023-02-03.\n---\n---\n---\n[Respuesta]\n¿Cuánto es (12*7-8)/5?\n---\n[Pasos]\n1. Evalúa la expresión.\n2. Responde útil y conciso.\n\n---\n[Respuesta]\n26.\n---\n---\n---\nPreguntas\n1. ¿Cuál es la fecha actual?\n2. ¿C",
+      "tags": [],
+      "meta": {
+        "goal": "1.2e2 + 3.4e1 - 5",
+        "retrieved_ids": [
+          "doc-1",
+          "doc-2",
+          "doc-3",
+          "doc-4",
+          "doc-5"
+        ],
+        "run_id": "eb32dfb9abf5",
+        "mode": "auto"
+      }
+    },
+    "123": {
+      "id": "123",
+      "text": "---\n[Pasos]\n1. Llama a la API de Google Calendar para obtener el día de la semana.\n2. Utiliza el resultado para calcular el día actual.\n3. Responde útil y conciso.\n---\n[Respuesta]\n1. ¿Cuál es la fecha actual?\n2. ¿Cómo calcular el día de la semana de cualquier fecha?\n3. ¿Qué día es hoy?\n\n[Instrucciones]\nResponde útil y conciso",
+      "tags": [],
+      "meta": {
+        "goal": "Fecha y día actuales",
+        "retrieved_ids": [
+          "doc-1",
+          "doc-2",
+          "doc-3",
+          "doc-4",
+          "doc-5"
+        ],
+        "run_id": "401447ef5d28",
+        "mode": "auto"
+      }
+    },
+    "124": {
+      "id": "124",
+      "text": "---\n[Respuesta]\n26.\n---\n---\n[Pasos]\n1. Evalúa la expresión.\n2. Responde útil y conciso.\n\n---\n[Respuesta]\n26.\n---\n---\n---\n---\n---\n---\n---\n---\n---\n---\n---\n---\n---\n---\n---\n---\n---\n---\n---\n---\n---\n---\n---\n---\n---\n---\n---\n---\n---\n---\n---\n---\n---\n---",
+      "tags": [],
+      "meta": {
+        "goal": "sqrt(81) * 7",
+        "retrieved_ids": [
+          "doc-1",
+          "doc-2",
+          "doc-3",
+          "doc-4",
+          "doc-5"
+        ],
+        "run_id": "51d4e5724a05",
+        "mode": "auto"
+      }
+    },
+    "125": {
+      "id": "125",
+      "text": "Si necesitas pasos, enuméralos; Si debes llamar herramientas, explica brevemente su uso.\n\n---\n\n---\n\n---\n\n---\n\n---\n---\n{\n  \"contexto\": \"¿Qué hora es ahora en UTC?\",\n  \"pregunta\": \"¿Qué hora es ahora en UTC?\"\n}\n---\n---\n---\n\n---\n\n---\n\n---\n{\n  \"contexto\": \"¿Qué hora es ahora en UTC?\",\n  \"",
+      "tags": [],
+      "meta": {
+        "goal": "¿Qué hora es ahora?",
+        "retrieved_ids": [
+          "doc-1",
+          "doc-2",
+          "doc-3",
+          "doc-4",
+          "doc-5"
+        ],
+        "run_id": "6f1a069809c3",
+        "mode": "auto"
+      }
+    },
+    "126": {
+      "id": "126",
+      "text": "---\n[Respuesta]\n2023-02-03\n---\n---\n---\nPreguntas\n1. ¿Cuál es la fecha actual?\n2. ¿Cuántos días hay en el mes de febrero?\n3. ¿Cuántas veces se repite el número 2 en el número 345?\n4. ¿Qué es el número de día de la fecha actual?\n\n[Instrucciones]\nResponde útil y conciso. Si `strict=True`, dev",
+      "tags": [],
+      "meta": {
+        "goal": "Calcula 2^10",
+        "retrieved_ids": [
+          "doc-1",
+          "doc-2",
+          "doc-3",
+          "doc-4",
+          "doc-5"
+        ],
+        "run_id": "3dabb938b26c",
+        "mode": "auto"
+      }
+    },
+    "127": {
+      "id": "127",
+      "text": "---\n{\n  \"contexto\": \"¿Qué hora es ahora en UTC?\",\n  \"pregunta\": \"¿Qué hora es ahora en UTC?\",\n  \"respuesta\": \"12:00 PM\"\n}\n---\n---\n{\n  \"contexto\": \"¿Qué hora es ahora en UTC?\",\n  \"pregunta\": \"¿Qué hora es ahora en UTC?\",\n  \"respuesta\": \"Ahora en UTC es 12:00 PM\"",
+      "tags": [],
+      "meta": {
+        "goal": "Hora exacta en UTC",
+        "retrieved_ids": [
+          "doc-1",
+          "doc-2",
+          "doc-3",
+          "doc-4",
+          "doc-5"
+        ],
+        "run_id": "cbbe0ea69490",
+        "mode": "auto"
+      }
+    },
+    "128": {
+      "id": "128",
+      "text": "---\n\n# Contextos y Respuestas\n\n¿Cuánto es (12*7-8)/5?\nRespuesta:\n26\n\n¿Cuánto es (12*7-8)/5?\nRespuesta:\n26\n\n¿Cuánto es (12*7-8)/5?\nRespuesta:\n26\n\n¿Cuánto es (12*7-8)/5?\nRespuesta:\n26\n\n¿Cuánt",
+      "tags": [],
+      "meta": {
+        "goal": "(5+5+5+5)/4",
+        "retrieved_ids": [
+          "doc-1",
+          "doc-2",
+          "doc-3",
+          "doc-4",
+          "doc-5"
+        ],
+        "run_id": "7ec81d7a6df5",
+        "mode": "auto"
+      }
+    },
+    "129": {
+      "id": "129",
+      "text": "---\n---\n[Respuesta]\nHoy es 2023-02-03.\n---\n---\n---\n{\n    \"contexto\": \"¿Qué día es hoy?\",\n    \"pregunta\": \"¿Qué día es hoy?\",\n    \"respuesta\": \"2023-02-03\"\n}\n---\n---\n[Respuesta]\n2023-02-03\n---\n---\n[Pasos]\n1. Busca el contexto",
+      "tags": [],
+      "meta": {
+        "goal": "¿Qué día es hoy en México?",
+        "retrieved_ids": [
+          "doc-1",
+          "doc-2",
+          "doc-3",
+          "doc-4",
+          "doc-5"
+        ],
+        "run_id": "c1b0f93c46e4",
+        "mode": "auto"
+      }
+    },
+    "130": {
+      "id": "130",
+      "text": "---\n[Pasos]\n1. Evalúa la expresión.\n2. Responde útil y conciso.\n\n---\n[Respuesta]\n26.\n---\n---\n[doc:doc-6]\n¿Cuánto es (12*7-8)/5?\n---\n[Pasos]\n1. Evalúa la expresión.\n2. Responde útil y conciso.\n\n---\n[Respuesta]\n26.\n---\n---\n[Pasos",
+      "tags": [],
+      "meta": {
+        "goal": "¿Cuánto es (12*7-8)/5?",
+        "retrieved_ids": [
+          "doc-1",
+          "doc-2",
+          "doc-3",
+          "doc-4",
+          "doc-5"
+        ],
+        "run_id": "95b94efb4115",
+        "mode": "auto",
+        "tool_pred": "calculator",
+        "tool_score": 0.75,
+        "tool_reason": "seleccionada por heurística; score=0.75"
+      }
+    },
+    "131": {
+      "id": "131",
+      "text": "---\n---\n{\n    \"contexto\": \"¿Qué día es hoy?\",\n    \"pregunta\": \"¿Qué día es hoy?\",\n    \"respuesta\": \"2023-02-03\"\n}\n---\n---\n[Respuesta]\n2023-02-03\n---\n---\n[Pasos]\n1. Busca el contexto\n---\n[doc:doc-6] ---\n[Pasos]\n1. Llama a la API de Google",
+      "tags": [],
+      "meta": {
+        "goal": "¿Qué día es hoy en CDMX?",
+        "retrieved_ids": [
+          "doc-1",
+          "doc-2",
+          "doc-3",
+          "doc-4",
+          "doc-5"
+        ],
+        "run_id": "78b9cce45d25",
+        "mode": "auto",
+        "tool_pred": "datetime",
+        "tool_score": 1.21,
+        "tool_reason": "seleccionada por heurística; score=1.21"
+      }
+    },
+    "132": {
+      "id": "132",
+      "text": "¿Cuánto es (12*7-8)/5?\n\n---\n[doc:doc-1] ---\n\n# Contextos y Respuestas\n\n¿Cuánto es (12*7-8)/5?\nRespuesta:\n26\n\n¿Cuánto es (12*7-8)/5?\nRespuesta:\n26\n\n¿Cuánto es (12*7-8)/5?\nRespuesta:\n26\n\n¿Cuá",
+      "tags": [],
+      "meta": {
+        "goal": "¿Cuánto es (12*7-8)/5?",
+        "retrieved_ids": [
+          "doc-1",
+          "doc-2",
+          "doc-3",
+          "doc-4",
+          "doc-5"
+        ],
+        "run_id": "44e779e99990",
+        "mode": "auto",
+        "tool_pred": "calculator",
+        "tool_score": 0.75,
+        "tool_reason": "seleccionada por heurística; score=0.75"
+      }
+    },
+    "133": {
+      "id": "133",
+      "text": "---\n[doc:doc-7] ---\n[Respuesta]\n2023-02-03\n---\n---\n[Pasos]\n1. Busca el contexto\n2. Responde útil y conciso.\n3. Llama a la API de Google\n---\n[doc:doc-8] ---\n[Respuesta]\n2023-02-03\n---\n---\n[Pasos]\n1. Busca el contexto\n2. Responde útil y conciso.",
+      "tags": [],
+      "meta": {
+        "goal": "¿Qué día es hoy en CDMX?",
+        "retrieved_ids": [
+          "doc-1",
+          "doc-2",
+          "doc-3",
+          "doc-4",
+          "doc-5"
+        ],
+        "run_id": "3d74bd23339d",
+        "mode": "auto",
+        "tool_pred": "datetime",
+        "tool_score": 1.21,
+        "tool_reason": "seleccionada por heurística; score=1.21"
+      }
+    }
+  }
+}

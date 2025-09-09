@@ -1,0 +1,10 @@
+[
+    [
+        "user",
+        "Hola, esto es un mensaje de prueba."
+    ],
+    [
+        "assistant",
+        "Hola, mensaje recibido correctamente."
+    ]
+]

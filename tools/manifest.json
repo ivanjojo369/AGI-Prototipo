@@ -1,0 +1,51 @@
+{
+  "schema_version": 1,
+  "tools": [
+    {
+      "name": "calculator",
+      "module": "tools.calculator",
+      "entrypoint": "run",
+      "args_schema": { "expr": "str" },
+      "cost": "low",
+      "risks": "math_errors",
+      "keywords": ["calcula", "suma", "resta", "multiplica", "divide", "porcentaje", "raíz", "potencia", "elevado", "log", "ln", "=", "resultado"],
+      "examples": ["¿Cuánto es (12*7-8)/5?", "Suma 1.5e3 y 2.25e2", "Calcula el 15% de 280", "2^10", "log(1000)"]
+    },
+    {
+      "name": "datetime",
+      "module": "tools.datetime_tool",
+      "entrypoint": "run",
+      "args_schema": { "tz": "str?", "fmt": "str?" },
+      "cost": "low",
+      "risks": "tz_confusion",
+      "keywords": ["fecha", "hora", "hoy", "mañana", "ayer", "utc", "gmt", "cdmx", "mexico city", "zona horaria", "timezone", "qué día es"],
+      "examples": ["¿Qué día es hoy en CDMX?", "Dime la fecha de hoy", "¿Qué hora es ahora en UTC?", "Hora local en Ciudad de México"]
+    },
+    {
+      "name": "http_fetch",
+      "module": "tools.http_fetch",
+      "entrypoint": "run",
+      "args_schema": { "url": "str", "timeout": "int?", "text_max_chars": "int?" },
+      "cost": "low",
+      "risks": "network_latency,robots,legal",
+      "keywords": ["descarga", "http", "https", "title", "texto", "web", "fetch"]
+    },
+    {
+      "name": "code_exec",
+      "module": "tools.code_exec",
+      "entrypoint": "run",
+      "args_schema": { "code": "str", "timeout_s": "float?" },
+      "cost": "medium",
+      "risks": "sandbox_escape"
+    },
+    {
+      "name": "files_io",
+      "module": "tools.files_io",
+      "entrypoint": "run",
+      "args_schema": { "path": "str", "action": "str?", "n": "int?" },
+      "cost": "low",
+      "risks": "path_traversal,large_files",
+      "keywords": ["archivo", "leer", "csv", "excel", "pdf", "markdown", "lista", "directorio", "preview", "head", "tail", "info"]
+    }
+  ]
+}

@@ -1,0 +1,13 @@
+﻿{
+  "messages": [
+    {
+      "role": "system",
+      "content": "Planner HTN. Devuelve SOLO un objeto JSON de nivel superior EXACTAMENTE asi: {\"subgoals\":[{\"desc\":\"...\",\"done_when\":\"...\"}]}. Reglas: 3-5 sub-tareas; desc <= 14 palabras; done_when es condicion verificable. No incluyas otro texto ni explicaciones. Solo JSON."
+    },
+    {
+      "role": "user",
+      "content": "Implementar FAISS en memoria semantica, evaluar retrieval@k y documentar setup."
+    }
+  ],
+  "params": { "max_new_tokens": 120, "temperature": 0.35, "top_p": 0.9, "stop": ["<|end_of_turn|>","</s>"], "stream": false }
+}

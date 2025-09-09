@@ -1,0 +1,246 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>AGI Local – OpenChat 3.5 (llama.cpp)</title>
+<style>
+  :root{--bg:#0b0d12;--fg:#e7eaf3;--muted:#9aa4b2;--card:#121722;--accent:#5da9ff}
+  *{box-sizing:border-box} body{margin:0;background:var(--bg);color:var(--fg);font:16px/1.5 system-ui,Segoe UI,Roboto,sans-serif}
+  .wrap{max-width:1000px;margin:24px auto;padding:0 16px}
+  .hero{display:flex;gap:16px;align-items:center;justify-content:space-between;flex-wrap:wrap}
+  h1{margin:0;font-size:22px}
+  .badge{background:#1b2333;color:var(--muted);padding:6px 10px;border-radius:999px;border:1px solid #283149}
+  .grid{display:grid;grid-template-columns:1fr 330px;gap:16px}
+  .card{background:var(--card);border:1px solid #283149;border-radius:14px;padding:14px}
+  .row{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+  label{color:var(--muted);font-size:12px}
+  input,textarea,select,button{border-radius:10px;border:1px solid #2a344e;background:#0f1420;color:var(--fg)}
+  textarea{width:100%;min-height:110px;padding:10px}
+  input[type="number"]{width:110px;padding:6px}
+  button{padding:8px 12px;cursor:pointer}
+  button.primary{background:var(--accent);border-color:var(--accent);color:#071223}
+  .msg{padding:10px 12px;border-radius:12px;margin:8px 0;max-width:85%}
+  .user{background:#1a2335;margin-left:auto}
+  .assistant{background:#0e1a2a;border:1px solid #273453}
+  .chips{display:flex;flex-wrap:wrap;gap:8px}
+  .chip{padding:6px 10px;border-radius:999px;border:1px solid #2a344e;background:#0f1420;color:var(--muted);cursor:pointer}
+  .stats{display:flex;gap:12px;color:var(--muted);font-size:12px;margin-top:6px}
+  .ok{color:#86efac} .warn{color:#fbbf24} .err{color:#f87171}
+  pre{white-space:pre-wrap;word-wrap:break-word;margin:0}
+  a { color: var(--accent); text-decoration: none;}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="hero">
+    <h1>AGI Local – OpenChat-3.5-1210 (llama.cpp)</h1>
+    <div class="row">
+      <span id="health" class="badge">checking…</span>
+      <a class="badge" href="http://127.0.0.1:8010/docs" target="_blank">/docs</a>
+      <a class="badge" href="https://github.com/ggerganov/llama.cpp" target="_blank">llama.cpp</a>
+    </div>
+  </div>
+
+  <div class="grid" style="margin-top:16px">
+    <!-- Chat panel -->
+    <div class="card">
+      <div class="row" style="justify-content:space-between">
+        <div class="row" style="gap:16px">
+          <div>
+            <label>max_new_tokens</label><br/>
+            <input id="maxNew" type="number" value="100" min="32" max="240"/>
+          </div>
+          <div>
+            <label>temperature</label><br/>
+            <input id="temp" type="number" step="0.05" value="0.6" min="0" max="1.5"/>
+          </div>
+          <div>
+            <label><input id="stream" type="checkbox" checked/> Streaming</label>
+          </div>
+          <div>
+            <label><input id="useMem" type="checkbox" checked/> Usar memoria “lite”</label>
+          </div>
+        </div>
+        <div class="stats">
+          <div>TTFT: <span id="ttft">–</span></div>
+          <div>Total: <span id="tlat">–</span></div>
+          <div>Estado: <span id="status" class="ok">listo</span></div>
+        </div>
+      </div>
+
+      <div id="log"></div>
+
+      <label style="margin-top:6px;display:block">Mensaje</label>
+      <textarea id="prompt" placeholder="Ej.: Dame 3 tips para bajar latencia en este stack."></textarea>
+      <div class="row">
+        <button id="send" class="primary">Enviar</button>
+        <button id="clear">Limpiar</button>
+      </div>
+
+      <div class="chips" style="margin-top:8px">
+        <div class="chip" data-q="Dame 3 tips para bajar latencia en este stack.">⚡ Latencia</div>
+        <div class="chip" data-q="Resume en 5 viñetas qué hace este sistema.">ℹ️ Qué hace</div>
+        <div class="chip" data-q="¿Cómo activar reflexión solo cuando la calidad baje?">🧠 Reflexión</div>
+        <div class="chip" data-q="¿Cómo persistir una preferencia del usuario con memoria ‘lite’?">📝 Memoria</div>
+      </div>
+    </div>
+
+    <!-- Memoria -->
+    <div class="card">
+      <h3 style="margin:4px 0 8px">Memoria “lite”</h3>
+      <label>Nuevo fact</label>
+      <textarea id="fact" placeholder="Prefiere respuestas concisas y accionables."></textarea>
+      <label>Tags (coma separadas)</label>
+      <input id="tags" value="pref,style,latency"/>
+      <div class="row" style="margin-top:8px">
+        <button id="saveMem">Guardar</button>
+        <span id="saveStatus" class="muted"></span>
+      </div>
+      <div style="margin-top:10px">
+        <label>Buscar memoria relacionada al prompt</label><br/>
+        <button id="peekMem">Ver top-3 para el mensaje actual</button>
+        <ul id="memList"></ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="card" style="margin-top:16px">
+    <b>Guion de demo (90–120 s):</b>
+    <ol>
+      <li>“Es un modelo local (OpenChat-3.5-1210 en llama.cpp) servido por FastAPI. Responde conciso y usa memoria ‘lite’ opcional.”</li>
+      <li>Guardar fact → <i>Prefiere respuestas concisas y accionables.</i> Luego preguntar por “Latencia”.</li>
+      <li>Mostrar métricas: TTFT (tiempo al primer token) y Total. Activar/desactivar <i>Streaming</i> y variar <i>max_new_tokens</i> si se alarga.</li>
+      <li>Resaltar endpoints: <code>/chat</code>, <code>/memory/semantic/*</code>, <a href="http://127.0.0.1:8010/docs" target="_blank">/docs</a>.</li>
+    </ol>
+  </div>
+</div>
+
+<script>
+const API = "http://127.0.0.1:8010";
+const stops = ["<|end_of_turn|>","</s>"];
+const $ = sel => document.querySelector(sel);
+const log = $("#log");
+
+function bubble(text, who){
+  const el = document.createElement("div");
+  el.className = "msg " + (who==="user" ? "user" : "assistant");
+  el.innerHTML = "<pre>"+text.replace(/[&<>]/g, s=>({"&":"&amp;","<":"&lt;",">":"&gt;"}[s]))+"</pre>";
+  log.appendChild(el);
+  log.scrollTop = log.scrollHeight;
+}
+
+function trimAtStop(t){
+  for(const s of stops){ const i = t.indexOf(s); if(i>=0) return t.slice(0,i).trim(); }
+  return t.trim();
+}
+
+async function health(){
+  try{
+    const r = await fetch(API+"/"); const j = await r.json();
+    $("#health").textContent = j.model_loaded ? "OK · modelo cargado" : "OK · modelo NO cargado";
+    $("#health").style.color = j.model_loaded ? "#86efac" : "#fbbf24";
+  }catch{ $("#health").textContent = "sin conexión"; $("#health").style.color="#f87171"; }
+}
+
+async function searchMemory(q){
+  try{
+    const r = await fetch(API + "/memory/semantic/search", {
+      method:"POST", headers:{"Content-Type":"application/json"},
+      body: JSON.stringify({ q, k: 3 })
+    });
+    const data = await r.json();
+    return (data.results||[]).map(x=>x.text).filter(Boolean);
+  }catch{ return []; }
+}
+
+function buildPayload(userText, memFacts){
+  const messages = [
+    {role:"system", content:"Tú eres un asistente técnico conciso y accionable.\n- Responde en ≤ 8 líneas.\n- Prioriza pasos y comandos.\n- Si hay riesgo de verborrea/lentitud, limita la salida."}
+  ];
+  if(memFacts.length){
+    messages.push({role:"system", content:`Contexto útil (memoria): ${memFacts.join(" | ").slice(0,350)}`});
+  }
+  messages.push({role:"user", content:userText});
+  return {
+    messages,
+    params:{
+      max_new_tokens: Math.max(32, Math.min(240, parseInt($("#maxNew").value)||100)),
+      temperature: parseFloat($("#temp").value)||0.6,
+      top_p: 0.9, top_k: 40, min_p: 0.05, repeat_penalty: 1.08,
+      stop: stops, stream: $("#stream").checked
+    }
+  };
+}
+
+async function send(){
+  const text = $("#prompt").value.trim();
+  if(!text){ return; }
+  bubble(text, "user");
+  $("#prompt").value = "";
+  $("#status").textContent = "enviando…";
+  $("#ttft").textContent = "–"; $("#tlat").textContent = "–";
+
+  const useMem = $("#useMem").checked;
+  const memFacts = useMem ? await searchMemory(text) : [];
+  const payload = buildPayload(text, memFacts);
+  const t0 = performance.now();
+
+  try{
+    if(payload.params.stream){
+      const r = await fetch(API+"/chat", {method:"POST", headers:{"Content-Type":"application/json"}, body: JSON.stringify(payload)});
+      if(!r.ok) throw new Error("HTTP "+r.status);
+      const reader = r.body.getReader();
+      let gotFirst=false, acc="";
+      const decoder = new TextDecoder();
+      while(true){
+        const {value,done} = await reader.read();
+        if(done) break;
+        const chunk = decoder.decode(value);
+        if(!gotFirst){ $("#ttft").textContent = Math.round(performance.now()-t0)+" ms"; gotFirst=true; }
+        acc += chunk;
+        const txt = trimAtStop(acc);
+        if($("#tmpResp")) $("#tmpResp").remove();
+        const ph = document.createElement("div");
+        ph.id="tmpResp"; ph.className="msg assistant"; ph.innerHTML="<pre>"+txt+"</pre>";
+        log.appendChild(ph); log.scrollTop = log.scrollHeight;
+      }
+      if($("#tmpResp")) $("#tmpResp").id="";
+      $("#tlat").textContent = Math.round(performance.now()-t0)+" ms";
+      $("#status").textContent = "listo";
+    }else{
+      const r = await fetch(API+"/chat", {method:"POST", headers:{"Content-Type":"application/json"}, body: JSON.stringify(payload)});
+      const j = await r.json();
+      $("#ttft").textContent = Math.round(performance.now()-t0)+" ms";
+      bubble(trimAtStop(String(j.text||j.content||"")), "assistant");
+      $("#tlat").textContent = Math.round(performance.now()-t0)+" ms";
+      $("#status").textContent = "listo";
+    }
+  }catch(e){
+    $("#status").textContent = "error"; bubble("Error: "+e.message, "assistant");
+  }
+}
+
+$("#send").onclick = send;
+$("#clear").onclick = ()=>{ log.innerHTML=""; };
+document.querySelectorAll(".chip").forEach(c=>c.onclick=()=>{$("#prompt").value=c.dataset.q;});
+$("#saveMem").onclick = async ()=>{
+  const fact = $("#fact").value.trim(); const tags = $("#tags").value.split(",").map(s=>s.trim()).filter(Boolean);
+  if(!fact){ $("#saveStatus").textContent="Escribe un fact."; return; }
+  $("#saveStatus").textContent="Guardando…";
+  try{
+    const r = await fetch(API+"/memory/semantic/upsert",{method:"POST",headers:{"Content-Type":"application/json"},
+      body: JSON.stringify({facts:[{text:fact,tags,meta:{source:"demo",ts:new Date().toISOString()}}]})});
+    $("#saveStatus").textContent = r.ok ? "✔ Guardado" : "✖ Error";
+  }catch{ $("#saveStatus").textContent="✖ Error"; }
+};
+$("#peekMem").onclick = async ()=>{
+  const text = $("#prompt").value.trim() || "latencia";
+  const facts = await searchMemory(text);
+  const ul = $("#memList"); ul.innerHTML="";
+  facts.forEach(t=>{ const li=document.createElement("li"); li.textContent=t; ul.appendChild(li); });
+};
+health();
+</script>
+</body>
+</html>

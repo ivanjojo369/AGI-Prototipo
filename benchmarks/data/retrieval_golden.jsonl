@@ -1,0 +1,7 @@
+{"query": "¿En qué año se publicó la Crítica de la razón pura?", "gold_doc_ids": ["4"]}
+{"query": "Capital de Francia", "gold_doc_ids": ["3"]}
+{"query": "¿Quién escribió Don Quijote?", "gold_doc_ids": ["6"]}
+{"query": "Albert Einstein nació en qué año", "gold_doc_ids": ["9"]}
+{"query": "Lenguaje de programación creado por Guido van Rossum", "gold_doc_ids": ["2"]}
+{"query": "¿En qué país está Machu Picchu?", "gold_doc_ids": ["4"]}
+{"query": "¿Quién pintó La noche estrellada?", "gold_doc_ids": ["14"]}

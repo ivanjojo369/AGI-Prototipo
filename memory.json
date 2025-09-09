@@ -1,0 +1,32 @@
+[
+  {
+    "id": "151d07ee-16db-4f33-8632-d267640b0230",
+    "mensaje": "hola",
+    "respuesta": "¡Hola! ¿En qué puedo ayudarte hoy?"
+  },
+  {
+    "id": "1316b170-b044-4a7a-a77a-c48248d3445f",
+    "mensaje": "me encantan las IAs",
+    "respuesta": "He procesado tu mensaje y generaré una respuesta útil cuando el modelo real esté disponible."
+  },
+  {
+    "id": "a657a7ae-272a-4047-bb18-0c1ecf5924cc",
+    "mensaje": "o ya veo parece ser que estas mejorando",
+    "respuesta": "¡Hola! ¿En qué puedo ayudarte hoy?"
+  },
+  {
+    "id": "2452741f-20e6-444b-8d04-25aeab563c34",
+    "mensaje": "que es lo que me encanta",
+    "respuesta": "¡Hola! ¿En qué puedo ayudarte hoy?"
+  },
+  {
+    "id": "7d955e4f-0bbc-4594-856d-bb9c8a63b4ed",
+    "mensaje": "en lo que quieras",
+    "respuesta": "¡Hola! ¿En qué puedo ayudarte hoy?"
+  },
+  {
+    "id": "f29ae427-1d26-4f93-af1e-7b0733391a90",
+    "mensaje": "me llamo alejandro",
+    "respuesta": "¡Encantado! Lo tendré en cuenta para futuras respuestas."
+  }
+]

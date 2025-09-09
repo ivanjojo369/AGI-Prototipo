@@ -1,0 +1,6 @@
+fastapi>=0.111
+uvicorn>=0.30
+pydantic>=2.7
+
+# Modelo local (CPU/GPU). Instala la build que uses (CUDA si aplica).
+llama-cpp-python>=0.2.82

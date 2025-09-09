@@ -1,0 +1,24 @@
+{
+  "model": {
+    "provider": "llama_cpp",
+    "model_path": "models/openchat-3.5-1210.Q4_K_M.gguf",
+    "n_ctx": 8192,
+    "use_gpu": true,
+    "gpu_layers": -1,
+    "threads": 0,
+    "temperature": 0.6,
+    "top_p": 0.93,
+    "repeat_penalty": 1.12
+  },
+  "memory": {
+    "persist_dir": "chroma_db",
+    "collection": "agi_memory",
+    "use_faiss": false,
+    "save_to_disk": true,
+    "max_context_items": 8
+  },
+  "planner": { "enable_deadline_priority": true, "default_policy": "context+priority" },
+  "reflection": { "style": "helpful, reflective, analytical, empathetic", "max_steps": 2, "enable_memory_enrichment": true },
+  "interface": { "reply_style": "conversational", "use_meta_agent": true },
+  "logging": { "level": "INFO" }
+}

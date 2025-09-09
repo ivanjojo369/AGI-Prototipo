@@ -1,0 +1,26 @@
+[
+  {
+    "id": "T01",
+    "goal": "Define Synchronexis en 3 frases claras.",
+    "expected_contains": "Synchronexis"
+  },
+  {
+  "id": "T02",
+  "goal": "Devuelve un objeto JSON que contenga las claves: owner (igual a 'agent', sin importar mayúsculas) y subgoals (lista de elementos que pueden ser números o strings). Se evaluará el PRIMER JSON válido encontrado; se tolera texto fuera del objeto.",
+  "require_json": true,
+  "expected_contains": "subgoals"
+},
+  {
+    "id": "T03",
+    "goal": "Resume en 80-120 palabras la diferencia entre un plan HTN y un plan plano."
+  },
+  {
+    "id": "T04",
+    "goal": "Propón 4 pruebas unitarias para validar un parser tolerante que extrae el top-level JSON de una respuesta ruidosa. RESPONDE EXACTAMENTE con 4 líneas numeradas 1-4, sin texto extra. Cada línea: nombre corto de la prueba — assert: <condición esperada>. Ejemplo de FORMATO (no lo repitas): '1. Nombre — assert: ...'."
+  },
+  {
+    "id": "T05",
+    "goal": "Entrega 5 bullets de riesgos de LLM en producción y una mitigación por cada uno.",
+    "expected_contains": "mitigación"
+  }
+]

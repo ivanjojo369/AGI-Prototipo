@@ -1,0 +1,16 @@
+{
+  "messages": [
+    {"role": "system", "content": "Tú eres un asistente técnico conciso y accionable."},
+    {"role": "user",   "content": "Dame 3 tips para bajar latencia en este stack."}
+  ],
+  "params": {
+    "max_new_tokens": 120,
+    "temperature": 0.6,
+    "top_p": 0.9,
+    "top_k": 40,
+    "min_p": 0.05,
+    "repeat_penalty": 1.08,
+    "stop": ["<|end_of_turn|>", "</s>"],
+    "stream": false
+  }
+}

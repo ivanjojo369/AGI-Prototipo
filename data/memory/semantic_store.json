@@ -1,0 +1,20 @@
+[
+  {
+    "text": "Le gusta optimizar latencia y TTFT.",
+    "tags": [
+      "latency"
+    ],
+    "meta": {},
+    "ts": 1756417661
+  },
+  {
+    "text": "Prefiere respuestas concisas y accionables.",
+    "tags": [
+      "pref",
+      "style"
+    ],
+    "meta": {},
+    "ts": 1756417661,
+    "ttl": 604800
+  }
+]

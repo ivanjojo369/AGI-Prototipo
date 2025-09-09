@@ -1,0 +1,30 @@
+{"id":"t01","prompt":"¿Cuánto es (12*7-8)/5?","gold_tool":"calculator"}
+{"id":"t02","prompt":"¿Qué día es hoy en CDMX?","gold_tool":"datetime"}
+{"id":"t03","prompt":"Suma 1.5e3 y 2.25e2","gold_tool":"calculator"}
+{"id":"t04","prompt":"Dime la fecha de hoy","gold_tool":"datetime"}
+{"id":"t05","prompt":"Calcula el 15% de 280","gold_tool":"calculator"}
+{"id":"t06","prompt":"¿Qué hora es ahora en UTC?","gold_tool":"datetime"}
+{"id":"t07","prompt":"(3.14*2)^2 / 8","gold_tool":"calculator"}
+{"id":"t08","prompt":"Qué hora es en Ciudad de México","gold_tool":"datetime"}
+{"id":"t09","prompt":"log(1000) + 2^5","gold_tool":"calculator"}
+{"id":"t10","prompt":"¿Fecha actual?","gold_tool":"datetime"}
+{"id":"t11","prompt":"resultado de 45/ (3+6)","gold_tool":"calculator"}
+{"id":"t12","prompt":"hora local en México City","gold_tool":"datetime"}
+{"id":"t13","prompt":"raíz de 144 más 2","gold_tool":"calculator"}
+{"id":"t14","prompt":"mañana a esta hora en CDMX qué fecha será","gold_tool":"datetime"}
+{"id":"t15","prompt":"elevado 2: (5^2)+3","gold_tool":"calculator"}
+{"id":"t16","prompt":"qué día es hoy","gold_tool":"datetime"}
+{"id":"t17","prompt":"porcentaje: 37% de 890","gold_tool":"calculator"}
+{"id":"t18","prompt":"timezone UTC ahora mismo","gold_tool":"datetime"}
+{"id":"t19","prompt":"(100-33.5)*6","gold_tool":"calculator"}
+{"id":"t20","prompt":"qué hora es en GMT","gold_tool":"datetime"}
+{"id":"t21","prompt":"Calcula '((9-3)*2)^3'","gold_tool":"calculator"}
+{"id":"t22","prompt":"Dime la hora en CDMX","gold_tool":"datetime"}
+{"id":"t23","prompt":"1.2e2 + 3.4e1 - 5","gold_tool":"calculator"}
+{"id":"t24","prompt":"Fecha y día actuales","gold_tool":"datetime"}
+{"id":"t25","prompt":"sqrt(81) * 7","gold_tool":"calculator"}
+{"id":"t26","prompt":"¿Qué hora es ahora?","gold_tool":"datetime"}
+{"id":"t27","prompt":"Calcula 2^10","gold_tool":"calculator"}
+{"id":"t28","prompt":"Hora exacta en UTC","gold_tool":"datetime"}
+{"id":"t29","prompt":"(5+5+5+5)/4","gold_tool":"calculator"}
+{"id":"t30","prompt":"¿Qué día es hoy en México?","gold_tool":"datetime"}

@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>AGI - Interfaz de Chat</title>
+    <style>
+        body { font-family: Arial, sans-serif; background: #111; color: #eee; margin: 0; padding: 0; }
+        #chat-container { max-width: 700px; margin: 40px auto; background: #222; border-radius: 10px; padding: 20px; }
+        #messages { height: 400px; overflow-y: auto; border: 1px solid #444; padding: 10px; margin-bottom: 10px; background: #000; }
+        .msg { margin: 10px 0; }
+        .user { color: #0f0; }
+        .agi { color: #0ff; }
+        #user_input { width: 85%; padding: 10px; }
+        #send_btn { padding: 10px; }
+    </style>
+</head>
+<body>
+    <div id="chat-container">
+        <h2>🤖 Chat con la AGI</h2>
+        <div id="messages"></div>
+        <form id="chat-form">
+            <input type="text" id="user_input" autocomplete="off" placeholder="Escribe tu mensaje..." />
+            <button id="send_btn" type="submit">Enviar</button>
+        </form>
+    </div>
+
+    <script>
+        const form = document.getElementById("chat-form");
+        form.addEventListener("submit", async function(e) {
+            e.preventDefault();
+            const input = document.getElementById("user_input");
+            const message = input.value.trim();
+            if (!message) return;
+
+            const messagesDiv = document.getElementById("messages");
+            messagesDiv.innerHTML += `<div class="msg user"><strong>Tú:</strong> ${message}</div>`;
+
+            try {
+                const res = await fetch("/send", {
+                    method: "POST",
+                    headers: {"Content-Type": "application/json"},
+                    body: JSON.stringify({ message: message })
+                });
+                const data = await res.json();
+                messagesDiv.innerHTML += `<div class="msg agi"><strong>AGI:</strong> ${data.reply}</div>`;
+            } catch (err) {
+                messagesDiv.innerHTML += `<div class="msg agi">⚠️ Error al procesar mensaje</div>`;
+                console.error("Error:", err);
+            }
+
+            input.value = "";
+            messagesDiv.scrollTop = messagesDiv.scrollHeight;
+        });
+    </script>
+</body>
+</html>

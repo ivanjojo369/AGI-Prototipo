@@ -1,0 +1,170 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <title>AGI Demo – OpenChat 3.5 (local)</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <style>
+    body{font-family:system-ui, sans-serif;max-width:900px;margin:24px auto;padding:0 16px}
+    h1{margin:0 0 12px} .row{display:flex;gap:12px;flex-wrap:wrap}
+    textarea{width:100%;min-height:120px} pre{background:#f6f6f6;padding:12px;border-radius:8px;overflow:auto}
+    .card{border:1px solid #e5e5e5;border-radius:12px;padding:12px;margin:12px 0}
+    label{display:block;margin:8px 0 4px}
+    input[type="number"]{width:120px}
+    button{padding:8px 12px;border-radius:10px;border:1px solid #ddd;background:#fff;cursor:pointer}
+    button:disabled{opacity:.6;cursor:not-allowed}
+    small{color:#666}
+  </style>
+</head>
+<body>
+  <h1>AGI Demo (local) · OpenChat-3.5-1210 + FastAPI</h1>
+  <div class="card">
+    <h3>Chat</h3>
+    <label for="prompt">Mensaje</label>
+    <textarea id="prompt" placeholder="Haz una pregunta breve…"></textarea>
+    <div class="row">
+      <div>
+        <label>max_new_tokens</label>
+        <input id="max_tokens" type="number" value="120" min="32" max="240">
+      </div>
+      <div>
+        <label>temperature</label>
+        <input id="temp" type="number" step="0.05" value="0.6" min="0.0" max="1.5">
+      </div>
+      <div>
+        <label><input id="use_mem" type="checkbox" checked> Usar memoria “lite”</label>
+        <small>(inyecta top-3 facts)</small>
+      </div>
+    </div>
+    <div class="row">
+      <button id="sendBtn">Enviar</button>
+      <div id="lat"></div>
+    </div>
+    <label>Respuesta</label>
+    <pre id="out"></pre>
+  </div>
+
+  <div class="card">
+    <h3>Memoria “lite” (guardar un fact)</h3>
+    <label for="fact">Texto del fact</label>
+    <textarea id="fact" placeholder="p.ej., Prefiere respuestas concisas y accionables."></textarea>
+    <label for="tags">Tags (coma separadas)</label>
+    <input id="tags" placeholder="pref,style,latency" style="width:100%">
+    <div class="row"><button id="saveMemBtn">Guardar en memoria</button><div id="saveStatus"></div></div>
+  </div>
+
+<script>
+const API = "http://127.0.0.1:8010";
+
+const sysBase = `Tú eres un asistente técnico conciso y accionable.
+- Responde en ≤ 8 líneas salvo que pidan detalle/código.
+- Prioriza pasos, listas cortas y comandos.
+- Si hay riesgo de verborrea/lentitud, limita la salida.`;
+
+const stop = ["<|end_of_turn|>", "</s>"];
+
+async function searchMemory(q){
+  try{
+    const r = await fetch(API + "/memory/semantic/search", {
+      method:"POST", headers:{"Content-Type":"application/json"},
+      body: JSON.stringify({ q, k: 3 })
+    });
+    if(!r.ok) return [];
+    const data = await r.json();
+    // Esperado: data.results: [{text, tags, meta}, ...]
+    return (data.results || []).map(x => x.text).filter(Boolean);
+  }catch{ return []; }
+}
+
+function buildBody(userText, useMem, maxNew, temp, memFacts){
+  const msgs = [
+    {role:"system", content: sysBase},
+    {role:"user", content: userText}
+  ];
+  if(useMem && memFacts.length){
+    const ctx = `Contexto útil (memoria): ${memFacts.slice(0,3).join(" | ").slice(0,350)}`;
+    msgs.splice(1,0,{role:"system", content: ctx});
+  }
+  return {
+    messages: msgs,
+    params: {
+      max_new_tokens: maxNew,
+      temperature: temp,
+      top_p: 0.9,
+      top_k: 40,
+      min_p: 0.05,
+      repeat_penalty: 1.08,
+      stop, stream: false
+    }
+  };
+}
+
+function trimAtStop(text){
+  for(const s of stop){
+    const i = text.indexOf(s);
+    if(i >= 0) return text.slice(0,i).trim();
+  }
+  return text.trim();
+}
+
+async function sendChat(){
+  const btn = document.getElementById("sendBtn");
+  const out = document.getElementById("out");
+  const lat = document.getElementById("lat");
+  const useMem = document.getElementById("use_mem").checked;
+  const userText = document.getElementById("prompt").value.trim();
+  const maxNew = parseInt(document.getElementById("max_tokens").value) || 120;
+  const temp = parseFloat(document.getElementById("temp").value) || 0.6;
+
+  if(!userText){ out.textContent = "Escribe un mensaje."; return;}
+  btn.disabled = true; out.textContent = "Pensando…"; lat.textContent = "";
+
+  let memFacts = [];
+  if(useMem){
+    memFacts = await searchMemory(userText);
+  }
+
+  const payload = buildBody(userText, useMem, maxNew, temp, memFacts);
+  const t0 = performance.now();
+  try{
+    const r = await fetch(API + "/chat", {
+      method:"POST", headers:{"Content-Type":"application/json"},
+      body: JSON.stringify(payload)
+    });
+    const t1 = performance.now();
+    lat.textContent = `Latencia: ${(t1 - t0).toFixed(0)} ms`;
+    if(!r.ok){ out.textContent = "Error en /chat"; btn.disabled=false; return; }
+    const data = await r.json();
+    // Soporta distintos formatos de salida sin acoplarte:
+    let text = data?.text || data?.content || data?.reply ||
+               data?.choices?.[0]?.message?.content || "";
+    out.textContent = trimAtStop(String(text || ""));
+  }catch(e){
+    out.textContent = "No se pudo conectar a /chat";
+  }finally{
+    btn.disabled = false;
+  }
+}
+
+async function saveMem(){
+  const fact = document.getElementById("fact").value.trim();
+  const tags = document.getElementById("tags").value.split(",").map(s=>s.trim()).filter(Boolean);
+  const info = document.getElementById("saveStatus");
+  if(!fact){ info.textContent = "Escribe un fact."; return; }
+  info.textContent = "Guardando…";
+  try{
+    const r = await fetch(API + "/memory/semantic/upsert", {
+      method:"POST", headers:{"Content-Type":"application/json"},
+      body: JSON.stringify({ facts: [{ text: fact, tags, meta: { source:"demo", ts: new Date().toISOString() } }] })
+    });
+    info.textContent = r.ok ? "✔ Guardado" : "✖ Error";
+  }catch{
+    info.textContent = "✖ Error";
+  }
+}
+
+document.getElementById("sendBtn").addEventListener("click", sendChat);
+document.getElementById("saveMemBtn").addEventListener("click", saveMem);
+</script>
+</body>
+</html>

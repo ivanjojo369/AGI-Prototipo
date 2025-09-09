@@ -1,0 +1,39 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.env
+.env.*
+.venv/
+venv/
+
+# Tests / coverage / cache
+.pytest_cache/
+.coverage*
+htmlcov/
+
+# IDE/editor
+.vscode/
+.idea/
+
+# Datos y runtime
+logs/
+*.log
+flask_session/
+sessions/
+chroma_db/
+clipboard_exports/
+tests/temp_memory*/
+temp_memory/
+memory_store/
+*.sqlite*
+*.bin
+*.index
+
+# Modelos grandes (no conviene versionarlos)
+models/
+*.gguf
+*.pt
+*.bin
+*.onnx
+*.safetensors

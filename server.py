@@ -1,8 +1,9 @@
-# server.py (raíz del proyecto) — Servidor FastAPI “lite” sin GPU
-# Fase 1: 
-#  - Etiquetado de recuerdos con result_quality, confidence, trace_id
-#  - get_status() con contadores y latencias
-#  - Búsqueda semántica mínima (CPU) con score normalizado
+# server.py — Servidor FastAPI “lite” sin GPU
+# Fase 1 + cierre fino:
+#   - Etiquetado de recuerdos: result_quality, confidence, trace_id
+#   - mem_id estable por recuerdo y alias citation_id en /search
+#   - get_status(): contadores y latencias avg/p95
+#   - Búsqueda “CPU” simple con score normalizado
 
 from __future__ import annotations
 from fastapi import FastAPI, Body, Request
@@ -26,11 +27,12 @@ app.add_middleware(
 # Memoria “lite” en RAM
 # Estructura de cada item:
 # {
-#   "doc_id": str,
+#   "mem_id": "mem://<uuid>",     # id estable para auditoría (“cita”)
+#   "doc_id": str,                # alias (para compat)
 #   "text": str,
-#   "meta": {...},                 # opcional
-#   "result_quality": str,         # "good" | "ok" | "bad" | "unknown"
-#   "confidence": float,           # [0,1]
+#   "meta": {...},                # opcional
+#   "result_quality": str,        # "good" | "ok" | "bad" | "unknown"
+#   "confidence": float,          # [0,1] (almacenada)
 #   "trace_id": str
 # }
 # ---------------------------
@@ -63,7 +65,6 @@ def _avg(lat_list: List[float]) -> Optional[float]:
 def _p95(lat_list: List[float]) -> Optional[float]:
     if not lat_list:
         return None
-    # percentil 95 simple
     s = sorted(lat_list)
     k = max(0, math.ceil(0.95 * len(s)) - 1)
     return float(s[k])
@@ -120,7 +121,8 @@ async def mem_upsert(
       - result_quality: default "unknown"
       - confidence: default 0.5
       - trace_id: del payload o generado
-      - doc_id: generado si no viene
+      - mem_id: generado si no viene
+      - doc_id: alias (usa mem_id por defecto)
     """
     t0 = perf_counter()
     try:
@@ -129,13 +131,16 @@ async def mem_upsert(
         req_trace = payload.get("trace_id") or str(uuid4())
 
         upserted = 0
+        created_ids: List[str] = []
         for f in facts:
             text = (f or {}).get("text")
             if not text:
                 continue
 
+            mem_id = f.get("mem_id") or f"mem://{uuid4()}"
             item = {
-                "doc_id": f.get("doc_id") or f"doc://{uuid4()}",
+                "mem_id": mem_id,
+                "doc_id": f.get("doc_id") or mem_id,  # alias de compatibilidad
                 "text": text,
                 "meta": f.get("meta") or {},
                 "result_quality": f.get("result_quality", "unknown"),
@@ -143,10 +148,11 @@ async def mem_upsert(
                 "trace_id": f.get("trace_id") or req_trace,
             }
             STORE.append(item)
+            created_ids.append(mem_id)
             upserted += 1
 
         COUNTERS["upserts_total"] += upserted
-        return {"ok": True, "upserted": upserted, "trace_id": req_trace}
+        return {"ok": True, "upserted": upserted, "trace_id": req_trace, "mem_ids": created_ids}
     finally:
         _record_latency("upsert", t0)
 
@@ -170,7 +176,8 @@ async def mem_search(
 ) -> Dict[str, Any]:
     """
     Búsqueda CPU con score normalizado.
-    Devuelve los recuerdos con sus etiquetas: result_quality, confidence, trace_id.
+    Devuelve los recuerdos con sus etiquetas (result_quality, confidence_source, trace_id)
+    y las **citas**: mem_id + alias citation_id.
     """
     t0 = perf_counter()
     try:
@@ -189,13 +196,14 @@ async def mem_search(
         scored.sort(key=lambda x: x[0], reverse=True)
         topk = []
         for s, f in scored[:k]:
-            # devolvemos un dict enriquecido con score y confidence de búsqueda
             out = dict(f)
             out["score"] = float(s)
-            # 'confidence' aquí refleja la confianza de la búsqueda; 
+            # 'confidence' aquí refleja la confianza de la búsqueda;
             # mantenemos 'confidence' original en 'confidence_source'
             out["confidence_source"] = out.get("confidence", 0.5)
             out["confidence"] = float(s)
+            # “cita” para auditoría
+            out["citation_id"] = f.get("mem_id") or f.get("doc_id")
             topk.append(out)
 
         return {"ok": True, "results": topk, "query": q, "k": k}

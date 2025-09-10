@@ -81,3 +81,13 @@ logs/*
 # Ruido de runs y otros formatos en benchmarks (seguir ignorando)
 logs/benchmarks/agent_run_*/
 logs/benchmarks/*.json
+
+# Ignora todo en logs
+logs/*
+!logs/
+
+# Ignora TODO dentro de logs/benchmarks...
+logs/benchmarks/*
+
+# ...pero permite solo los CSV de métricas
+!logs/benchmarks/*.csv

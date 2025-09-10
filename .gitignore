@@ -77,3 +77,13 @@ models/
 
 # (si no quieres versionar el vendor)
 llama-cpp-python/
+
+# Ignora todo logs
+logs/*
+
+# Re-habilita la carpeta logs/ (necesario para poder "designorar" abajo)
+!logs/
+
+# Permite benchmarks y sus CSV
+!logs/benchmarks/
+!logs/benchmarks/*.csv

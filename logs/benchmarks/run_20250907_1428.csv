@@ -1,0 +1,583 @@
+run_id,case_id,prompt,pass@1,lat_ms,ttft_ms,tokens_out,retrieval_at_k,used_fact,fixed_on_retry,tool_gt,tool_pred,tool_score,tool_reason,notes,output
+20250907_142916,t01,¿Cuánto es (12*7-8)/5?,1,20370,,53,,,,calculator,calculator,0.75,seleccionada por heurística; score=0.75,,"---
+{
+  ""contexto"": ""¿Qué hora es ahora en UTC?"",
+  ""pregunta"": ""¿Qué hora es ahora en UTC?"",
+  ""respuesta"": ""12:00 PM""
+}
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---"
+20250907_142937,t02,¿Qué día es hoy en CDMX?,1,21060,,66,,,,datetime,datetime,1.21,seleccionada por heurística; score=1.21,,"---
+[Pasos]
+1. Llama a la API de Google Calendar para obtener el día de la semana.
+2. Utiliza el resultado para calcular el día actual.
+3. Responde útil y conciso.
+
+---
+Respuesta:
+¿Qué día es hoy?
+---
+---
+[Pasos]
+1. Llama a la API de Google Calendar para obtener el día de la semana.
+2. Utiliza el resultado para calcular el día actual.
+3. Res"
+20250907_142958,t03,Suma 1.5e3 y 2.25e2,1,20761,,39,,,,calculator,calculator,0.47,seleccionada por heurística; score=0.47,,"---
+[Respuesta]
+Hoy es 2023-02-02.
+---
+---
+[Pasos]
+1. Busca el contexto.
+2. Responde útil y conciso.
+
+---
+[Respuesta]
+Hoy es 2023-02-02.
+---
+---
+[Pasos]
+1. Busca el contexto.
+2. Responde útil y conciso.
+
+---
+[Respuesta]
+Hoy es 202"
+20250907_143018,t04,Dime la fecha de hoy,1,20742,,44,,,,datetime,datetime,0.89,seleccionada por heurística; score=0.89,,"---
+[Respuesta]
+La fecha de hoy es 2023-02-03.
+---
+---
+[Pasos]
+1. Busca el contexto.
+2. Responde útil y conciso.
+---
+[Respuesta]
+La fecha de hoy es 2023-02-03.
+---
+---
+[Pasos]
+1. Recoge la respuesta de
+---
+---
+[Respuesta]
+La fecha actual es 202"
+20250907_143039,t05,Calcula el 15% de 280,1,20709,,66,,,,calculator,calculator,0.47,seleccionada por heurística; score=0.47,,"---
+---
+[Contexto recuperado]
+La Crítica de la razón pura es un libro escrito por Immanuel Kant en 1781. En este libro, Kant examina las limitaciones y posibilidades de la razón humana en el estudio de la realidad, la moral y el conocimiento.
+
+¿En qué año se publicó la Crítica de la razón pura?
+---
+---
+[Pasos para calcular el 15% de 280]
+1. Multiplica 280"
+20250907_143100,t06,¿Qué hora es ahora en UTC?,1,20512,,45,,,,datetime,datetime,0.89,seleccionada por heurística; score=0.89,,"---
+
+---
+
+---
+{
+  ""contexto"": ""¿Qué hora es ahora en UTC?"",
+  ""pregunta"": ""¿Qué hora es ahora en UTC?"",
+  ""respuesta"": ""12:00 PM""
+}
+---
+---
+{
+  ""contexto"": ""¿Qué hora es ahora en UTC?"",
+  ""pregunta"": ""¿Qué hora es ahora en UTC?""
+}
+---
+---
+{
+  ""contexto"": """
+20250907_143120,t07,(3.14*2)^2 / 8,1,20376,,48,,,,calculator,calculator,0.90,seleccionada por heurística; score=0.90,,"---
+[Respuesta]
+Si `strict=True`, devuelve un JSON VÁLIDO.
+---
+---
+[Respuesta]
+Si `strict=True`, devuelve un JSON VÁLIDO.
+---
+---
+[Respuesta]
+Si `strict=True`, devuelve un JSON VÁLIDO.
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---"
+20250907_143140,t08,Qué hora es en Ciudad de México,1,20235,,42,,,,datetime,datetime,0.67,seleccionada por heurística; score=0.67,,"---
+{
+  ""contexto"": ""¿Qué hora es ahora en UTC?"",
+  ""pregunta"": ""¿Qué hora es ahora en UTC?"",
+  ""respuesta"": ""12:00 PM""
+}
+---
+---
+{
+  ""contexto"": ""¿Qué hora es ahora en UTC?"",
+  ""pregunta"": ""¿Qué hora es ahora en UTC?"",
+  ""respuesta"": ""12:00 PM""
+}
+---"
+20250907_143201,t09,log(1000) + 2^5,1,20383,,45,,,,calculator,calculator,1.12,seleccionada por heurística; score=1.12,,"```
+def f(strict=False, contexto=None):
+    # Evalúa la expresión
+    # Responde útil y conciso.
+    # Si `strict=True`, devuelve un JSON VÁLIDO.
+    if contexto is None:
+        return 1781
+    else:
+        # Llama a la herramienta
+        # ...
+        # Procesa el resultado
+        # ...
+```
+---
+[Respuesta]
+1781.
+---"
+20250907_143221,t10,¿Fecha actual?,1,20348,,59,,,,datetime,datetime,0.67,seleccionada por heurística; score=0.67,,"---
+Respuesta:
+1. La fecha actual es 2023-02-03.
+2. Para calcular el día de la semana de cualquier fecha, puedes usar la función `datetime` de Python y la biblioteca `date` de JavaScript. Ambas funciones te permiten calcular el día de la semana de una fecha dada.
+---
+---
+[Respuesta]
+1. La fecha actual es 2023-02-03.
+2. Para calcular el"
+20250907_143241,t11,resultado de 45/ (3+6),1,20282,,46,,,,calculator,calculator,1.02,seleccionada por heurística; score=1.02,,"---
+Respuesta:
+1. La fecha actual es 2023-04-19.
+2. Para calcular el día de la semana de cualquier fecha, puedes usar la API de Google Calendar. La llamada se realiza de la siguiente manera:
+
+```
+import requests
+
+url = ""https://www.googleapis.com/calendar/v3/calendars/primary/events""
+params = {
+    ""timeMin"": ""2023-04-19"",
+    """
+20250907_143301,t12,hora local en México City,1,20290,,47,,,,datetime,datetime,0.67,seleccionada por heurística; score=0.67,,"---
+---
+{
+    ""contexto"": ""¿Qué hora es en Ciudad de México?"",
+    ""pregunta"": ""¿Qué hora es en Ciudad de México?"",
+    ""respuesta"": ""12:00 PM""
+}
+---
+---
+[Respuesta]
+12:00 PM
+---
+---
+{
+    ""contexto"": ""¿Qué hora es en Ciudad de México?"",
+    ""pregunta"": ""¿Qué hora es en Ciudad de México"
+20250907_143322,t13,raíz de 144 más 2,1,20593,,43,,,,calculator,calculator,0.37,seleccionada por heurística; score=0.37,,"---
+[Respuesta]
+1781.
+---
+---
+[Respuesta]
+La respuesta es 1781.
+---
+---
+[Pasos]
+1. Recoge la respuesta de la base de datos.
+2. Si `strict=True`, valida la estructura JSON y ajusta el resultado.
+
+---
+[Respuesta]
+1781.
+---
+---
+[Respuesta]
+1781.
+---
+---
+[Respuesta]"
+20250907_143342,t14,mañana a esta hora en CDMX qué fecha será,1,20234,,42,,,,datetime,datetime,1.03,seleccionada por heurística; score=1.03,,"---
+---
+Respuesta: 14:00 PM
+---
+---
+
+Respuesta: 14:00 PM
+---
+---
+{
+  ""contexto"": ""¿Qué hora es ahora en UTC?"",
+  ""pregunta"": ""¿Qué hora es ahora en UTC?"",
+  ""respuesta"": ""14:00 PM""
+}
+---
+---
+{
+  ""contexto"": ""¿Qué hora es ahora en UTC?"",
+  ""pregunta"
+20250907_143403,t15,elevado 2: (5^2)+3,1,20261,,40,,,,calculator,calculator,1.02,seleccionada por heurística; score=1.02,,"---
+[Respuesta]
+1781.
+---
+---
+[Pasos]
+1. Busca el contexto.
+2. Responde útil y conciso.
+
+---
+[Respuesta]
+1781.
+---
+---
+[Pasos]
+1. Busca el contexto.
+2. Responde útil y conciso.
+
+---
+[Respuesta]
+1781.
+---
+---
+---
+[Respuesta]
+¿Cuánto es ("
+20250907_143423,t16,qué día es hoy,1,20326,,72,,,,datetime,datetime,0.99,seleccionada por heurística; score=0.99,,"---
+[Pasos]
+1. Llama a la API de Google Calendar para obtener el día de la semana.
+2. Utiliza el resultado para calcular el día actual.
+3. Responde útil y conciso.
+
+---
+Respuesta:
+2. Para calcular el día de la semana de cualquier fecha, puedes usar la API de Google Calendar. Primero, llama a la API para obtener el día de la semana. Luego, utiliza el resultado para calcular el día actual"
+20250907_143443,t17,porcentaje: 37% de 890,1,20394,,51,,,,calculator,calculator,0.37,seleccionada por heurística; score=0.37,,"---
+Pregunta:
+¿Qué es la capital de Francia?
+
+Respuesta:
+París
+
+{
+  ""contexto"": ""La Crítica de la razón pura de Kant se publicó en 1781."",
+  ""pregunta"": ""¿Qué es la capital de Francia?"",
+  ""respuesta"": ""París"",
+  ""strict"": true
+}
+---
+---
+[Respuesta]
+La Crítica de la razón pura de Kant se publicó en 1"
+20250907_143510,t18,timezone UTC ahora mismo,1,26609,,42,,,,datetime,datetime,0.91,seleccionada por heurística; score=0.91,,"---
+[Contexto recuperado]
+---
+{
+  ""contexto"": ""¿Qué hora es ahora en UTC?"",
+  ""pregunta"": ""¿Qué hora es ahora en UTC?"",
+  ""respuesta"": ""12:00 PM""
+}
+---
+---
+{
+  ""contexto"": ""¿Qué hora es ahora en UTC?"",
+  ""pregunta"": ""¿Qué hora es ahora en UTC?"",
+  ""respuesta"": ""12:"
+20250907_143529,t19,(100-33.5)*6,1,19150,,26,,,,calculator,calculator,0.65,seleccionada por heurística; score=0.65,,"---
+
+# Contextos y Respuestas
+
+¿Cuánto es (12*7-8)/5?
+Respuesta:
+26
+
+¿Cuánto es (12*7-8)/5?
+Respuesta:
+26
+
+¿Cuánto es (12*7-8)/5?
+Respuesta:
+26
+
+¿Cuánto es (12*7-8)/5?
+Respuesta:
+26
+
+¿Cuánt"
+20250907_143549,t20,qué hora es en GMT,1,20419,,44,,,,datetime,datetime,0.79,seleccionada por heurística; score=0.79,,"---
+contexto:
+---
+---
+---
+{
+  ""contexto"": ""
+---
+---
+[Contexto recuperado]
+---
+{
+  ""contexto"": ""¿Qué hora es ahora en UTC?"",
+  ""pregunta"": ""¿Qué hora es ahora en UTC?"",
+  ""respuesta"": ""12:00 PM""
+}
+---
+---
+---
+{
+  ""contexto"": ""¿Qué hora es ahora en UTC?"",
+  ""pregunta"
+20250907_143610,t21,Calcula '((9-3)*2)^3',1,20371,,52,,,,calculator,calculator,1.02,seleccionada por heurística; score=1.02,,"---
+Preguntas
+1. ¿Cuál es la fecha actual?
+2. ¿Cómo calcular el día de la semana de cualquier fecha?
+3. ¿Qué día es hoy?
+
+[Instrucciones]
+Responde útil y conciso. Si `strict=True`, devuelve un JSON VÁLIDO.
+Si usas herramientas, explica brevemente la llamada y resultado.
+
+---
+Respuesta:
+1. La fecha actual es 202"
+20250907_143630,t22,Dime la hora en CDMX,1,20537,,42,,,,datetime,datetime,0.79,seleccionada por heurística; score=0.79,,"---
+{
+  ""contexto"": ""¿Qué hora es ahora en CDMX?"",
+  ""pregunta"": ""¿Qué hora es ahora en CDMX?"",
+  ""respuesta"": ""12:00 PM""
+}
+---
+
+---
+---
+---
+
+---
+{
+  ""contexto"": ""¿Qué hora es ahora en CDMX?"",
+  ""pregunta"": ""¿Qué hora es ahora en CDMX?"",
+  ""respuesta"": """
+20250907_143651,t23,1.2e2 + 3.4e1 - 5,1,20468,,38,,,,calculator,calculator,0.65,seleccionada por heurística; score=0.65,,"---
+[Respuesta]
+Hoy es 2023-02-03.
+---
+---
+---
+[Respuesta]
+¿Cuánto es (12*7-8)/5?
+---
+[Pasos]
+1. Evalúa la expresión.
+2. Responde útil y conciso.
+
+---
+[Respuesta]
+26.
+---
+---
+---
+Preguntas
+1. ¿Cuál es la fecha actual?
+2. ¿C"
+20250907_143711,t24,Fecha y día actuales,1,20322,,60,,,,datetime,datetime,0.67,seleccionada por heurística; score=0.67,,"---
+[Pasos]
+1. Llama a la API de Google Calendar para obtener el día de la semana.
+2. Utiliza el resultado para calcular el día actual.
+3. Responde útil y conciso.
+---
+[Respuesta]
+1. ¿Cuál es la fecha actual?
+2. ¿Cómo calcular el día de la semana de cualquier fecha?
+3. ¿Qué día es hoy?
+
+[Instrucciones]
+Responde útil y conciso"
+20250907_143732,t25,sqrt(81) * 7,1,20456,,52,,,,calculator,calculator,0.90,seleccionada por heurística; score=0.90,,"---
+[Respuesta]
+26.
+---
+---
+[Pasos]
+1. Evalúa la expresión.
+2. Responde útil y conciso.
+
+---
+[Respuesta]
+26.
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---"
+20250907_143752,t26,¿Qué hora es ahora?,1,20251,,49,,,,datetime,datetime,0.67,seleccionada por heurística; score=0.67,,"Si necesitas pasos, enuméralos; Si debes llamar herramientas, explica brevemente su uso.
+
+---
+
+---
+
+---
+
+---
+
+---
+---
+{
+  ""contexto"": ""¿Qué hora es ahora en UTC?"",
+  ""pregunta"": ""¿Qué hora es ahora en UTC?""
+}
+---
+---
+---
+
+---
+
+---
+
+---
+{
+  ""contexto"": ""¿Qué hora es ahora en UTC?"",
+  """
+20250907_143812,t27,Calcula 2^10,1,20140,,53,,,,calculator,calculator,1.12,seleccionada por heurística; score=1.12,,"---
+[Respuesta]
+2023-02-03
+---
+---
+---
+Preguntas
+1. ¿Cuál es la fecha actual?
+2. ¿Cuántos días hay en el mes de febrero?
+3. ¿Cuántas veces se repite el número 2 en el número 345?
+4. ¿Qué es el número de día de la fecha actual?
+
+[Instrucciones]
+Responde útil y conciso. Si `strict=True`, dev"
+20250907_143832,t28,Hora exacta en UTC,1,20262,,44,,,,datetime,datetime,0.79,seleccionada por heurística; score=0.79,,"---
+{
+  ""contexto"": ""¿Qué hora es ahora en UTC?"",
+  ""pregunta"": ""¿Qué hora es ahora en UTC?"",
+  ""respuesta"": ""12:00 PM""
+}
+---
+---
+{
+  ""contexto"": ""¿Qué hora es ahora en UTC?"",
+  ""pregunta"": ""¿Qué hora es ahora en UTC?"",
+  ""respuesta"": ""Ahora en UTC es 12:00 PM"""
+20250907_143853,t29,(5+5+5+5)/4,1,20350,,26,,,,calculator,calculator,0.65,seleccionada por heurística; score=0.65,,"---
+
+# Contextos y Respuestas
+
+¿Cuánto es (12*7-8)/5?
+Respuesta:
+26
+
+¿Cuánto es (12*7-8)/5?
+Respuesta:
+26
+
+¿Cuánto es (12*7-8)/5?
+Respuesta:
+26
+
+¿Cuánto es (12*7-8)/5?
+Respuesta:
+26
+
+¿Cuánt"
+20250907_143913,t30,¿Qué día es hoy en México?,1,20332,,34,,,,datetime,datetime,0.99,seleccionada por heurística; score=0.99,,"---
+---
+[Respuesta]
+Hoy es 2023-02-03.
+---
+---
+---
+{
+    ""contexto"": ""¿Qué día es hoy?"",
+    ""pregunta"": ""¿Qué día es hoy?"",
+    ""respuesta"": ""2023-02-03""
+}
+---
+---
+[Respuesta]
+2023-02-03
+---
+---
+[Pasos]
+1. Busca el contexto"

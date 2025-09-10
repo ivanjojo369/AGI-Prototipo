@@ -1,0 +1,1235 @@
+timestamp,goal_hash,goal,answer,k,support_doc_id,retrieval_hit@k,used_fact,best_cos
+1757098388,439d1ce854,¿En qué año se publicó la Crítica de la razón pura?,"---
+
+La Crítica de la razón pura es un libro filosófico escrito en 1781 por Immanuel Kant.
+
+---
+
+Si se especificó `strict=True`, el resultado sería un JSON válido:
+
+```json
+{
+  ""year"": 1781,
+  ""title"": ""Critique of Pure Reason"",
+  ""author"": ""Immanuel Kant""
+}
+```
+
+---
+
+Explicación de herramientas:
+- Para bus",5,,False,False,0.0
+1757098407,b0575d9b06,Capital de Francia,"```
+[
+    {
+        ""country"": ""France"",
+        ""capital"": ""Paris"",
+        ""language"": ""French"",
+        ""population"": 6725475,
+        ""area"": 64012,
+        ""currency"": ""Euro"",
+        ""gdp"": 2800000000000,
+        ""gdp_per_capita"": 41828.15
+    }
+]
+```
+
+---
+
+P",5,,False,False,0.0
+1757098425,be300baa07,¿Quién escribió Don Quijote?,"---
+Miguel de Cervantes Saavedra escribió Don Quijote.
+---
+Inicio: 1605
+Género: Novela picaresca y caballeresca
+Número de volúmenes: 2
+Número de historias: 10 (5 en cada volumen)
+---
+El libro cuenta las aventuras de Alonso Quijano, un hidalgo que se ha obsesionado con la caballería y la leyenda de los caballeros andantes. Desde entonces,",5,,False,False,0.0
+1757098443,4925fff315,Albert Einstein nació en qué año,"------------------------------------------------------------------------------------------------------------------------------------------
+
+Albert Einstein nació en el año 1879.
+
+Si se requiere una respuesta en formato JSON válido y se especifica que `strict=True`:
+
+```json
+{
+  ""result"": ""1879""
+}
+```
+
+Explicación: La respuesta es una cadena de texto que representa el año en que Albert Einstein nació. La estructura JSON válida tiene un objeto con una propiedad llamada ""result"" que contiene",5,,False,False,0.0
+1757098461,6754346b83,Lenguaje de programación creado por Guido van Rossum,"1. Crea una función que tome un string y lo devuelva en mayúsculas.
+2. Crea una función que tome un número y devuelva su cuadrado.
+3. Crea una función que tome un número y devuelva su factorial.
+4. Crea una función que tome dos números y devuelva su suma.
+5. Crea una función que tome un número y devuelva ""par"" o ""impar"" si es par o impar.
+6. Crea",5,,False,False,0.0
+1757098480,933e8b82bd,¿En qué país está Machu Picchu?,"---
+El sitio arqueológico de Machu Picchu se encuentra en el país de Perú.
+---
+Esta respuesta es útil y precisa. No es necesario enumerar pasos, llamar herramientas o explicar el uso de herramientas. La respuesta es directa y cumple con las instrucciones proporcionadas.
+
+No es necesario agregar una respuesta en JSON, ya que no se ha especificado que `strict=True`.
+
+La respuesta no requiere ex",5,,False,False,0.0
+1757098498,fd6dc0b694,¿Quién pintó La noche estrellada?,"---
+
+La Noche Estrellada es un cuadro del pintor holandés Vincent van Gogh.
+
+---
+
+Vincent van Gogh pintó La noche estrellada
+
+---
+
+Vincent van Gogh, un pintor holandés, creó La noche estrellada en 1890.
+
+---
+
+La respuesta es:
+
+Vincent van Gogh
+
+---
+
+{
+    ""pintor"": ""Vincent van Gogh"",
+    ""p",5,,False,False,0.0
+1757098995,439d1ce854,¿En qué año se publicó la Crítica de la razón pura?,"---
+El libro ""Crítica de la razón pura"" fue publicado por Immanuel Kant en el año 1781.
+La respuesta a la pregunta es:
+1781
+---
+# Tiempo usado
+30 segundos
+
+# Herramientas usadas
+Ninguna
+
+# Explicación
+No se requiere explicación en este caso.
+---
+# Instrucciones
+Ninguna
+
+# JSON VÁLIDO
+False
+---",5,,False,False,0.0
+1757099014,b0575d9b06,Capital de Francia,"```
+def country_capital(country, strict=False):
+    country_capital_dict = {
+        ""France"": ""Paris"",
+        ""Germany"": ""Berlin"",
+        ""Spain"": ""Madrid"",
+        ""Italy"": ""Rome"",
+        ""United Kingdom"": ""London""
+    }
+    if strict:
+        # Validación adicional, como un diccionario con solo países y capitales válidos.
+        pass
+    # Responde con el capital correspondiente, o un mens",5,,False,False,0.0
+1757099032,be300baa07,¿Quién escribió Don Quijote?,"Ejemplo:
+```python
+def who_wrote_book(title, strict=False):
+    book = {""Don Quijote"": ""Miguel de Cervantes""}
+    return book.get(title)
+```
+
+Resolución:
+```python
+def who_wrote_book(title, strict=False):
+    if title == ""Don Quijote"":
+        return ""Miguel de Cervantes""
+    return ""Author not found""
+
+# Call the function.
+print(who_wrote_",5,,False,False,0.0
+1757099050,4925fff315,Albert Einstein nació en qué año,"def _calculate_age(birthdate: datetime.date, currentdate: datetime.date) -> int:
+    """"""
+    Calculate the age of a person based on the birthdate and current date.
+    Parameters:
+        birthdate (datetime.date): The birthdate of the person.
+        currentdate (datetime.date): The current date.
+    Returns:
+        int: The age of the person.
+    """"""
+    age = currentdate.year - birthdate.year
+    if currentdate.month < birthdate.month or (currentdate.",5,,False,False,0.0
+1757099068,6754346b83,Lenguaje de programación creado por Guido van Rossum,"- Completa el siguiente código
+- Crea una función `suma` que sume dos números:
+- Crea una función `multiplica` que multiplique dos números:
+- Crea una función `resta` que reste dos números:
+- Crea una función `divide` que divida dos números:
+
+Para comprobar el código, puedes usar las funciones `suma`, `multiplica`, `resta`, `divide` y las combin",5,,False,False,0.0
+1757099086,933e8b82bd,¿En qué país está Machu Picchu?,"---
+
+El objetivo es responder la pregunta ""¿En qué país está Machu Picchu?""
+
+Para lograr este objetivo, deberemos investigar donde está Machu Picchu.
+
+Machu Picchu está ubicado en el país de Perú.
+
+Respuesta: Perú
+---
+
+Si necesitas pasos, aquí tienes una posible secuencia de pasos:
+
+1. Investigar en qué país está Machu Picchu.
+2. Responder la pregunta",5,,False,False,0.0
+1757099104,fd6dc0b694,¿Quién pintó La noche estrellada?,"---
+La Noche Estrellada es un cuadro del pintor holandés Vincent Van Gogh.
+
+---
+La respuesta anterior es válida. Si `strict=True`, devuelvo un JSON válido:
+```json
+{
+    ""response"": ""La Noche Estrellada es un cuadro del pintor holandés Vincent Van Gogh.""
+}
+```
+---
+strict=True:
+```json
+{
+    ""strict"": true,
+    ""response"": ""Vincent Van Gogh""",5,,False,False,0.0
+1757099239,439d1ce854,¿En qué año se publicó la Crítica de la razón pura?,"[solucion]
+El filósofo alemán Immanuel Kant publicó en el año 1781 su obra titulada ""Crítica de la razón pura"". Esta obra es considerada como uno de los hitos más importantes en la historia de la filosofía. En ella, Kant desarrolla su teoría sobre la naturaleza y las limitaciones de la razón y cómo estas afectan nuestro conocimiento. La obra se divide en dos partes principales: la teoría analítica y la te",5,,False,False,0.0
+1757099257,b0575d9b06,Capital de Francia,"---
+
+Responde:
+
+```python
+def get_france_capital(strict=False):
+    capital = ""Paris""
+    result = {""capital"": capital}
+    if strict:
+        import json
+        return json.dumps(result, ensure_ascii=False)
+    else:
+        return result
+
+print(get_france_capital())
+print(get_france_capital(strict=True))
+```
+
+---
+
+Respuesta:
+
+```python
+def get_",5,,False,False,0.0
+1757099275,be300baa07,¿Quién escribió Don Quijote?,"[Respuesta]
+Miguel de Cervantes Saavedra.
+
+[Instrucciones]
+No es necesario.
+
+[Información adicional]
+El libro fue escrito en el siglo XVII y está considerado uno de los primeros libros de novelas en castellano.
+
+[Respuesta JSON válida]
+```json
+{
+  ""respuesta"": ""Miguel de Cervantes Saavedra"",
+  ""instrucciones"": ""No es necesario"",
+  ""informacion_adicional"":",5,,False,False,0.0
+1757099293,4925fff315,Albert Einstein nació en qué año,"```python
+def search_birth_year(name, strict=False):
+    import requests
+    from bs4 import BeautifulSoup
+
+    # Use herramientas adecuadas para buscar la información en línea.
+    # Puedes necesitar varias llamadas a herramientas para obtener la información deseada.
+    # Verifica que las herramientas devuelvan lo que esperas.
+
+    # Llamar herramientas
+    # ...
+
+    # Procesar y presentar la",5,,False,False,0.0
+1757099312,6754346b83,Lenguaje de programación creado por Guido van Rossum,"- Python es un lenguaje de programación creado por Guido van Rossum.
+- Se introdujo al público en 1991.
+- Se utiliza en sistemas operativos Unix, Linux y Windows.
+- Python es interpretado.
+- Python se utiliza para:
+	* Automatización de tareas
+	* Crear programas de alto nivel (no interactúan directamente con el hardware)
+	* Crear aplicaciones web
+	* Crear aplicaciones de escritorio
+	* Crear",5,,False,False,0.0
+1757099330,933e8b82bd,¿En qué país está Machu Picchu?,"---
+
+El sitio arqueológico de Machu Picchu se encuentra en el país sudamericano de Perú. Es uno de los principales destinos turísticos del país y una de las maravillas del mundo antiguo.
+
+---
+
+Respuesta:
+
+Perú
+
+---
+
+Instrucciones:
+
+1. Identificar la pregunta.
+2. Recopilar información relevante.
+3. Responder de manera concisa y útil.
+4. (Opcional) Incluir detall",5,,False,False,0.0
+1757099348,fd6dc0b694,¿Quién pintó La noche estrellada?,"def artist_of_starry_night(strict=False):
+    # Call your tools
+    artist = find_artist_of_starry_night()
+    # Return the result
+    return artist
+
+Pista: No olvides utilizar el nombre completo del artista cuando lo encuentres.
+
+Respuesta:
+Vincent van Gogh
+
+Instrucciones:
+Responde útil y preciso. Si `strict=True`, devuelve un JSON VÁLIDO.
+Si usas herramientas,",5,,False,False,0.0
+1757100189,439d1ce854,¿En qué año se publicó la Crítica de la razón pura?,"def get_year_published_critica_de_la_razon_pura(strict=False):
+    # Llamar a una herramienta (API)
+    response = call_api(""https://api.example.com/philosophy/books"")
+    
+    # Procesar la respuesta de la API (JSON)
+    data = response.json()
+    
+    # Encontrar el libro ""Crítica de la razón pura"" en la lista de libros
+    book = next((b for b in data",5,,False,False,0.0
+1757100208,b0575d9b06,Capital de Francia,"```python
+def get_capital_of_country(country: str, strict: bool = False) -> Union[Dict[str, Any], None]:
+    """"""
+    :param country: El país cuya capital deseas obtener
+    :param strict: Si es True, el resultado debe ser un JSON válido
+    :return: La capital de Francia
+    """"""
+    countries_capitals = {
+        ""Francia"": ""París"",
+        # ""Alemania"": ""Berlín"",
+        # ""España"": ""Mad",5,,False,False,0.0
+1757100226,be300baa07,¿Quién escribió Don Quijote?,"# Respuesta
+Miguel de Cervantes escribió Don Quijote.
+
+---
+
+# Código
+
+```python
+def responder(strict=False):
+    respuesta = ""Miguel de Cervantes escribió Don Quijote.""
+
+    if strict:
+        return {
+            ""text"": respuesta,
+            ""lang"": ""es"",
+        }
+
+    return respuesta
+```
+
+---
+
+# Explicación
+
+Este código es una función",5,,False,False,0.0
+1757100244,4925fff315,Albert Einstein nació en qué año,"---
+
+Albert Einstein nació en 1879
+
+---
+
+Ejemplo de respuesta con `strict=True`:
+
+```json
+{
+  ""year"": 1879
+}
+```
+
+Ejemplo de respuesta con `strict=False` (texto):
+
+```
+Albert Einstein nació en 1879
+```
+
+---
+
+Casos de prueba:
+
+- `strict=True`
+- `strict=False`
+
+---",5,,False,False,0.0
+1757100262,6754346b83,Lenguaje de programación creado por Guido van Rossum,"Pregunta:
+Cuáles son los tipos de datos básicos en Python?
+Responde con los tipos de datos básicos y luego con los ejemplos.
+
+Respuesta:
+
+Los tipos de datos básicos en Python son:
+
+- Int: Enteros
+- Float: Números con coma flotante
+- Complex: Complejos
+- Str: Cadenas
+- Bool: Booleanos
+
+Ejemplos:
+
+- Int: 10, -10",5,,False,False,0.0
+1757100279,933e8b82bd,¿En qué país está Machu Picchu?,"Si necesitas pasos, enuméralos.
+
+# Respuesta:
+El país en el que está ubicado Machu Picchu es Perú.
+
+Para llegar a esta respuesta, utilicé la siguiente estrategia:
+
+1. Identifiqué la pregunta y la respuesta requerida.
+2. Realicé una búsqueda rápida en línea para encontrar la respuesta.
+3. Verifiqué la información obtenida para asegurarme de que era prec",5,,False,False,0.0
+1757100297,fd6dc0b694,¿Quién pintó La noche estrellada?,"---
+
+La pintura La noche estrellada fue creada por Salvador Dalí.
+
+---
+
+Si lo deseas, también puedes hacer uso de herramientas de API para buscar este tipo de información. Por ejemplo, puedes usar la API de Google Knowledge Graph.
+
+La llamada sería así:
+
+```
+import requests
+
+response = requests.get('https://content.guardianapis.com/search?api-key=<your_api_key>&q=painting%3A%2",5,,False,False,0.0
+1757100352,439d1ce854,¿En qué año se publicó la Crítica de la razón pura?,"# Instrucciones
+
+Aquí está la información relevante:
+
+- Klemperer, W. (1956). ""Immanuel Kant"". The Cambridge History of English Literature. Cambridge University Press.
+- Kant, I. (1999). ""Critique of Pure Reason"". Cambridge: Cambridge University Press.
+
+La respuesta debe incluir:
+
+- El año de publicación de la Crítica de la razón pura.
+- Un comentario breve sobre la relevancia del libro en la",5,,False,False,0.0
+1757100370,b0575d9b06,Capital de Francia,"---
+
+{
+  ""capital"": ""París"",
+  ""lengua"": ""Francés"",
+  ""moneda"": {
+    ""nombre"": ""euro"",
+    ""simbolo"": ""€"",
+    ""código"": 978
+  }
+}
+
+---
+
+Si el objeto no es válido, devuelve una excepción con el siguiente formato:
+
+{
+  ""error"": ""Mensaje de la excepción"",
+  ""tipo"": ""Nombre",5,,False,False,0.0
+1757100388,be300baa07,¿Quién escribió Don Quijote?,"Si es necesario, haz una llamada a una API externa.
+
+respuesta: Miguel de Cervantes.
+
+respuesta_con_json: {""respuesta"": ""Miguel de Cervantes""}
+
+respuesta_con_json_strict: {""respuesta"": ""Miguel de Cervantes""}
+
+---
+
+Objetivo: ¿Quién escribió El Quijote?
+Responde útil y preciso.
+Si necesitas pasos, enuméralos; si debes llamar herramient",5,,False,False,0.0
+1757100406,4925fff315,Albert Einstein nació en qué año,"---
+Albert Einstein nació en 1879.
+
+---
+El método utilizado para encontrar esta información es un búsqueda en línea en un motor de búsqueda como Google. La respuesta se obtiene a partir de fuentes confiables y se presenta en un formato conciso y útil.
+
+Si `strict=True`, el resultado sería:
+
+{
+  ""year"": 1879
+}
+---
+¿Cómo puedes ayudar a otros a encontrar la respu",5,,False,False,0.0
+1757100424,6754346b83,Lenguaje de programación creado por Guido van Rossum,"1. Identifica el idioma de programación.
+2. Identifica el tipo de dato del objeto.
+3. Identifica los valores del objeto.
+4. Identifica el tipo de dato de cada valor.
+5. Identifica si el valor es un dato primitivo o compuesto.
+6. Identifica si el valor es una cadena, número, lista, diccionario, o booleano.
+7. Identifica el contenido de la cadena.
+8. Identifica los elementos de una lista.
+9. Ident",5,,False,False,0.0
+1757100442,933e8b82bd,¿En qué país está Machu Picchu?,"---
+El sitio arqueológico de Machu Picchu está ubicado en el país sudamericano de Perú.
+
+Si el usuario pide una respuesta en formato JSON válido, la respuesta sería:
+```json
+{""country"": ""Perú""}
+```
+---
+Si se especifica `strict=True`, la respuesta JSON válida es:
+```json
+{""country"": ""Perú"", ""strict"": true}
+```
+---
+Si se especifica `strict=False`, la respuesta JSON",5,,False,False,0.0
+1757100460,fd6dc0b694,¿Quién pintó La noche estrellada?,"Para este problema, hemos decidido utilizar la API de Wikipedia, que es una fuente de información confiable y gratuita, además de disponer de una gran cantidad de datos.
+
+Para ello, primero debemos instalar el módulo requests, que nos permitirá realizar peticiones HTTP. Puedes instalarlo ejecutando el siguiente comando:
+```
+pip install requests
+```
+Una vez instalado, podemos proceder a utilizarlo.
+
+La API de",5,,False,False,0.0
+1757105260,e7f7f6ceea,﻿¿Cuándo se publicó la Crítica de la razón pura?,"---
+
+""La Crítica de la razón pura"" es el tercer tomo de la obra ""Crítica de la razón racional"" de Immanuel Kant.
+Para la fecha de publicación, la respuesta es:
+- El segundo tomo, conocido como la ""Crítica de la razón pura"", se publicó en 1781.
+
+El texto no es muy largo, pero puede ser algo más extenso de lo que cabría en una respuesta corta, así que es mejor escribir",5,,False,False,0.0
+1757105278,50d78c2229,Kant 1781,"[Instrucciones]
+[Sin respuestas]
+Responde útil y preciso.
+Si necesitas pasos, enuméralos; si debes llamar herramientas, explica brevemente su uso.
+[Instrucciones]
+
+Respuesta:
+
+Kant en 1781 escribió “Observaciones sobre el sentido estricto y aparente de la idea de Dios y el mundo” en la que critica la argumentación de Leibniz sobre la existencia de Dios. La obra es una",5,,False,False,0.0
+1757105305,e7f7f6ceea,﻿¿Cuándo se publicó la Crítica de la razón pura?,"[Respuesta]
+La Crítica de la razón pura fue publicada en 1781.
+
+
+---
+
+[Instrucciones]
+Se te presenta una cadena que contiene dos números y un signo aritmético. Determina si la cadena representa una expresión matemática válida.
+
+[Ejemplo]
+La cadena ""3 2 -"" representa la expresión ""3 - 2"". La respuesta debería ser `True`.
+
+[Respu",5,,False,False,0.0
+1757105324,50d78c2229,Kant 1781,"Responde con tu respuesta y la tarea aún no ha sido completada.
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+La tarea no ha sido completada. ¡Resuélvela!
+
+Kant escribió su obra ""Crítica de la razón pura"" en el año 1781.
+
+Tu trabajo es crear un programa en cualquier lenguaje de programación que puedas elegir, que tome como entrada un string que representa el título de una obra y un",5,,False,False,0.0
+1757110569,439d1ce854,¿En qué año se publicó la Crítica de la razón pura?,"---
+La Crítica de la razón pura fue publicada en 1781.
+El primer paso sería encontrar el año de publicación de la obra.
+Una herramienta útil para esta tarea es buscar en Internet.
+Luego, revisar fuentes confiables como bibliotecas o universidades para obtener la información precisa.
+Después de investigar, se encontró que la Crítica de la razón pura fue publicada en 1781.
+---
+{
+  ""year",5,,False,False,0.0
+1757110587,b0575d9b06,Capital de Francia,"[Instrucciones]
+
+Responde útil, preciso y conciso.
+Si `strict=True`, devuelve un JSON VÁLIDO.
+Si usas herramientas, explica brevemente la llamada y resultado.
+[Instrucciones]
+
+Responde útil, preciso y conciso.
+Si `strict=True`, devuelve un JSON VÁLIDO.
+Si usas herramientas, explica brevemente la llamada y resultado.
+[Instrucciones]
+
+Respon",5,,False,False,0.0
+1757110606,be300baa07,¿Quién escribió Don Quijote?,"---
+El autor de Don Quijote de la Mancha es Miguel de Cervantes.
+---
+El análisis de la respuesta es un trabajo de maestría, el cual requiere investigación. Para obtener una respuesta adecuada, se debe utilizar una fuente confiable como un libro de referencia o una fuente académica. Para obtener una respuesta breve y concisa, se puede utilizar un motor de búsqueda para buscar información relevante en línea.
+
+Para obtener una",5,,False,False,0.0
+1757110624,4925fff315,Albert Einstein nació en qué año,"#
+
+```
+def year_of_birth(name, strict=False):
+    # Diccionario con el año de nacimiento de las personas más influyentes
+    notable_years = {
+        ""Albert_Einstein"": 1879,
+        ""Isaac_Newton"": 1643,
+        ""Charles_Darwin"": 1809,
+        ""Leonardo_Da_Vinci"": 1452,
+        ""Galileo_Gal",5,,False,False,0.0
+1757110643,6754346b83,Lenguaje de programación creado por Guido van Rossum,"Responde con el formato de un diccionario para que sea más fácil para usted leerlo.
+
+- [ ] Hazlo con 💩
+- [x] Hazlo con 💻
+
+[Instrucciones]
+
+- [ ] Hazlo con 💩
+- [x] Hazlo con 💻
+
+## Respuesta:
+
+**Python** es un lenguaje de programación creado por Guido van Rossum y lanzado en el año 2000",5,,False,False,0.0
+1757110661,933e8b82bd,¿En qué país está Machu Picchu?,"Ejemplo:
+```
+def where_is_machu_picchu():
+    """"""
+    Machu Picchu is in the country of Peru.
+    """"""
+    return ""Peru""
+```
+
+def where_is_machu_picchu(strict=False):
+    """"""
+    Machu Picchu is in the country of Peru.
+    """"""
+    return {""country"": ""Peru""}
+
+def where_is_machu_picchu():
+    """"""
+    Machu Picchu",5,,False,False,0.0
+1757110679,fd6dc0b694,¿Quién pintó La noche estrellada?,"Respuesta:
+
+Esta pregunta se puede responder con una herramienta de búsqueda en Internet.
+
+Pasos:
+
+1. Ejecutar una búsqueda en Internet con la frase ""Quien pintó La noche estrellada""
+2. Seleccionar el resultado más relevante.
+
+Resultado:
+
+La pintura ""La noche estrellada"" fue pintada por Vincent van Gogh.
+
+Para hacer la búsqueda, se usó el motor de",5,,False,False,0.0
+1757110956,439d1ce854,¿En qué año se publicó la Crítica de la razón pura?,"[respuesta]
+2004
+[/respuesta]
+
+[instrucciones]
+{
+  ""strict"": true
+}
+[/instrucciones]
+
+{
+  ""exacto"": ""2004"",
+  ""mensual"": ""agosto"",
+  ""dia"": ""20"",
+  ""strict"": true
+}
+[/instrucciones]
+
+[herramienta]
+No se ha utilizado herramienta en esta pregunta.
+[/herramienta]",5,,False,False,0.0
+1757110974,b0575d9b06,Capital de Francia,"---
+title: Capital de Francia
+question: ¿Cuál es la capital de Francia?
+- Paris
+- London
+- Madrid
+- Berlin
+- Roma
+
+answer:
+- Paris
+
+explanation:
+- Paris is the correct answer because it is the largest city in France, the heart of French culture, the location of many of its historic milestones, and the seat of its government. London, Madrid, Berlin, and Rome are all beautiful cities, but they are not the capitals of France.
+
+strict: False
+---
+title: Capital de Francia
+question:",5,,False,False,0.0
+1757110992,be300baa07,¿Quién escribió Don Quijote?,"---
+La novela ""Don Quijote de la Mancha"" fue escrita por Miguel de Cervantes Saavedra.
+---
+Esta respuesta cumple los requisitos de la instrucción dada. La respuesta es útil, concisa y precisa, dando a conocer al autor de la novela ""Don Quijote de la Mancha"". Además, si se requiere un formato de respuesta en JSON, la respuesta cumple con este requisito. No se mencionan herramientas en esta inst",5,,False,False,0.0
+1757111011,4925fff315,Albert Einstein nació en qué año,"[int]
+{
+    ""year"": 1879,
+    ""strict"": false,
+    ""source"": ""https://es.wikipedia.org/wiki/Albert_Einstein""
+}
+
+# Código
+```
+from typing import Any, Dict
+
+def get_year(int):
+    """"""
+    This function returns the year Einstein was born.
+    """"""
+    source = ""https://es.wikipedia.org/wiki/Albert_Einstein""
+    url = f""{source}#Nac",5,,False,False,0.0
+1757111029,6754346b83,Lenguaje de programación creado por Guido van Rossum,"[Adivina el número]
+
+1. Genera un número aleatorio entre 1 y 100.
+
+2. Pregúntale al usuario que adivine el número.
+
+3. Incrementa la pregunta con la siguiente información:
+
+  * Si el usuario adivina el número, muestra un mensaje de felicitaciones y la cantidad de intentos.
+
+  * Si el usuario está por encima del número, muestra un mensaje indicando que el número es menor.",5,,False,False,0.0
+1757111047,933e8b82bd,¿En qué país está Machu Picchu?,"---
+
+Respuesta:
+Perú
+
+---
+
+Instrucciones:
+No hay instrucciones adicionales para este objetivo.
+
+---
+
+Llamadas a herramientas:
+No se necesitan llamadas a herramientas para este objetivo.
+
+---
+
+Resultados:
+No se necesitan resultados adicionales para este objetivo.
+
+---
+
+Explicación de llamadas a herramientas (si se aplican):
+No se aplican llamadas a herramientas para este objet",5,,False,False,0.0
+1757111065,fd6dc0b694,¿Quién pintó La noche estrellada?,"Pasos:
+1. Realiza una búsqueda en internet para conocer el autor de ""La noche estrellada"".
+2. Verifica la fiabilidad de la fuente y la información.
+3. Presenta el resultado.
+
+Herramientas:
+- Búsqueda en internet.
+
+Resultado:
+El autor de ""La nanche estrellada"" es Stanley Lionel ""Lee"" Krasner.
+
+Si `strict=True`:
+{""autor"": ""Stanley Lionel \""Lee\""",5,,False,False,0.0
+e771cb1edb23,1757112782,439d1ce854,301,2,5,,,True,0.5463,0.6172,0.381,doc-1
+1757112782,439d1ce854,¿En qué año se publicó la Crítica de la razón pura?,"[Respuesta]
+¿En qué año se publicó la Crítica de la razón pura?
+2006
+[contexto recuperado]
+La Crítica de la razón pura de Kant se publicó en 1781.
+
+[contexto recuperado]
+La Crítica de la razón pura de Kim Kardashian se publicó en 2006.
+---
+¿En qué año se publicó la Crítica de la razón pura?
+2006
+
+---",5,1,False,False,0.0
+1d7aa106b9b1,1757112800,b0575d9b06,394,3,5,,,True,0.5799,0.6483,0.4203,doc-1
+1757112800,b0575d9b06,Capital de Francia,"---
+
+[Contexto recuperado]
+París es la capital de Francia.
+---
+¿Qué es la capital de Francia?
+París
+
+[contexto recuperado]
+París es la capital de Francia.
+
+[contexto recuperado]
+París es la capital de Francia.
+---
+¿Qué es la capital de Francia?
+París
+
+[contexto recuperado]
+París es la capital de Francia.
+
+[contexto recuperado]
+París es la capital de Francia.
+---
+¿Qué es la capital de Francia",5,3,False,False,0.0
+1757112818,be300baa07,¿Quién escribió Don Quijote?,"---
+
+El autor de Don Quijote es Miguel de Cervantes Saavedra.
+---
+
+Si se especifica `strict=True`, el resultado sería:
+
+```json
+{
+  ""result"": ""Miguel de Cervantes Saavedra""
+}
+```
+---
+
+Si se especifica `strict=False`, el resultado sería:
+
+```
+Miguel de Cervantes Saavedra
+```
+---
+
+Si se especifica `strict=False` y se requiere una explicación ad",5,,False,False,0.0
+9813bce0da4f,1757112837,4925fff315,271,3,5,,,False,0.2295,0.263,0.1514,doc-1
+1757112837,4925fff315,Albert Einstein nació en qué año,"[Contexto recuperado]
+¿Cuántos años tiene Albert Einstein en 2018?
+2018 - 1879 = 139
+Albert Einstein nació en 1879, por lo que en 2018 tendría 139 años.
+
+[contexto recuperado]
+¿Cuántos años tendría Albert Einstein en 2021?
+2021 - 1879 = 142
+Albert Einstein nació en 1879,",5,1,False,False,0.0
+1ce958f82bad,1757112856,6754346b83,288,5,5,,,False,0.2149,0.2543,0.1231,doc-1
+1757112856,6754346b83,Lenguaje de programación creado por Guido van Rossum,"{
+""pregunta"": ""¿Cuántos años tiene Guido van Rossum?"",
+""respuesta"": ""70"",
+""contexto"": ""Guido van Rossum tiene 70 años."",
+""strict"": true
+}
+
+{
+""pregunta"": ""¿Cuántos años tiene Guido van Rossum?"",
+""respuesta"": ""70"",
+""contexto"": ""Guido van Rossum tiene 70 años."",
+""strict"": false
+}
+
+{
+""pregun",5,2,False,False,0.0
+e6589f189de7,1757112876,933e8b82bd,261,4,5,,,True,0.97,0.9768,0.9542,doc-2
+1757112878,933e8b82bd,¿En qué país está Machu Picchu?,"---
+¿Cuántos años tiene Albert Einstein en 2018?
+2018 - 1879 = 139
+Albert Einstein nació en 1879, por lo que en 2018 tendría 139 años.
+
+[contexto recuperado]
+¿Cuántos años tendría Albert Einstein en 2021?
+2021 - 1879 = 142
+Albert Einstein nació en 1879,
+---
+---",5,1,False,False,0.0
+bd9c3b08313c,1757112897,fd6dc0b694,314,4,5,,,True,0.5384,0.6097,0.3718,doc-3
+1757112897,fd6dc0b694,¿Quién pintó La noche estrellada?,"---
+{
+  ""contexto"": ""París es la capital de Francia."",
+  ""pregunta"": ""¿Qué es la capital de Francia?""
+}
+---
+""París""
+
+---
+{
+  ""contexto"": ""París es la capital de Francia."",
+  ""pregunta"": ""¿Qué es la capital de Francia?""
+}
+---
+""París""
+
+---
+{
+  ""contexto"": ""París es la capital de Francia."",
+  ""pregunta"": ""¿Qué es la",5,1,False,False,0.0
+a364940ec7b6,1757112993,439d1ce854,312,5,5,,,True,0.6484,0.7077,0.5102,doc-3
+1757112993,439d1ce854,¿En qué año se publicó la Crítica de la razón pura?,"Contexto:
+La Crítica de la razón pura de Kant se publicó en 1781.
+
+Pregunta:
+¿Qué es la capital de Francia?
+
+Respuesta:
+París
+---
+{
+  ""contexto"": ""París es la capital de Francia."",
+  ""pregunta"": ""¿Qué es la capital de Francia?"",
+  ""respuesta"": ""París""
+}
+---
+{
+  ""contexto"": ""París es la capital de Francia."",
+  """,5,4,True,False,0.0
+8adab57f4767,1757113012,b0575d9b06,315,5,5,,,True,0.834,0.8667,0.7576,doc-3
+1757113012,b0575d9b06,Capital de Francia,"Pregunta:
+¿Qué es la capital de Francia?
+---
+Respuesta:
+París
+---
+{
+  ""contexto"": ""París es la capital de Francia."",
+  ""pregunta"": ""¿Qué es la capital de Francia?"",
+  ""respuesta"": ""París""
+}
+---
+{
+  ""contexto"": ""París es la capital de Francia."",
+  ""pregunta"": ""¿Qué es la capital de Francia?"",
+  ""respuesta"": ""París""",5,3,True,False,0.0
+aa34a80b34a6,1757113030,be300baa07,330,1,5,,,True,0.8798,0.9038,0.8239,doc-1
+1757113030,be300baa07,¿Quién escribió Don Quijote?,"---
+
+Miguel de Cervantes Saavedra escribió Don Quijote.
+---
+
+Si se especifica `strict=False`, el resultado sería:
+
+```
+Miguel de Cervantes Saavedra
+```
+---
+
+Si se especifica `strict=True`, el resultado sería:
+
+```json
+{
+  ""result"": ""Miguel de Cervantes Saavedra""
+}
+```
+---
+
+Si se especifica `strict=False` y se requiere una explic",5,6,False,False,0.0
+3e967ca76e7e,1757113050,4925fff315,293,5,5,,,False,0.4796,0.5327,0.3556,doc-3
+1757113050,4925fff315,Albert Einstein nació en qué año,"[Pasos]
+1. Recoge la respuesta de la base de datos.
+2. Si `strict=True`, valida la estructura JSON y ajusta el resultado.
+
+---
+[Respuesta]
+La Crítica de la razón pura de Kant se publicó en 1781.
+
+---
+---
+[Contexto]
+La Crítica de la razón pura de Kant se publicó en 1781.
+
+[Pregunta]
+¿Qué es la",5,9,True,False,0.0
+351c834621ab,1757113070,6754346b83,299,5,5,,,True,0.8955,0.9167,0.8462,doc-4
+1757113070,6754346b83,Lenguaje de programación creado por Guido van Rossum,"---
+[Respuesta]
+La Crítica de la razón pura de Kant se publicó en 1781.
+
+---
+---
+[Contexto]
+La Crítica de la razón pura de Kant se publicó en 1781.
+
+Pregunta:
+¿Qué es la capital de Francia?
+
+Respuesta:
+París
+---
+{
+  ""contexto"": ""París es la capital de Francia."",
+  ""pregunta"": ""¿Qué es la capital de",5,2,True,False,0.0
+e9026a25ba94,1757113090,933e8b82bd,259,5,5,,,True,0.6443,0.6955,0.525,doc-3
+1757113090,933e8b82bd,¿En qué país está Machu Picchu?,"---
+---
+---
+[Contexto]
+La Crítica de la razón pura de Kant se publicó en 1781.
+
+Pregunta:
+¿Cuántos años tiene Albert Einstein en 2018?
+2018 - 1879 = 139
+Albert Einstein nació en 1879, por lo que en 2018 tendría 139 años.
+
+Respuesta:
+139 años
+---
+---
+---
+---
+[",5,4,True,False,0.0
+922f11cbcc77,1757113110,fd6dc0b694,341,5,5,,,True,0.7206,0.7646,0.6179,doc-1
+1757113110,fd6dc0b694,¿Quién pintó La noche estrellada?,"---
+[Respuesta]
+París es la capital de Francia.
+
+---
+---
+[Contexto recuperado]
+París es la capital de Francia.
+
+[Pasos]
+1. Recoge la respuesta de la base de datos.
+2. Si `strict=True`, valida la estructura JSON y ajusta el resultado.
+
+---
+[Respuesta]
+París es la capital de Francia.
+
+---
+---
+[Contexto]
+París es la capital de Francia.
+
+[Preg",5,4,True,False,0.0
+e786348ea2db,1757113451,439d1ce854,296,5,5,,,True,0.5986,0.6493,0.4802,doc-1
+1757113451,439d1ce854,¿En qué año se publicó la Crítica de la razón pura?,"¿En qué año se publicó la Crítica de la razón pura?
+
+---
+Respuesta:
+La Crítica de la razón pura de Kant se publicó en 1781.
+---
+---
+[Pasos]
+1. Busca el contexto.
+2. Responde útil y conciso.
+
+---
+[Contexto]
+La Crítica de la razón pura de Kant se publicó en 1781.
+
+¿En qué año se publicó la Crítica",5,4,False,False,0.0
+c214dc6102bb,1757113472,b0575d9b06,379,5,5,,,True,0.9813,0.9855,0.9714,doc-2
+1757113472,b0575d9b06,Capital de Francia,"[Contexto recuperado]
+París es la capital de Francia.
+---
+---
+
+[Contexto recuperado]
+París es la capital de Francia.
+---
+¿Qué es la capital de Francia?
+París
+
+[Contexto recuperado]
+París es la capital de Francia.
+---
+---
+
+[Contexto recuperado]
+París es la capital de Francia.
+---
+¿Qué es la capital de Francia?
+París
+
+[Contexto recuperado]
+París es la capital de Francia.
+---
+---",5,3,False,False,0.0
+cf45dc123249,1757113490,be300baa07,352,2,5,,,True,0.7103,0.7568,0.6018,doc-2
+1757113490,be300baa07,¿Quién escribió Don Quijote?,"[Instrucciones]
+Para responder con el nombre de quien escribió Don Quijote, se debe tener en cuenta que es Miguel de Cervantes Saavedra. Si se especifica `strict=False`, el resultado sería:
+
+```
+Miguel de Cervantes Saavedra
+```
+---
+---
+
+Si se especifica `strict=True`, el resultado sería:
+
+```json
+{
+  ""result"": ""Miguel de Cervantes Saavedra""
+}
+```
+---",5,6,False,False,0.0
+a5aef47ff8ad,1757113510,4925fff315,288,5,5,,,True,0.7392,0.7825,0.6383,doc-5
+1757113510,4925fff315,Albert Einstein nació en qué año,"---
+[Contexto]
+La Crítica de la razón pura de Kant se publicó en 1781.
+
+Pregunta:
+¿En qué año se publicó la Crítica de la razón pura?
+2006
+
+Respuesta:
+¿En qué año se publicó la Crítica de la razón pura?
+2006
+
+---
+---
+---
+---
+[Contexto]
+La Crítica de la razón pura de Kant se publicó en 17",5,9,False,False,0.0
+f09b24d21df1,1757113529,6754346b83,313,5,5,,,True,0.6106,0.671,0.4698,doc-2
+1757113529,6754346b83,Lenguaje de programación creado por Guido van Rossum,"---
+{
+""contexto"": ""La Crítica de la razón pura de Kant se publicó en 1781."",
+""pregunta"": ""¿Cuántos años tiene Guido van Rossum?"",
+""respuesta"": ""70"",
+""strict"": false
+}
+
+[Contexto recuperado]
+Python fue creado por Guido van Rossum
+---
+Python fue creado por Guido van Rossum, quien tiene 70 años.
+---
+---
+[Respuesta]",5,2,False,False,0.0
+7456c914b4c9,1757113549,933e8b82bd,262,5,5,,,True,0.9573,0.9669,0.9351,doc-5
+1757113549,933e8b82bd,¿En qué país está Machu Picchu?,"---
+[Contexto recuperado]
+La Crítica de la razón pura de Kant se publicó en 1781.
+
+Pregunta:
+¿Cuántos años tiene Albert Einstein en 2018?
+2018 - 1879 = 139
+Albert Einstein nació en 1879, por lo que en 2018 tendría 139 años.
+
+Respuesta:
+139 años
+---
+---
+---
+---
+[",5,4,False,False,0.0
+2d8b42536361,1757113570,fd6dc0b694,350,5,5,,,False,0.4343,0.4946,0.2937,doc-3
+1757113570,fd6dc0b694,¿Quién pintó La noche estrellada?,"---
+[Respuesta]
+¿En qué año se publicó la Crítica de la razón pura?
+2006
+
+---
+---
+[Contexto]
+¿Qué fue el imperio incaico?
+El imperio incaico fue un imperio precolombino ubicado en el territorio que actualmente conforma el Perú, Bolivia, el noroeste de Argentina, el sur de Ecuador, el suroeste de Colombia y el extremo norte de Chile.
+
+---
+[Pasos]
+1.",5,14,False,False,0.0
+872cf9dbbc36,1757113599,439d1ce854,283,5,5,,,True,0.9051,0.9246,0.8596,doc-1
+1757113599,439d1ce854,¿En qué año se publicó la Crítica de la razón pura?,"""La Crítica de la razón pura"" de Kant se publicó en 1781.
+---
+[Contexto]
+La Crítica de la razón pura de Kant se publicó en 1781.
+
+Pregunta:
+¿En qué año se publicó la Crítica de la razón pura?
+
+Respuesta:
+1781
+
+---
+---
+---
+---
+---
+---
+[Contexto]
+La Crítica de la razón pura de Kant se",5,21,True,False,0.0
+633fb369726d,1757113619,b0575d9b06,383,5,5,,,False,0.2016,0.2322,0.1301,doc-5
+1757113619,b0575d9b06,Capital de Francia,"Para los contextos de tipo `pregunta-respuesta`:
+* El contexto es un string con información relevante.
+* La pregunta es un string que se debe responder.
+* La respuesta es un string que es la respuesta correcta.
+* Devuelve un diccionario con el contexto, la pregunta y la respuesta, y si corresponde, el formato JSON válido.
+
+Para los contextos de tipo `pregunta`:
+* El contexto es un",5,3,True,False,0.0
+dcfd64a83cea,1757113638,be300baa07,333,3,5,,,True,0.8712,0.8971,0.8107,doc-2
+1757113638,be300baa07,¿Quién escribió Don Quijote?,"Miguel de Cervantes escribió Don Quijote.
+---
+
+Si se especifica `strict=False`, el resultado sería:
+
+```
+Miguel de Cervantes
+```
+---
+
+Si se especifica `strict=True`, el resultado sería:
+
+```json
+{
+  ""result"": ""Miguel de Cervantes""
+}
+```
+---
+---
+---
+
+Para responder con el nombre de quien escribió Don Quijote, se debe tener en cuenta",5,6,True,False,0.0
+707e98aecba7,1757113658,4925fff315,279,5,5,,,True,0.8245,0.8569,0.7488,doc-4
+1757113658,4925fff315,Albert Einstein nació en qué año,"---
+La Crítica de la razón pura de Kant se publicó en 1781.
+
+¿En qué año se publicó la Crítica?
+1781
+
+---
+---
+---
+[Contexto recuperado]
+Albert Einstein nació en 1879
+¿Cuántos años tendría Albert Einstein en 2018?
+2018 - 1879 = 139
+Albert Einstein nació en 1879, por lo que en 201",5,9,True,False,0.0
+7b9a445fa823,1757113678,6754346b83,300,5,5,,,True,0.8634,0.89,0.8013,doc-5
+1757113678,6754346b83,Lenguaje de programación creado por Guido van Rossum,"---
+La Crítica de la razón pura de Kant se publicó en 1781.
+
+---
+---
+[Respuesta]
+{
+  ""pregunta"": ""¿Qué es la capital de Francia?"",
+  ""respuesta"": ""París"",
+  ""contexto"": ""París es la capital de Francia.""
+}
+
+{
+  ""pregunta"": ""¿Qué es la capital de Francia?"",
+  ""respuesta"": ""París"",
+  ""contexto"": ""París",5,2,True,False,0.0
+6470ceb036de,1757113698,933e8b82bd,280,5,5,,,True,0.6244,0.6742,0.5081,doc-5
+1757113698,933e8b82bd,¿En qué país está Machu Picchu?,"Pregunta:
+¿Dónde está Machu Picchu?
+
+Respuesta:
+Machu Picchu está en Perú.
+
+---
+{
+  ""contexto"": ""Machu Picchu está en Perú."",
+  ""pregunta"": ""¿Dónde está Machu Picchu?"",
+  ""respuesta"": ""Machu Picchu está en Perú.""
+}
+---
+---
+[Contexto]
+La Crítica de la razón pura de Kant se publicó",5,18,True,False,0.0
+2f738548f966,1757113718,fd6dc0b694,291,5,5,,,True,0.9318,0.9466,0.8973,doc-3
+1757113718,fd6dc0b694,¿Quién pintó La noche estrellada?,"---
+[Respuesta]
+La Crítica de la razón pura de Kant se publicó en 1781.
+
+---
+---
+---
+---
+---
+---
+[Contexto]
+La Crítica de la razón pura de Kant se publicó en 1781.
+
+Pregunta:
+¿Qué es la capital de Francia?
+
+Respuesta:
+París
+
+---
+{
+  ""contexto"": ""La Crítica de la razón pura de Kant se public",5,14,True,False,0.0

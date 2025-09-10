@@ -38,4 +38,42 @@ models/
 *.onnx
 *.safetensors
 
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+
+# Entornos
+venv/
+.env/
+.venv/
+
+# IDE
+.vscode/
+.vs/
+
+# Pruebas / cobertura
+.pytest_cache/
+.coverage
+htmlcov/
+
+# Runtime / datos locales
+logs/
+sessions/
+flask_session/
+temp_memory/
+memory_store/
+chroma_db/
+backup_chroma_db/
+*.db
+*.sqlite3
+
+# Modelos / artefactos grandes
+models/
+*.gguf
+*.bin
+*.pt
+
+# (si no quieres versionar el vendor)
 llama-cpp-python/

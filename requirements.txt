@@ -4,3 +4,18 @@ pydantic>=2.7
 
 # Modelo local (CPU/GPU). Instala la build que uses (CUDA si aplica).
 llama-cpp-python>=0.2.82
+
+fastapi>=0.111
+uvicorn>=0.30
+pydantic>=2.7
+llama-cpp-python>=0.2.82
+
+# Necesarios por tu código:
+numpy
+faiss-cpu     # (o faiss-gpu si compilas con CUDA)
+psutil
+gputil
+requests
+beautifulsoup4
+lxml
+pandas

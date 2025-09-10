@@ -1,7 +1,7 @@
 {
-  "MODEL_PATH": "C:\\Users\\PC\\Documents\\AGI-Prototipo\\models\\openchat-3.5-1210.Q4_K_M.gguf",
+  "MODEL_PATH": "C:\\...\\models\\openchat-3.5-1210.Q4_K_M.gguf",
   "N_CTX": 4096,
   "N_THREADS": 12,
-  "N_BATCH": 192,
-  "N_GPU_LAYERS": 0
+  "N_BATCH": 128,
+  "N_GPU_LAYERS": 35
 }

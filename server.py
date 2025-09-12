@@ -12,6 +12,13 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.openapi.utils import get_openapi
 from fastapi.responses import JSONResponse
 from fastapi.security import APIKeyHeader
+from server_jobs_router import jobs_router
+
+app = FastAPI(title="AGI Prototype (FAISS-CPU)", version="3.5.0")
+app.add_middleware(CORSMiddleware, allow_origins=["*"], allow_credentials=True, allow_methods=["*"], allow_headers=["*"])
+
+# ⬇️ Pon esto aquí (después de crear app)
+app.include_router(jobs_router)
 
 # Memoria vectorial
 from memory.unified_memory import UnifiedMemory

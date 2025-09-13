@@ -1,4 +1,4 @@
-# server.py — AGI Prototype (Fases 1–3)
+# server.py — AGI Prototype (Fases 1–4: + Jobs)
 from __future__ import annotations
 
 import os
@@ -12,24 +12,23 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.openapi.utils import get_openapi
 from fastapi.responses import JSONResponse
 from fastapi.security import APIKeyHeader
+
+# ──────────────────────────────────────────────────────────────────────────────
+# Routers / Módulos internos
+# ──────────────────────────────────────────────────────────────────────────────
+# Router de Jobs (Fase 4)
 from server_jobs_router import jobs_router
 
-app = FastAPI(title="AGI Prototype (FAISS-CPU)", version="3.5.0")
-app.add_middleware(CORSMiddleware, allow_origins=["*"], allow_credentials=True, allow_methods=["*"], allow_headers=["*"])
-
-# ⬇️ Pon esto aquí (después de crear app)
-app.include_router(jobs_router)
-
-# Memoria vectorial
+# Memoria vectorial unificada
 from memory.unified_memory import UnifiedMemory
 
-# Orquestador (con fallback a módulo raíz “orchestrator.py”)
+# Orquestador (fallback si no existe paquete reasoner)
 try:
     from reasoner.orchestrator import SkillOrchestrator  # type: ignore
 except Exception:
     from orchestrator import SkillOrchestrator  # type: ignore
 
-# Planner HTN
+# Planner HTN y acciones builtin
 from planner.task_planner import (
     Plan as HTNPlan,
     Step as HTNStep,
@@ -37,7 +36,7 @@ from planner.task_planner import (
     BuiltinActions,
 )
 
-# Curriculum (fallback mínimo)
+# Curriculum (con fallback mínimo)
 try:
     from reasoner.curriculum import CurriculumBuilder  # type: ignore
 except Exception:
@@ -49,21 +48,30 @@ except Exception:
                 out.append({"id": str(i), "practice": f"Reintenta: {q}", "hint": "Divide y valida.", "tags": ["autogen"]})
             return out
 
-
-# -----------------------------------------------------------------------------
-# App + Seguridad (API Key) con bypass en tests
-# -----------------------------------------------------------------------------
+# ──────────────────────────────────────────────────────────────────────────────
+# App & Seguridad (API Key)
+# ──────────────────────────────────────────────────────────────────────────────
 API_KEY_HEADER_NAME = "x-api-key"
 api_key_header = APIKeyHeader(name=API_KEY_HEADER_NAME, auto_error=False)
 
-app = FastAPI(title="AGI Prototype (FAISS-CPU)", version="3.5.0")
-app.add_middleware(CORSMiddleware, allow_origins=["*"], allow_credentials=True, allow_methods=["*"], allow_headers=["*"])
+app = FastAPI(title="AGI Prototype (FAISS-CPU)", version="4.0.0")
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
+# Incluir router de Jobs (requiere API_KEY configurada para usarse)
+app.include_router(jobs_router)
+
+# Whitelist para docs/health sin API key
 DOCS_WHITELIST = {"/", "/docs", "/redoc", "/openapi.json", "/status", "/get_status"}
 
 @app.middleware("http")
 async def api_key_middleware(request: Request, call_next):
-    # Bypass seguro en tests / CI
+    # Bypass en tests/CI controlado
     if os.getenv("PYTEST_CURRENT_TEST") or os.getenv("ALLOW_TEST_NO_AUTH") == "1":
         return await call_next(request)
 
@@ -72,21 +80,30 @@ async def api_key_middleware(request: Request, call_next):
         return await call_next(request)
 
     sent_key = request.headers.get(API_KEY_HEADER_NAME)
+    # Permite Bearer como alternativa
     if not sent_key:
         auth = request.headers.get("authorization", "")
         if auth.lower().startswith("bearer "):
             sent_key = auth[7:].strip()
+
     if sent_key != required_key:
         return JSONResponse({"detail": "Forbidden: invalid or missing API Key"}, status_code=403)
+
     return await call_next(request)
 
+# OpenAPI con esquema de seguridad por header
 def custom_openapi() -> dict:
     if app.openapi_schema:
         return app.openapi_schema
-    schema = get_openapi(title=app.title, version=app.version, description="AGI endpoints (Fases 1–3)", routes=app.routes)
+    schema = get_openapi(
+        title=app.title,
+        version=app.version,
+        description="AGI endpoints (Fases 1–4, incluye /jobs/*)",
+        routes=app.routes,
+    )
     schema.setdefault("components", {}).setdefault("securitySchemes", {})["ApiKeyAuth"] = {
         "type": "apiKey", "in": "header", "name": API_KEY_HEADER_NAME,
-        "description": "Introduce tu API Key."
+        "description": "Introduce tu API Key.",
     }
     schema["security"] = [{"ApiKeyAuth": []}]
     app.openapi_schema = schema
@@ -94,12 +111,13 @@ def custom_openapi() -> dict:
 
 app.openapi = custom_openapi  # type: ignore[assignment]
 
-# -----------------------------------------------------------------------------
-# Estado y utilidades
-# -----------------------------------------------------------------------------
+# ──────────────────────────────────────────────────────────────────────────────
+# Estado / Utilidades
+# ──────────────────────────────────────────────────────────────────────────────
 UM = UnifiedMemory(memory_dir="memory_store", use_gpu=False)
 
 def _vector_provider(query: str, k: int) -> List[Dict[str, Any]]:
+    # CONF_SCALE controla cómo escalamos el score a 'confidence'
     scale = float(os.environ.get("CONF_SCALE", "200.0"))
     try:
         res = UM.retrieve_relevant_memories(query, top_k=k)
@@ -113,14 +131,21 @@ def _vector_provider(query: str, k: int) -> List[Dict[str, Any]]:
         if isinstance(meta, list) and len(meta) > 20:
             meta = meta[:20] + ["…"]
         out.append({
-            "text": r.get("text", ""), "score": raw, "confidence": conf,
+            "text": r.get("text", ""),
+            "score": raw,
+            "confidence": conf,
             "citation_id": r.get("citation_id") or r.get("mem_id"),
-            "metadata": meta, "result_quality": r.get("result_quality", "unknown"),
+            "metadata": meta,
+            "result_quality": r.get("result_quality", "unknown"),
             "trace_id": r.get("trace_id"),
         })
     return out
 
-ORCH = SkillOrchestrator(memory_vector_provider=_vector_provider, fs_root=".", score_threshold=0.45)
+ORCH = SkillOrchestrator(
+    memory_vector_provider=_vector_provider,
+    fs_root=".",
+    score_threshold=0.45,
+)
 
 def memory_action(**kwargs):
     q = (kwargs.get("query") or "").strip()
@@ -138,15 +163,17 @@ actions = {
 PLANNER = TaskPlanner(actions=actions, curriculum_path="data/curriculum/planner_curriculum.jsonl")
 CURRICULUM = CurriculumBuilder()
 
-# -----------------------------------------------------------------------------
+# ──────────────────────────────────────────────────────────────────────────────
 # Métricas
-# -----------------------------------------------------------------------------
+# ──────────────────────────────────────────────────────────────────────────────
 COUNTERS: Dict[str, int] = {k: 0 for k in [
     "total_requests", "chat_requests", "upserts_total", "search_requests",
     "vec_upserts_total", "vec_search_requests", "reason_requests",
     "plan_requests", "curriculum_requests",
 ]}
-LAT_LOG: Dict[str, List[float]] = {k: [] for k in ["chat","upsert","search","vec_upsert","vec_search","reason","plan","curriculum"]}
+LAT_LOG: Dict[str, List[float]] = {k: [] for k in [
+    "chat","upsert","search","vec_upsert","vec_search","reason","plan","curriculum"
+]}
 
 def _record_latency(bucket: str, t0: float) -> None:
     LAT_LOG.setdefault(bucket, []).append((perf_counter() - t0) * 1000.0)
@@ -160,10 +187,9 @@ def _p95(x: List[float]) -> Optional[float]:
     from math import ceil
     return float(s[max(0, ceil(0.95 * len(s)) - 1)])
 
-
-# -----------------------------------------------------------------------------
-# Memoria semántica "lite" (RAM) — Fase 1 compat
-# -----------------------------------------------------------------------------
+# ──────────────────────────────────────────────────────────────────────────────
+# Memoria semántica (RAM) de compatibilidad — Fase 1
+# ──────────────────────────────────────────────────────────────────────────────
 STORE: List[Dict[str, Any]] = []
 
 def _simple_score(q: str, t: str) -> float:
@@ -175,9 +201,9 @@ def _simple_score(q: str, t: str) -> float:
         return 0.0
     return min(1.0, hits / max(1, len(tl) / max(1, len(ql))))
 
-# -----------------------------------------------------------------------------
+# ──────────────────────────────────────────────────────────────────────────────
 # Endpoints
-# -----------------------------------------------------------------------------
+# ──────────────────────────────────────────────────────────────────────────────
 @app.get("/")
 def health() -> Dict[str, Any]:
     return {"ok": True}
@@ -274,12 +300,16 @@ async def semantic_search(payload: Dict[str, Any] = Body(...)) -> Dict[str, Any]
     try:
         COUNTERS["total_requests"] += 1; COUNTERS["search_requests"] += 1
         q = (payload.get("q") or "").strip(); k = int(payload.get("k", 5))
-        scored: List[Tuple[float, Dict[str, Any]]] = [( _simple_score(q, f.get("text","")), f) for f in STORE]
+        scored: List[Tuple[float, Dict[str, Any]]] = [(_simple_score(q, f.get("text","")), f) for f in STORE]
         scored.sort(key=lambda x: x[0], reverse=True)
         out = []
         for s, f in scored[:k]:
-            row = dict(f); row["score"] = float(s); row["confidence_source"] = row.get("confidence", 0.5)
-            row["confidence"] = float(s); row["citation_id"] = f.get("mem_id") or f.get("doc_id"); out.append(row)
+            row = dict(f)
+            row["score"] = float(s)
+            row["confidence_source"] = row.get("confidence", 0.5)
+            row["confidence"] = float(s)
+            row["citation_id"] = f.get("mem_id") or f.get("doc_id")
+            out.append(row)
         return {"ok": True, "results": out, "query": q, "k": k}
     finally:
         _record_latency("search", t0)
@@ -296,12 +326,19 @@ async def vector_upsert(payload: Dict[str, Any] = Body(...)) -> Dict[str, Any]:
             text = (f or {}).get("text")
             if not text: continue
             meta = f.get("metadata") or f.get("meta") or {}
-            res = UM.add_to_vector_memory(text, metadata=meta,
-                                          result_quality=f.get("result_quality","unknown"),
-                                          confidence=float(f.get("confidence",0.5)),
-                                          trace_id=f.get("trace_id") or req_trace)
-            mem_id = res[1] if isinstance(res, tuple) and len(res) >= 2 else (res.get("mem_id") if isinstance(res, dict) else (res if isinstance(res, str) else None))
-            if mem_id: mem_ids.append(mem_id); upserted += 1
+            res = UM.add_to_vector_memory(
+                text,
+                metadata=meta,
+                result_quality=f.get("result_quality","unknown"),
+                confidence=float(f.get("confidence",0.5)),
+                trace_id=f.get("trace_id") or req_trace,
+            )
+            mem_id = (
+                res[1] if isinstance(res, tuple) and len(res) >= 2 else
+                (res.get("mem_id") if isinstance(res, dict) else (res if isinstance(res, str) else None))
+            )
+            if mem_id:
+                mem_ids.append(mem_id); upserted += 1
         COUNTERS["vec_upserts_total"] += upserted
         return {"ok": True, "upserted": upserted, "mem_ids": mem_ids}
     finally:
@@ -328,7 +365,7 @@ async def reason_execute(payload: Dict[str, Any] = Body(...)) -> Dict[str, Any]:
     finally:
         _record_latency("reason", t0)
 
-# -------------------------------- Fase 3 -------------------------------------#
+# ------------------------------ Planner (HTN) --------------------------------#
 def _normalize_goal_text(goal: Any) -> str:
     if isinstance(goal, list): s = " ".join(str(x) for x in goal)
     elif isinstance(goal, str): s = goal
@@ -336,18 +373,21 @@ def _normalize_goal_text(goal: Any) -> str:
     return s
 
 def _solve_goal_to_plan(goal: Any, context: Dict[str, Any]) -> HTNPlan:
+    # Heurística simple compatible con tu Fase 3
     goal_str = _normalize_goal_text(goal); gl = goal_str.lower()
     if "buscar" in gl:
         return HTNPlan(goal=goal_str, steps=[
             HTNStep(id="T", kind="task", name="buscar_y_leer",
-                    inputs={"query": context.get("query", goal_str), "path": context.get("path", "server.py")})
+                    inputs={"query": context.get("query", goal_str),
+                            "path": context.get("path", "server.py")})
         ], metadata={"auto": True})
     if "leer" in gl or "read" in gl:
         return HTNPlan(goal=goal_str, steps=[
             HTNStep(id="r1", kind="action", name="filesystem_read",
-                    inputs={"path": context.get("path", "server.py")}, postconditions=["len(result) > 0"])
+                    inputs={"path": context.get("path", "server.py")},
+                    postconditions=["len(result) > 0"])
         ], metadata={"auto": True})
-    # Default: 3 steps (mem → py → fs)
+    # Default: 3 pasos (mem → py → fs)
     return HTNPlan(goal=goal_str, steps=[
         HTNStep(id="m1", kind="action", name="memory_search", inputs={"query": goal_str, "k": 3}),
         HTNStep(id="s1", kind="action", name="python_exec",
@@ -403,9 +443,9 @@ async def curriculum_build(payload: Dict[str, Any] = Body(...)) -> Dict[str, Any
     finally:
         _record_latency("curriculum", t0)
 
-# -----------------------------------------------------------------------------
+# ──────────────────────────────────────────────────────────────────────────────
 # Main
-# -----------------------------------------------------------------------------
+# ──────────────────────────────────────────────────────────────────────────────
 if __name__ == "__main__":
     import uvicorn
     port = int(os.environ.get("PORT", "8010"))

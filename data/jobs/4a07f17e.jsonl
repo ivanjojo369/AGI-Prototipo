@@ -1,0 +1,2 @@
+{"type": "job_meta", "status": "running", "meta": {"goal": "demo", "params": {}}, "ts": "2025-09-13T00:29:36.302358Z"}
+{"step_id": "s1", "status": "running", "analysis": "arrancando", "result": null, "error": null, "meta": null, "type": "step_start", "ts": "2025-09-13T00:29:59.062174Z"}

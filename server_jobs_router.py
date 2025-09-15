@@ -2,22 +2,35 @@
 from __future__ import annotations
 import os
 from typing import Any, Dict, List, Optional
+
 from fastapi import APIRouter, Depends, Header, HTTPException, Query
 from pydantic import BaseModel, Field
+try:
+    from pydantic import ConfigDict  # v2
+except Exception:
+    ConfigDict = None
+
 from jobs.manager import JobManager
 
 API_KEY_ENV = "API_KEY"
-
 jobs_router = APIRouter(prefix="/jobs", tags=["jobs"])
 _manager = JobManager()
 
 # ---------- auth ----------
-def _require_api_key(x_api_key: Optional[str] = Header(None)) -> None:
+def _require_api_key(
+    x_api_key: Optional[str] = Header(None),
+    authorization: Optional[str] = Header(None),
+) -> None:
     expected = os.getenv(API_KEY_ENV, "")
     if not expected:
-        # Para evitar abrir endpoints sin llave por un .env mal configurado
         raise HTTPException(status_code=500, detail="Server misconfigured: API_KEY not set")
-    if not x_api_key or x_api_key != expected:
+
+    bearer = None
+    if authorization and authorization.lower().startswith("bearer "):
+        bearer = authorization[7:].strip()
+
+    sent = x_api_key or bearer
+    if not sent or sent != expected:
         raise HTTPException(status_code=401, detail="Forbidden: invalid or missing API Key")
 
 # ---------- schemas ----------
@@ -28,6 +41,13 @@ class StartJobBody(BaseModel):
     autostart: bool = Field(default=False, description="Colocar el job en running inmediatamente")
 
 class CheckpointBody(BaseModel):
+    # permitir campos extra + Pydantic v1/v2
+    if ConfigDict:
+        model_config = ConfigDict(extra="allow")
+    else:
+        class Config:
+            extra = "allow"
+
     job_id: str
     step_id: Optional[str] = None
     status: Optional[str] = Field(default=None, description="running|completed|failed|paused|cancelled")
@@ -37,12 +57,13 @@ class CheckpointBody(BaseModel):
     meta: Optional[Dict[str, Any]] = None
     type: Optional[str] = Field(default="step", description="step|step_start|step_end|plan|job_meta|status|custom")
 
+    # lista de pasos para type="plan"
+    steps: Optional[List[Dict[str, Any]]] = None
+
 # ---------- endpoints ----------
 @jobs_router.post("/start")
 def start_job(body: StartJobBody, _: None = Depends(_require_api_key)):
-    """
-    Crea un job con estado queued|running, adjunta plan opcional y emite checkpoints.
-    """
+    """Crea un job y emite checkpoints iniciales."""
     job = _manager.create_job(goal=body.goal, plan=body.plan, params=body.params, autostart=body.autostart)
     return {"ok": True, "job": job.__dict__}
 
@@ -92,11 +113,13 @@ def cancel_job(job_id: str, _: None = Depends(_require_api_key)):
 
 @jobs_router.post("/checkpoint")
 def push_checkpoint(body: CheckpointBody, _: None = Depends(_require_api_key)):
-    """
-    Punto de integración: desde /plan/execute o /reason/execute
-    puedes POSTear aquí para registrar análisis, resultados, errores, etc.
-    """
-    ev = body.dict()
-    job_id = ev.pop("job_id")
-    _manager.checkpoint(job_id, ev)
+    """Integra checkpoints desde planner/reasoner: plan/step_start/step_end/status/custom."""
+    try:
+        # Pydantic v2
+        event = body.model_dump(exclude_none=False)  # type: ignore[attr-defined]
+    except Exception:
+        # Pydantic v1
+        event = body.dict()
+    job_id = event.pop("job_id")
+    _manager.checkpoint(job_id, event)
     return {"ok": True}

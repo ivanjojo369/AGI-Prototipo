@@ -1,4 +1,4 @@
-# planner/task_planner.py — HTN MVP (Pydantic v2)
+# planner/task_planner.py — HTN + auto-checkpoints (Pydantic v2)
 from __future__ import annotations
 
 import ast
@@ -7,14 +7,24 @@ import os
 import time
 from datetime import datetime
 from pathlib import Path
-from collections.abc import Sequence  # para isinstance con listas/tuplas
+from collections.abc import Sequence
 from typing import Any, Callable, Dict, List, Literal, Optional, Tuple, Union
 
 from pydantic import BaseModel, Field, field_validator, model_validator
 
+# ──────────────────────────────────────────────────────────────────────────────
+# Integración (best-effort) con /jobs/checkpoint
+# ──────────────────────────────────────────────────────────────────────────────
+def _noop_push_ckpt(job_id: Optional[str], **fields) -> bool:
+    return False
+
+try:
+    # Preferimos utils.checkpoints_client si existe
+    from utils.checkpoints_client import push_ckpt as _push_ckpt  # type: ignore
+except Exception:
+    _push_ckpt = _noop_push_ckpt
 
 __all__ = ["Step", "Plan", "BuiltinActions", "TaskPlanner"]
-
 
 # =============================================================================
 # Modelos (Step / Plan)
@@ -29,8 +39,8 @@ class Step(BaseModel):
     kind: Literal["action", "task"] = "action"
     name: str = Field(..., description="Nombre de la acción o tarea")
     inputs: Dict[str, Any] = Field(default_factory=dict)
-    preconditions: List[str] = Field(default_factory=list)    # expresiones sobre 'state'
-    postconditions: List[str] = Field(default_factory=list)   # expresiones sobre 'state' o 'result'
+    preconditions: List[str] = Field(default_factory=list)
+    postconditions: List[str] = Field(default_factory=list)
     retries: int = Field(0, ge=0, le=5)
     continue_on_error: bool = Field(False)
 
@@ -74,10 +84,7 @@ def _flatten_scope(scope: Dict[str, Any], prefix: str = "", out: Optional[Dict[s
 
 
 def _render_template(value: Any, scope: Dict[str, Any]) -> Any:
-    """
-    Reemplaza {{var}} (incluye notación tipo 'results.s1') en strings.
-    Aplica recursivamente a dicts/listas.
-    """
+    """Reemplaza {{var}} (incluye notación tipo 'results.s1') en strings."""
     if isinstance(value, str):
         if "{{" in value and "}}" in value:
             flat = _flatten_scope(scope)
@@ -99,10 +106,7 @@ _ALLOWED_EVAL_BUILTINS = {
 }
 
 def _safe_eval_bool(expr: str, state: Dict[str, Any]) -> bool:
-    """
-    Evalúa expresiones booleanas para pre/postconditions de forma acotada.
-    No permite imports, atributos, ni lambdas.
-    """
+    """Evalúa expresiones booleanas para pre/postconditions de forma acotada."""
     tree = ast.parse(expr, mode="eval")
     for node in ast.walk(tree):
         if isinstance(node, (ast.Import, ast.ImportFrom, ast.Attribute, ast.Lambda)):
@@ -168,12 +172,10 @@ class BuiltinActions:
 
     @staticmethod
     def memory_search(**kwargs) -> Any:
-        # Debe inyectarse desde el server.
         raise NotImplementedError("memory_search no implementado (inyectar handler real).")
 
     @staticmethod
     def search_web(**kwargs) -> Any:
-        # Debe inyectarse desde el server.
         raise NotImplementedError("search_web no implementado (inyectar conector real).")
 
 
@@ -188,6 +190,7 @@ class TaskPlanner:
         task_handlers: Optional[Dict[str, Callable[[Step, Dict[str, Any]], List[Step]]]] = None,
         curriculum_path: Union[str, Path] = "data/curriculum/planner_curriculum.jsonl",
         conf_scale: Optional[float] = None,
+        checkpoint_push: Callable[[Optional[str]], bool] | None = None,
     ):
         self.actions = actions or {
             "python_exec": BuiltinActions.python_exec,
@@ -206,17 +209,33 @@ class TaskPlanner:
         except Exception:
             self.conf_scale = 100.0
 
+        # función para emitir checkpoints (inyectable / opcional)
+        self._push_ckpt = checkpoint_push or _push_ckpt
+
     # ------------------------------------------------------------------ Ejecutar
-    def execute_plan(self, plan: Plan, context: Optional[Dict[str, Any]] = None) -> Dict[str, Any]:
+    def execute_plan(
+        self,
+        plan: Plan,
+        context: Optional[Dict[str, Any]] = None,
+        job_id: Optional[str] = None,
+    ) -> Dict[str, Any]:
         """
         Ejecuta los steps del plan (lineal) con:
           - pre/postconditions, retries, continue_on_error
           - logging de curriculum (fallos)
+          - **checkpoints**: plan/step_start/step_end/final si se provee job_id
         """
         ctx = context or {}
         state = {"context": ctx, "results": {}, "errors": []}
         errors_for_curriculum: List[Tuple[Step, Exception]] = []
         steps_queue = list(plan.steps)
+
+        # anunciar plan -> fija steps_total en /jobs/status
+        try:
+            steps_payload = [s.model_dump() for s in plan.steps]
+            self._push_ckpt(job_id, type="plan", steps=steps_payload, status="running")
+        except Exception:
+            pass
 
         while steps_queue:
             step = steps_queue.pop(0)
@@ -232,6 +251,7 @@ class TaskPlanner:
                 err = AssertionError(f"Preconditions no satisfechas en step '{step.id}' ({step.name})")
                 self._record_error(state, step, err, retry_index=None)
                 errors_for_curriculum.append((step, err))
+                self._push_ckpt(job_id, type="step_end", step_id=step.id, status="failed", error=str(err))
                 if not step.continue_on_error:
                     break
                 continue
@@ -241,6 +261,13 @@ class TaskPlanner:
             last_exc: Optional[Exception] = None
             while attempt <= step.retries:
                 try:
+                    # step_start (con análisis del step)
+                    try:
+                        self._push_ckpt(job_id, type="step_start", step_id=step.id,
+                                        status="running", analysis=step.model_dump())
+                    except Exception:
+                        pass
+
                     scope = {"state": state, "context": ctx, "results": state["results"]}
                     inputs = _render_template(step.inputs, scope)
                     action = self.actions.get(step.name)
@@ -256,11 +283,26 @@ class TaskPlanner:
 
                     self._prune_step_errors(state, step.id)  # éxito
                     last_exc = None
+
+                    # step_end OK
+                    try:
+                        self._push_ckpt(job_id, type="step_end", step_id=step.id,
+                                        status="completed", result=result)
+                    except Exception:
+                        pass
                     break
                 except Exception as e:
                     last_exc = e
                     self._record_error(state, step, e, retry_index=attempt)
                     attempt += 1
+
+                    # step_end failed (intento)
+                    try:
+                        self._push_ckpt(job_id, type="step_end", step_id=step.id,
+                                        status="failed", error=str(e))
+                    except Exception:
+                        pass
+
                     if attempt > step.retries:
                         errors_for_curriculum.append((step, e))
                         if not step.continue_on_error:
@@ -279,6 +321,13 @@ class TaskPlanner:
 
         confidence = self._compute_confidence(status, state["errors"], len(plan.steps))
         curriculum_entries = self._write_curriculum(plan, errors_for_curriculum, state)
+
+        # checkpoint final
+        try:
+            self._push_ckpt(job_id, type="status", status=("completed" if status != "failed" else "failed"))
+        except Exception:
+            pass
+
         return {
             "status": status,
             "goal": plan.goal,
@@ -364,13 +413,9 @@ class TaskPlanner:
 
     # -------------------------------------------------------- Crear plan
     def create_plan(self, goal: Any, context: Optional[Dict[str, Any]] = None) -> Plan:
-        """
-        - Si goal es una *secuencia* (lista/tupla; no str/bytes), crea un plan con esos steps.
-        - Si goal es string, usa heurísticas ('buscar','leer') o el plan por defecto (3 pasos).
-        """
         _Step, _Plan = Step, Plan
 
-        # A) Secuencia de acciones/tareas (lista/tupla; no strings)
+        # A) Secuencia (lista/tupla)
         if isinstance(goal, Sequence) and not isinstance(goal, (str, bytes, bytearray)):
             allowed = {"memory_search", "memory_vector", "python_exec", "filesystem_read", "search_web"}
             steps: List[Step] = []
@@ -379,7 +424,7 @@ class TaskPlanner:
                 if name not in allowed:
                     name = "search_web"
                 if name == "memory_vector":
-                    name = "memory_search"  # alias → canónico
+                    name = "memory_search"
                 steps.append(_Step(id=f"s{i}", kind="action", name=name))
             if not steps:
                 steps = [
@@ -428,29 +473,15 @@ class TaskPlanner:
             metadata={"auto": True},
         )
 
-    # Alias por si en algún sitio usan plan(...)
+    # Alias
     def plan(self, goal: Any, context: Optional[Dict[str, Any]] = None) -> Plan:
         return self.create_plan(goal, context)
 
     # -------------------------------------------------------- Priorizar
     def prioritize_tasks(self, plan: Union[Plan, List[Step]], strategy: str = "default") -> List[Dict[str, Any]]:
-        """
-        Devuelve una lista de **diccionarios** con la clave 'task' (lo que
-        indexan los tests como item['task']).
-
-        Prioridad:
-          memory_search/memory_vector -> python_exec -> filesystem_read -> search_web -> resto.
-        Orden estable dentro de cada nivel de prioridad.
-        """
         steps: List[Step] = plan.steps if isinstance(plan, Plan) else list(plan)
 
-        order = {
-            "memory_search": 0,
-            "memory_vector": 0,  # alias
-            "python_exec": 1,
-            "filesystem_read": 2,
-            "search_web": 3,
-        }
+        order = {"memory_search": 0, "memory_vector": 0, "python_exec": 1, "filesystem_read": 2, "search_web": 3}
         indexed = list(enumerate(steps))
         sorted_indexed = sorted(indexed, key=lambda p: (order.get(p[1].name, 99), p[0]))
         sorted_steps = [s for _, s in sorted_indexed]
@@ -458,7 +489,7 @@ class TaskPlanner:
         items: List[Dict[str, Any]] = []
         for s in sorted_steps:
             items.append({
-                "task": s.name,                 # <- clave que usan los tests
+                "task": s.name,
                 "id": s.id,
                 "kind": s.kind,
                 "inputs": s.inputs,
@@ -466,11 +497,10 @@ class TaskPlanner:
                 "postconditions": s.postconditions,
                 "retries": s.retries,
                 "continue_on_error": s.continue_on_error,
-                "_step": s,                     # Step original por si hace falta reconstruir
+                "_step": s,
             })
         return items
 
-    # Devuelve un Plan reordenado (a partir del formato dict de arriba)
     def prioritize_plan(self, plan: Plan, strategy: str = "default") -> Plan:
         items = self.prioritize_tasks(plan, strategy=strategy)
         steps_sorted = [it.get("_step", None) for it in items if isinstance(it, dict)]
@@ -485,19 +515,10 @@ class TaskPlanner:
         analysis: Any
     ) -> Union['Plan', List[Dict[str, Any]]]:
         """
-        Actualiza el plan con el resultado de análisis:
-        - Si recibe la lista de dicts de `prioritize_tasks`, añade:
-            • 'analysis' con el objeto recibido
-            • 'result'  (si analysis es dict con 'result', usa ese valor; en otro caso, usa analysis)
-          y retorna la misma lista (mutación in-place).
-          Heurística para elegir el ítem a actualizar:
-            1) Si analysis trae 'task'/'name'/'skill', actualiza ese ítem.
-            2) Si no, actualiza el primer ítem que aún no tenga 'result'.
-            3) Si todos tienen, actualiza el primero.
-        - Si recibe un Plan o una lista de Step, los retorna sin cambios.
-        Además registra una entrada ligera en el curriculum (best-effort).
+        Si recibe la lista de dicts de `prioritize_tasks`, añade 'analysis' y 'result'.
+        También registra la entrada en el curriculum (best-effort).
         """
-        # Log ligero a curriculum (no debe bloquear)
+        # Log ligero a curriculum
         try:
             entry = {
                 "ts": datetime.utcnow().isoformat() + "Z",
@@ -510,7 +531,7 @@ class TaskPlanner:
         except Exception:
             pass
 
-        # Lista de dicts (formato de prioritize_tasks)
+        # Lista de dicts (formato prioritize_tasks)
         if isinstance(plan_or_items, list) and plan_or_items and isinstance(plan_or_items[0], dict):
             target_idx = None
             task_name = None

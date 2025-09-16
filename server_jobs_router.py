@@ -1,20 +1,29 @@
-# server_jobs_router.py — Fase 5: Jobs + persistencia + resume/replay (con eventos cmd)
+# server_jobs_router.py — Fase 6: Jobs + persistencia + índice + rotación + métricas
 from __future__ import annotations
 
 import json
 import os
 from collections import deque
 from datetime import datetime, timezone
-from typing import Any, Deque, Dict, List, Optional
+from typing import Any, Deque, Dict, List, Optional, cast
 from uuid import uuid4
 
 from fastapi import APIRouter, HTTPException, Query
 from pydantic import BaseModel, Field
 
+# Persistencia / índice (Fase 6)
+from jobs_storage import (
+    index_all,
+    index_remove,
+    index_add_or_update,
+    rotate_if_needed,
+    index_get,
+)
+
 # -----------------------------------------------------------------------------
 # Config
 # -----------------------------------------------------------------------------
-JOBS_DIR = os.getenv("JOBS_DIR", "jobs_store")
+JOBS_DIR = os.getenv("JOBS_DIR", "data/jobs")
 os.makedirs(JOBS_DIR, exist_ok=True)
 
 EVENTS_MAX = int(os.getenv("JOBS_EVENTS_MAX", "2000"))
@@ -22,8 +31,9 @@ AUTOCREATE_ON_CHECKPOINT = os.getenv("JOBS_AUTOCREATE", "0") in {"1", "true", "T
 
 jobs_router = APIRouter(prefix="/jobs", tags=["jobs"])
 
-# In-memory registry (se carga on-demand desde disco si existe dump)
+# In-memory cache (rehidratación on-demand)
 _JOBS: Dict[str, Dict[str, Any]] = {}
+
 
 # -----------------------------------------------------------------------------
 # Utils
@@ -37,20 +47,34 @@ def _job_path(job_id: str) -> str:
 
 
 def _snapshot(job: Dict[str, Any]) -> Dict[str, Any]:
-    # Convierte deque → list para persistir
     snap = dict(job)
     snap["events"] = list(job.get("events", []))
+    snap["schema_version"] = 1
     return snap
 
 
+def _atomic_write(path: str, data: Dict[str, Any]) -> None:
+    tmp = path + ".tmp"
+    with open(tmp, "w", encoding="utf-8") as f:
+        json.dump(data, f, ensure_ascii=False, indent=2)
+    os.replace(tmp, path)
+
+
 def _save(job: Dict[str, Any]) -> None:
+    """Guarda snapshot, actualiza índice y aplica rotación."""
     p = _job_path(job["job_id"])
-    with open(p, "w", encoding="utf-8") as f:
-        json.dump(_snapshot(job), f, ensure_ascii=False, indent=2)
+    _atomic_write(p, _snapshot(job))
+    # Actualiza índice y dispara rotación
+    index_add_or_update(job)
+    purged = rotate_if_needed()
+    # Saca del cache los purgados, para que tail/status devuelvan 404
+    for jid in purged:
+        _JOBS.pop(jid, None)
 
 
-from typing import Any, Dict, List, Deque, cast
+from typing import Any, Dict, List, Deque, Optional, cast
 from collections import deque
+import json, os
 
 def _load(job_id: str) -> Optional[Dict[str, Any]]:
     p = _job_path(job_id)
@@ -58,25 +82,42 @@ def _load(job_id: str) -> Optional[Dict[str, Any]]:
         return None
 
     with open(p, "r", encoding="utf-8") as f:
-        data = cast(Dict[str, Any], json.load(f))  # tipado explícito
+        data: Dict[str, Any] = cast(Dict[str, Any], json.load(f))
 
-    # Normaliza y tipa los eventos
     raw = data.get("events")
     ev: List[Dict[str, Any]] = cast(List[Dict[str, Any]], raw or [])
-    events: Deque[Dict[str, Any]] = deque(ev[-EVENTS_MAX:], maxlen=EVENTS_MAX)
 
+    # ✅ Tipamos la variable 'events' y luego la metemos al dict (sin type-comment)
+    events: Deque[Dict[str, Any]] = deque(ev[-EVENTS_MAX:], maxlen=EVENTS_MAX)
     data["events"] = events
+
     return data
 
 
 def _get_job(job_id: str) -> Dict[str, Any]:
+    """
+    Obtiene un job desde el caché; si no está o está obsoleto, intenta cargarlo
+    desde disco. Si no existe en disco/índice, responde 404 e invalida el caché.
+    """
     job = _JOBS.get(job_id)
-    if not job:
+
+    # Si está en caché, valida que siga existiendo en disco/índice.
+    if job is not None:
+        file_exists = os.path.exists(_job_path(job_id))
+        in_index = index_get(job_id) is not None
+        if not (file_exists and in_index):
+            _JOBS.pop(job_id, None)  # inválida caché obsoleto
+            job = None
+
+    # Si no lo tenemos (o lo invalidamos), intenta cargar de disco
+    if job is None:
         job = _load(job_id)
         if job:
             _JOBS[job_id] = job
+
     if not job:
         raise HTTPException(status_code=404, detail="job_id not found")
+
     return job
 
 
@@ -98,7 +139,7 @@ def _new_job(
 ) -> Dict[str, Any]:
     jid = (job_id or uuid4().hex[:8]).strip()
     if jid in _JOBS or os.path.exists(_job_path(jid)):
-        # Idempotencia: devuelve el existente si ya hay dump o registro
+        # Idempotencia: devuelve el existente si ya hay registro
         existing = _JOBS.get(jid) or _load(jid)
         if existing:
             _JOBS[jid] = existing
@@ -118,7 +159,7 @@ def _new_job(
         "cursor": 0,
         "events": deque(maxlen=EVENTS_MAX),  # type: Deque[Dict[str, Any]]
     }
-    # primer evento meta
+    # Primer evento
     job["events"].append({"type": "job_meta", "status": job["status"], "meta": "", "ts": _now_iso(), "seq": 1})
     job["cursor"] = 1
     _JOBS[jid] = job
@@ -132,19 +173,15 @@ def _apply_checkpoint_side_effects(job: Dict[str, Any], t: str, req: "Checkpoint
             job["steps_total"] = max(0, int(len(req.steps)))
         job["status"] = job.get("status", "running") or "running"
         job["last_event"] = "plan"
-
     elif t == "step_start":
         job["last_event"] = f"step_start:{req.step_id or ''}"
-
     elif t == "step_end":
         job["steps_done"] = min(job.get("steps_total", 0), job.get("steps_done", 0) + 1)
         job["last_event"] = f"step_end:{req.step_id or ''}"
-
     elif t == "status":
         if req.status:
             job["status"] = req.status
         job["last_event"] = "status"
-
     else:
         job["last_event"] = t or "event"
 
@@ -160,7 +197,7 @@ class JobStartReq(BaseModel):
     goal: str = Field(..., min_length=1)
     autostart: bool = True
     meta: Dict[str, Any] = Field(default_factory=dict)
-    job_id: Optional[str] = Field(default=None, description="Opcional para idempotencia por ID explícito")
+    job_id: Optional[str] = Field(default=None)
     state: Dict[str, Any] = Field(default_factory=dict)
 
 
@@ -180,22 +217,22 @@ class CheckpointReq(BaseModel):
 class ResumeReq(BaseModel):
     job_id: str = Field(..., min_length=1)
     mode: str = Field(default="continue", description="continue | reset")
-    from_step: Optional[str] = Field(default=None, description="Etiqueta/ID de step desde el cual continuar")
+    from_step: Optional[str] = None
     meta: Dict[str, Any] = Field(default_factory=dict)
 
 
 class ReplayReq(BaseModel):
     job_id: str = Field(..., min_length=1)
-    # aceptamos ambos nombres por compat con tests
-    from_event: Optional[int] = Field(default=None, description="seq inicial (alias: from_event_idx)")
-    to_event: Optional[int] = Field(default=None, description="seq final exclusivo (alias: to_event_idx)")
+    from_event: Optional[int] = None
+    to_event: Optional[int] = None
+    # aliases de compatibilidad
     from_event_idx: Optional[int] = None
     to_event_idx: Optional[int] = None
     mode: str = Field(default="dry-run", description="dry-run | apply")
 
 
 # -----------------------------------------------------------------------------
-# Routes
+# Endpoints (base + fase 6)
 # -----------------------------------------------------------------------------
 @jobs_router.post("/start")
 def start_job(req: JobStartReq) -> Dict[str, Any]:
@@ -228,7 +265,6 @@ def push_checkpoint(req: CheckpointReq) -> Dict[str, Any]:
     _append_event(job, payload)
     _apply_checkpoint_side_effects(job, (req.type or "").lower(), req)
     _save(job)
-
     return {"ok": True}
 
 
@@ -251,10 +287,15 @@ def job_status(job_id: str = Query(...)) -> Dict[str, Any]:
 @jobs_router.get("/tail")
 def job_tail(
     job_id: str = Query(...),
-    n: Optional[int] = Query(None, ge=1, le=EVENTS_MAX, description="Si se envía, devuelve los últimos n eventos"),
-    since: int = Query(0, ge=0, description="Offset (seq) desde el cual leer"),
-    limit: int = Query(100, ge=1, le=EVENTS_MAX, description="Máximo de eventos a devolver cuando se usa since"),
+    n: Optional[int] = Query(None, ge=1, le=EVENTS_MAX),
+    since: int = Query(0, ge=0),
+    limit: int = Query(100, ge=1, le=EVENTS_MAX),
 ) -> Dict[str, Any]:
+    # Guardia contra jobs purgados o borrados (invalida caché si quedó)
+    if (index_get(job_id) is None) or (not os.path.exists(_job_path(job_id))):
+        _JOBS.pop(job_id, None)
+        raise HTTPException(status_code=404, detail="job_id not found")
+
     job = _get_job(job_id)
     events = list(job["events"])
     total = len(events)
@@ -263,6 +304,7 @@ def job_tail(
         ev = events[-n:]
         return {"ok": True, "events": ev, "total": total}
 
+    # modo incremental
     start_idx = 0
     if since > 0:
         for i, e in enumerate(events):
@@ -281,9 +323,7 @@ def job_tail(
 @jobs_router.get("/dump")
 def job_dump(job_id: str = Query(...)) -> Dict[str, Any]:
     job = _get_job(job_id)
-    snap = _snapshot(job)
-    snap["schema_version"] = 1
-    return {"ok": True, "job": snap}
+    return {"ok": True, "job": _snapshot(job)}
 
 
 @jobs_router.post("/resume")
@@ -295,17 +335,9 @@ def job_resume(req: ResumeReq) -> Dict[str, Any]:
             raise HTTPException(status_code=404, detail="job_id not found")
         _JOBS[req.job_id] = job
 
-    # 1) Encolar evento de comando (lo que piden los tests)
-    _append_event(
-        job,
-        {
-            "type": "cmd",
-            "cmd": "resume",
-            "args": {"mode": req.mode, "from_step": req.from_step, "meta": req.meta},
-        },
-    )
+    # evento cmd (compat con tests)
+    _append_event(job, {"type": "cmd", "cmd": "resume", "args": {"mode": req.mode, "from_step": req.from_step, "meta": req.meta}})
 
-    # 2) Cambiar estado
     resumed = False
     if req.mode == "reset":
         job["steps_done"] = 0
@@ -318,7 +350,6 @@ def job_resume(req: ResumeReq) -> Dict[str, Any]:
             job["last_event"] = "status"
             resumed = True
 
-    # 3) También anotamos un evento de status (opcional, pero útil)
     _append_event(job, {"type": "status", "status": "running", "meta": req.meta})
     _save(job)
 
@@ -329,20 +360,11 @@ def job_resume(req: ResumeReq) -> Dict[str, Any]:
 @jobs_router.post("/replay")
 def job_replay(req: ReplayReq) -> Dict[str, Any]:
     job = _get_job(req.job_id)
-
-    # Resolver aliases from/to
     start_seq = req.from_event if req.from_event is not None else (req.from_event_idx or 0)
     end_seq = req.to_event if req.to_event is not None else req.to_event_idx
 
-    # 1) Encolar evento de comando (lo que piden los tests)
-    _append_event(
-        job,
-        {
-            "type": "cmd",
-            "cmd": "replay",
-            "args": {"from_event": start_seq, "to_event": end_seq, "mode": req.mode},
-        },
-    )
+    # evento cmd (compat con tests)
+    _append_event(job, {"type": "cmd", "cmd": "replay", "args": {"from_event": start_seq, "to_event": end_seq, "mode": req.mode}})
     _save(job)
 
     events = list(job["events"])
@@ -365,7 +387,6 @@ def job_replay(req: ReplayReq) -> Dict[str, Any]:
                 break
 
     window = events[start_idx:end_idx]
-    # recomputa contadores en ventana (no modifica salvo mode=apply)
     steps_total = job["steps_total"]
     steps_done = 0
     status = job["status"]
@@ -406,4 +427,36 @@ def cancel_job(job_id: str = Query(...)) -> Dict[str, Any]:
     _append_event(job, {"type": "status", "status": "cancelled"})
     job["last_event"] = "status"
     _save(job)
+    return {"ok": True}
+
+
+# ---------------------- Endpoints NUEVOS Fase 6 ------------------------------#
+@jobs_router.get("/list")
+def list_jobs() -> Dict[str, Any]:
+    """Lista de jobs desde el índice (sin abrir archivos)."""
+    jobs = index_all()
+    return {"ok": True, "jobs": jobs, "count": len(jobs)}
+
+
+@jobs_router.get("/load")
+def load_job(job_id: str = Query(...)) -> Dict[str, Any]:
+    """
+    Rehidrata un job desde disco (si existe) hacia el cache y devuelve snapshot completo.
+    Además sincroniza índice/rotación.
+    """
+    job = _load(job_id)
+    if not job:
+        raise HTTPException(status_code=404, detail="job_id not found")
+    _JOBS[job_id] = job
+    _save(job)  # sincroniza índice y updated_at; puede purgar terceros
+    return {"ok": True, "job": _snapshot(job)}
+
+
+@jobs_router.delete("/delete")
+def delete_job(job_id: str = Query(...)) -> Dict[str, Any]:
+    """Borra del índice y del disco (hard delete)."""
+    existed = index_remove(job_id, soft_delete=False)
+    _JOBS.pop(job_id, None)
+    if not existed:
+        raise HTTPException(status_code=404, detail="job_id not found")
     return {"ok": True}

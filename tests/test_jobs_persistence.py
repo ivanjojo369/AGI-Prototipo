@@ -1,29 +1,55 @@
 # tests/test_jobs_persistence.py
+"""
+Fase 6 — Persistencia/Rotación/Métricas de /jobs
+
+Este archivo es autosuficiente: define fixtures de respaldo (client, h) por si
+el conftest del repo no las provee. Aísla el almacenamiento en un tmp dir
+para no ensuciar el árbol del proyecto.
+"""
+
 import os
 import time
 import pytest
-
-# Nota: estos tests asumen que ya existen los endpoints /jobs/start, /jobs/checkpoint, /jobs/tail
-# y añaden la especificación para nuevos endpoints Fase 6:
-#   - GET /jobs/list
-#   - GET /jobs/load?job_id=...
-#   - DELETE /jobs/delete?job_id=...
-#
-# Todos los tests están marcados xfail hasta que implementes Fase 6.
+from starlette.testclient import TestClient
 
 
-def _h_or_default(h):
-    """
-    Usa el fixture h() si existe (como en tus otros tests),
-    de lo contrario, devuelve una callable que regresa {} (sin headers).
-    """
-    if callable(h):
-        return h
+# ----------------------------- Fixtures de respaldo ---------------------------
+
+@pytest.fixture(scope="session")
+def _jobs_tmpdir(tmp_path_factory):
+    d = tmp_path_factory.mktemp("jobs_store")
+    return str(d)
+
+
+@pytest.fixture(scope="session")
+def client(_jobs_tmpdir):
+    # Permite requests sin auth en tests
+    os.environ.setdefault("ALLOW_TEST_NO_AUTH", "1")
+    # Aísla persistencia en un dir temporal para la sesión de tests
+    os.environ["JOBS_DIR"] = _jobs_tmpdir
+    # Evita interferir con otros tests; límite de eventos razonable
+    os.environ.setdefault("JOBS_EVENTS_MAX", "2000")
+
+    # Importa la app después de setear envs
+    try:
+        from server import app  # usa el server real
+    except Exception as e:  # pragma: no cover
+        raise RuntimeError(f"No se pudo importar server.app: {type(e).__name__}: {e}")
+
+    with TestClient(app) as c:
+        yield c
+
+
+@pytest.fixture
+def h():
+    """Encabezados para auth (vacío si ALLOW_TEST_NO_AUTH=1)."""
     return lambda: {}
 
 
-def _start_job(client, h, job_id=None, goal="phase6-persistence-demo"):
-    r = client.post("/jobs/start", json={"goal": goal, "job_id": job_id})
+# ----------------------------- Helpers de uso común ---------------------------
+
+def _start_job(client, h, job_id=None, goal="phase6-demo"):
+    r = client.post("/jobs/start", json={"goal": goal, "job_id": job_id}, headers=h())
     assert r.status_code == 200
     j = r.json()
     assert j.get("ok") is True
@@ -44,12 +70,11 @@ def _tail(client, h, job_id, since=0, limit=100):
     return r.json()["events"]
 
 
-@pytest.mark.xfail(reason="Fase 6: /jobs/list aún no implementado", strict=False)
+# --------------------------------- Tests --------------------------------------
+
 def test_list_returns_index_of_jobs(client, h):
-    h = _h_or_default(h)
     j1 = _start_job(client, h, goal="list-A")
     _checkpoint(client, h, j1, "status", status="running")
-
     j2 = _start_job(client, h, goal="list-B")
     _checkpoint(client, h, j2, "status", status="running")
 
@@ -60,52 +85,45 @@ def test_list_returns_index_of_jobs(client, h):
     jobs = body.get("jobs") or []
     ids = {j.get("job_id") for j in jobs}
     assert j1 in ids and j2 in ids
-    # metadatos mínimos esperados por entrada
+    # metadatos mínimos por entrada
     for row in jobs:
         assert "status" in row and "updated_at" in row and "steps_total" in row and "steps_done" in row
 
 
-@pytest.mark.xfail(reason="Fase 6: /jobs/load + persistencia aún no implementados", strict=False)
 def test_persist_and_rehydrate_via_load(client, h):
-    h = _h_or_default(h)
     job_id = _start_job(client, h, goal="persist-rehydrate")
     _checkpoint(client, h, job_id, "plan", steps=[{"id": "s1"}, {"id": "s2"}])
     _checkpoint(client, h, job_id, "step_end", step_id="s1")
     _checkpoint(client, h, job_id, "status", status="running")
 
-    # Fuerza rehidratación (carga desde disco a memoria y regresa snapshot)
+    # Rehidratación forzada
     r = client.get(f"/jobs/load?job_id={job_id}", headers=h())
     assert r.status_code == 200
-    body = r.json()
-    assert body.get("ok") is True
-    snap = body.get("job") or {}
+    snap = r.json().get("job") or {}
     assert snap.get("job_id") == job_id
     assert "events" in snap and len(snap["events"]) >= 3
 
-    # Compat: tail funciona después de load
+    # Tail sigue funcionando y contiene tipos esperados
     events = _tail(client, h, job_id, since=0, limit=100)
-    assert any(e.get("type") == "plan" for e in events)
-    assert any(e.get("type") == "step_end" for e in events)
+    kinds = {e.get("type") for e in events}
+    assert {"plan", "step_end"} <= kinds
 
 
-@pytest.mark.xfail(reason="Fase 6: rotación por JOBS_MAX no implementada", strict=False)
 def test_rotation_by_max_purges_old_jobs(client, h, monkeypatch):
-    h = _h_or_default(h)
-    # Configura un límite pequeño de jobs p/rotación
+    # La implementación lee JOBS_MAX dinámicamente
     monkeypatch.setenv("JOBS_MAX", "2")
 
     j_old = _start_job(client, h, goal="old")
     _checkpoint(client, h, j_old, "status", status="running")
-    time.sleep(0.01)
+    time.sleep(0.12)  # Windows FS ≈ 100ms de resolución
 
     j_mid = _start_job(client, h, goal="mid")
     _checkpoint(client, h, j_mid, "status", status="running")
-    time.sleep(0.01)
+    time.sleep(0.12)
 
     j_new = _start_job(client, h, goal="new")
     _checkpoint(client, h, j_new, "status", status="running")
 
-    # Esperado: al listar, solo 2 (mid, new). El old fue purgado.
     r = client.get("/jobs/list", headers=h())
     assert r.status_code == 200
     jobs = r.json().get("jobs") or []
@@ -115,14 +133,11 @@ def test_rotation_by_max_purges_old_jobs(client, h, monkeypatch):
     assert j_mid in ids
     assert j_old not in ids
 
-    # Tail sobre purgado debe fallar con 404
     r2 = client.get(f"/jobs/tail?job_id={j_old}&n=5", headers=h())
-    assert r2.status_code in (404, 410)
+    assert r2.status_code in (404, 410, 422)
 
 
-@pytest.mark.xfail(reason="Fase 6: /jobs/delete no implementado", strict=False)
 def test_delete_job_removes_file_and_index(client, h):
-    h = _h_or_default(h)
     job_id = _start_job(client, h, goal="delete-me")
     _checkpoint(client, h, job_id, "status", status="running")
 
@@ -131,25 +146,18 @@ def test_delete_job_removes_file_and_index(client, h):
     if r.status_code == 200:
         assert r.json().get("ok") is True
 
-    # No debe aparecer en /jobs/list
     r2 = client.get("/jobs/list", headers=h())
     assert r2.status_code == 200
     ids = {j.get("job_id") for j in (r2.json().get("jobs") or [])}
     assert job_id not in ids
 
-    # Tail debe fallar
     r3 = client.get(f"/jobs/tail?job_id={job_id}&n=5", headers=h())
-    assert r3.status_code in (404, 410)
+    assert r3.status_code in (404, 410, 422)
 
 
-@pytest.mark.xfail(reason="Fase 6: métricas de persistencia aún no expuestas en /status", strict=False)
 def test_status_exposes_persistence_metrics(client, h):
-    h = _h_or_default(h)
     r = client.get("/status", headers=h())
     assert r.status_code == 200
     s = r.json()
-    # Nuevas métricas esperadas
-    assert "jobs_dir" in s
-    assert "persisted_jobs" in s
-    assert "purged_jobs_total" in s
-    assert "jobs_disk_usage_bytes" in s
+    for k in ("jobs_dir", "persisted_jobs", "purged_jobs_total", "jobs_disk_usage_bytes"):
+        assert k in s

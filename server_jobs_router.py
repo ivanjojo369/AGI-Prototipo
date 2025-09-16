@@ -1,6 +1,7 @@
-# server_jobs_router.py
+# server_jobs_router.py — Fase 5: Jobs + persistencia + resume/replay (con eventos cmd)
 from __future__ import annotations
 
+import json
 import os
 from collections import deque
 from datetime import datetime, timezone
@@ -13,41 +14,67 @@ from pydantic import BaseModel, Field
 # -----------------------------------------------------------------------------
 # Config
 # -----------------------------------------------------------------------------
-EVENTS_MAX = int(os.getenv("JOBS_EVENTS_MAX", "500"))
+JOBS_DIR = os.getenv("JOBS_DIR", "jobs_store")
+os.makedirs(JOBS_DIR, exist_ok=True)
+
+EVENTS_MAX = int(os.getenv("JOBS_EVENTS_MAX", "2000"))
 AUTOCREATE_ON_CHECKPOINT = os.getenv("JOBS_AUTOCREATE", "0") in {"1", "true", "True"}
 
 jobs_router = APIRouter(prefix="/jobs", tags=["jobs"])
 
-# In-memory store
+# In-memory registry (se carga on-demand desde disco si existe dump)
 _JOBS: Dict[str, Dict[str, Any]] = {}
 
-
+# -----------------------------------------------------------------------------
+# Utils
+# -----------------------------------------------------------------------------
 def _now_iso() -> str:
     return datetime.now(timezone.utc).isoformat().replace("+00:00", "Z")
 
 
-def _new_job(goal: str, autostart: bool = True, meta: Optional[Dict[str, Any]] = None) -> Dict[str, Any]:
-    job_id = uuid4().hex[:8]
-    job = {
-        "job_id": job_id,
-        "goal": goal,
-        "status": "running" if autostart else "created",
-        "created_at": _now_iso(),
-        "updated_at": _now_iso(),
-        "steps_total": 0,
-        "steps_done": 0,
-        "last_event": "",
-        "meta": meta or {},
-        "events": deque(maxlen=EVENTS_MAX),  # type: Deque[Dict[str, Any]]
-    }
-    # primer evento meta
-    job["events"].append({"type": "job_meta", "status": job["status"], "meta": "", "ts": _now_iso()})
-    _JOBS[job_id] = job
-    return job
+def _job_path(job_id: str) -> str:
+    return os.path.join(JOBS_DIR, f"{job_id}.json")
+
+
+def _snapshot(job: Dict[str, Any]) -> Dict[str, Any]:
+    # Convierte deque → list para persistir
+    snap = dict(job)
+    snap["events"] = list(job.get("events", []))
+    return snap
+
+
+def _save(job: Dict[str, Any]) -> None:
+    p = _job_path(job["job_id"])
+    with open(p, "w", encoding="utf-8") as f:
+        json.dump(_snapshot(job), f, ensure_ascii=False, indent=2)
+
+
+from typing import Any, Dict, List, Deque, cast
+from collections import deque
+
+def _load(job_id: str) -> Optional[Dict[str, Any]]:
+    p = _job_path(job_id)
+    if not os.path.exists(p):
+        return None
+
+    with open(p, "r", encoding="utf-8") as f:
+        data = cast(Dict[str, Any], json.load(f))  # tipado explícito
+
+    # Normaliza y tipa los eventos
+    raw = data.get("events")
+    ev: List[Dict[str, Any]] = cast(List[Dict[str, Any]], raw or [])
+    events: Deque[Dict[str, Any]] = deque(ev[-EVENTS_MAX:], maxlen=EVENTS_MAX)
+
+    data["events"] = events
+    return data
 
 
 def _get_job(job_id: str) -> Dict[str, Any]:
     job = _JOBS.get(job_id)
+    if not job:
+        job = _load(job_id)
+        if job:
+            _JOBS[job_id] = job
     if not job:
         raise HTTPException(status_code=404, detail="job_id not found")
     return job
@@ -56,60 +83,51 @@ def _get_job(job_id: str) -> Dict[str, Any]:
 def _append_event(job: Dict[str, Any], payload: Dict[str, Any]) -> None:
     evt = dict(payload)
     evt["ts"] = _now_iso()
+    evt["seq"] = job.get("cursor", 0) + 1
+    job["cursor"] = evt["seq"]
     job["events"].append(evt)
     job["updated_at"] = evt["ts"]
 
 
-# -----------------------------------------------------------------------------
-# Models
-# -----------------------------------------------------------------------------
-class JobStartReq(BaseModel):
-    goal: str = Field(..., min_length=1)
-    autostart: bool = True
-    meta: Dict[str, Any] = Field(default_factory=dict)
+def _new_job(
+    goal: str,
+    autostart: bool = True,
+    meta: Optional[Dict[str, Any]] = None,
+    job_id: Optional[str] = None,
+    initial_state: Optional[Dict[str, Any]] = None,
+) -> Dict[str, Any]:
+    jid = (job_id or uuid4().hex[:8]).strip()
+    if jid in _JOBS or os.path.exists(_job_path(jid)):
+        # Idempotencia: devuelve el existente si ya hay dump o registro
+        existing = _JOBS.get(jid) or _load(jid)
+        if existing:
+            _JOBS[jid] = existing
+            return existing
+
+    job = {
+        "job_id": jid,
+        "goal": goal,
+        "status": "running" if autostart else "created",
+        "created_at": _now_iso(),
+        "updated_at": _now_iso(),
+        "steps_total": 0,
+        "steps_done": 0,
+        "last_event": "",
+        "meta": meta or {},
+        "state": initial_state or {},
+        "cursor": 0,
+        "events": deque(maxlen=EVENTS_MAX),  # type: Deque[Dict[str, Any]]
+    }
+    # primer evento meta
+    job["events"].append({"type": "job_meta", "status": job["status"], "meta": "", "ts": _now_iso(), "seq": 1})
+    job["cursor"] = 1
+    _JOBS[jid] = job
+    _save(job)
+    return job
 
 
-class CheckpointReq(BaseModel):
-    job_id: str = Field(..., min_length=1)
-    type: str = Field(..., description="plan | step_start | step_end | status | meta")
-    # datos opcionales
-    step_id: Optional[str] = None
-    steps: Optional[List[Dict[str, Any]]] = None
-    status: Optional[str] = None
-    result: Optional[Any] = None
-    error: Optional[str] = None
-    analysis: Optional[Any] = None
-    meta: Dict[str, Any] = Field(default_factory=dict)
-
-
-# -----------------------------------------------------------------------------
-# Routes
-# -----------------------------------------------------------------------------
-@jobs_router.post("/start")
-def start_job(req: JobStartReq) -> Dict[str, Any]:
-    job = _new_job(req.goal.strip(), autostart=req.autostart, meta=req.meta)
-    return {"ok": True, "job": {k: v for k, v in job.items() if k != "events"}}
-
-
-@jobs_router.post("/checkpoint")
-def push_checkpoint(req: CheckpointReq) -> Dict[str, Any]:
-    # autocreate si se habilita por env
-    job = _JOBS.get(req.job_id)
-    if not job:
-        if AUTOCREATE_ON_CHECKPOINT:
-            job = _new_job(goal=f"auto:{req.job_id}", autostart=True)
-            job["job_id"] = req.job_id  # respeta el ID recibido
-            _JOBS[req.job_id] = job
-        else:
-            raise HTTPException(status_code=404, detail="job_id not found")
-
-    payload = req.model_dump()
-    _append_event(job, payload)
-
-    t = (req.type or "").lower()
-
+def _apply_checkpoint_side_effects(job: Dict[str, Any], t: str, req: "CheckpointReq") -> None:
     if t == "plan":
-        # sólo fija total cuando venga la lista de steps
         if isinstance(req.steps, list):
             job["steps_total"] = max(0, int(len(req.steps)))
         job["status"] = job.get("status", "running") or "running"
@@ -119,7 +137,6 @@ def push_checkpoint(req: CheckpointReq) -> Dict[str, Any]:
         job["last_event"] = f"step_start:{req.step_id or ''}"
 
     elif t == "step_end":
-        # incrementa sin superar el total
         job["steps_done"] = min(job.get("steps_total", 0), job.get("steps_done", 0) + 1)
         job["last_event"] = f"step_end:{req.step_id or ''}"
 
@@ -129,8 +146,88 @@ def push_checkpoint(req: CheckpointReq) -> Dict[str, Any]:
         job["last_event"] = "status"
 
     else:
-        # evento genérico (no toca contadores)
         job["last_event"] = t or "event"
+
+    if req.state:
+        job_state = job.setdefault("state", {})
+        job_state.update(req.state)
+
+
+# -----------------------------------------------------------------------------
+# Models
+# -----------------------------------------------------------------------------
+class JobStartReq(BaseModel):
+    goal: str = Field(..., min_length=1)
+    autostart: bool = True
+    meta: Dict[str, Any] = Field(default_factory=dict)
+    job_id: Optional[str] = Field(default=None, description="Opcional para idempotencia por ID explícito")
+    state: Dict[str, Any] = Field(default_factory=dict)
+
+
+class CheckpointReq(BaseModel):
+    job_id: str = Field(..., min_length=1)
+    type: str = Field(..., description="plan | step_start | step_end | status | meta | event")
+    step_id: Optional[str] = None
+    steps: Optional[List[Dict[str, Any]]] = None
+    status: Optional[str] = None
+    result: Optional[Any] = None
+    error: Optional[str] = None
+    analysis: Optional[Any] = None
+    meta: Dict[str, Any] = Field(default_factory=dict)
+    state: Optional[Dict[str, Any]] = None
+
+
+class ResumeReq(BaseModel):
+    job_id: str = Field(..., min_length=1)
+    mode: str = Field(default="continue", description="continue | reset")
+    from_step: Optional[str] = Field(default=None, description="Etiqueta/ID de step desde el cual continuar")
+    meta: Dict[str, Any] = Field(default_factory=dict)
+
+
+class ReplayReq(BaseModel):
+    job_id: str = Field(..., min_length=1)
+    # aceptamos ambos nombres por compat con tests
+    from_event: Optional[int] = Field(default=None, description="seq inicial (alias: from_event_idx)")
+    to_event: Optional[int] = Field(default=None, description="seq final exclusivo (alias: to_event_idx)")
+    from_event_idx: Optional[int] = None
+    to_event_idx: Optional[int] = None
+    mode: str = Field(default="dry-run", description="dry-run | apply")
+
+
+# -----------------------------------------------------------------------------
+# Routes
+# -----------------------------------------------------------------------------
+@jobs_router.post("/start")
+def start_job(req: JobStartReq) -> Dict[str, Any]:
+    job = _new_job(
+        req.goal.strip(),
+        autostart=req.autostart,
+        meta=req.meta,
+        job_id=req.job_id,
+        initial_state=req.state or {},
+    )
+    idempotent = job["goal"] == req.goal.strip() or req.job_id is not None
+    out = {k: v for k, v in job.items() if k not in {"events"}}
+    return {"ok": True, "idempotent": idempotent, "job": out}
+
+
+@jobs_router.post("/checkpoint")
+def push_checkpoint(req: CheckpointReq) -> Dict[str, Any]:
+    job = _JOBS.get(req.job_id)
+    if not job:
+        if AUTOCREATE_ON_CHECKPOINT:
+            job = _new_job(goal=f"auto:{req.job_id}", autostart=True, job_id=req.job_id)
+        else:
+            job = _load(req.job_id)
+            if job:
+                _JOBS[req.job_id] = job
+            else:
+                raise HTTPException(status_code=404, detail="job_id not found")
+
+    payload = req.model_dump()
+    _append_event(job, payload)
+    _apply_checkpoint_side_effects(job, (req.type or "").lower(), req)
+    _save(job)
 
     return {"ok": True}
 
@@ -141,28 +238,172 @@ def job_status(job_id: str = Query(...)) -> Dict[str, Any]:
     status_obj = {
         "job_id": job["job_id"],
         "updated_at": job["updated_at"],
-        "status": job["status"],         # estado textual (running/completed/...)
+        "status": job["status"],
         "steps_total": job["steps_total"],
         "steps_done": job["steps_done"],
         "last_event": job["last_event"],
+        "cursor": job.get("cursor", len(job["events"])),
         "meta": job.get("meta", {}),
     }
-    # <-- ojo: ajustamos la forma del payload a la que espera el test
     return {"ok": True, "status": status_obj}
 
 
 @jobs_router.get("/tail")
-def job_tail(job_id: str = Query(...), n: int = Query(10, ge=1, le=EVENTS_MAX)) -> Dict[str, Any]:
+def job_tail(
+    job_id: str = Query(...),
+    n: Optional[int] = Query(None, ge=1, le=EVENTS_MAX, description="Si se envía, devuelve los últimos n eventos"),
+    since: int = Query(0, ge=0, description="Offset (seq) desde el cual leer"),
+    limit: int = Query(100, ge=1, le=EVENTS_MAX, description="Máximo de eventos a devolver cuando se usa since"),
+) -> Dict[str, Any]:
     job = _get_job(job_id)
-    ev = list(job["events"])[-n:]
-    return {"ok": True, "events": ev}
+    events = list(job["events"])
+    total = len(events)
+
+    if n is not None:
+        ev = events[-n:]
+        return {"ok": True, "events": ev, "total": total}
+
+    start_idx = 0
+    if since > 0:
+        for i, e in enumerate(events):
+            if int(e.get("seq", i + 1)) > since:
+                start_idx = i
+                break
+        else:
+            start_idx = total
+
+    end_idx = min(total, start_idx + limit)
+    ev = events[start_idx:end_idx]
+    next_since = ev[-1]["seq"] if ev else since
+    return {"ok": True, "events": ev, "total": total, "next_since": next_since}
 
 
-# (Opcional) cancelar job
+@jobs_router.get("/dump")
+def job_dump(job_id: str = Query(...)) -> Dict[str, Any]:
+    job = _get_job(job_id)
+    snap = _snapshot(job)
+    snap["schema_version"] = 1
+    return {"ok": True, "job": snap}
+
+
+@jobs_router.post("/resume")
+def job_resume(req: ResumeReq) -> Dict[str, Any]:
+    job = _JOBS.get(req.job_id)
+    if not job:
+        job = _load(req.job_id)
+        if not job:
+            raise HTTPException(status_code=404, detail="job_id not found")
+        _JOBS[req.job_id] = job
+
+    # 1) Encolar evento de comando (lo que piden los tests)
+    _append_event(
+        job,
+        {
+            "type": "cmd",
+            "cmd": "resume",
+            "args": {"mode": req.mode, "from_step": req.from_step, "meta": req.meta},
+        },
+    )
+
+    # 2) Cambiar estado
+    resumed = False
+    if req.mode == "reset":
+        job["steps_done"] = 0
+        job["status"] = "running"
+        job["last_event"] = "status"
+        resumed = True
+    else:
+        if job.get("status") != "running":
+            job["status"] = "running"
+            job["last_event"] = "status"
+            resumed = True
+
+    # 3) También anotamos un evento de status (opcional, pero útil)
+    _append_event(job, {"type": "status", "status": "running", "meta": req.meta})
+    _save(job)
+
+    out = {k: v for k, v in job.items() if k != "events"}
+    return {"ok": True, "resumed": resumed, "job": out}
+
+
+@jobs_router.post("/replay")
+def job_replay(req: ReplayReq) -> Dict[str, Any]:
+    job = _get_job(req.job_id)
+
+    # Resolver aliases from/to
+    start_seq = req.from_event if req.from_event is not None else (req.from_event_idx or 0)
+    end_seq = req.to_event if req.to_event is not None else req.to_event_idx
+
+    # 1) Encolar evento de comando (lo que piden los tests)
+    _append_event(
+        job,
+        {
+            "type": "cmd",
+            "cmd": "replay",
+            "args": {"from_event": start_seq, "to_event": end_seq, "mode": req.mode},
+        },
+    )
+    _save(job)
+
+    events = list(job["events"])
+    total = len(events)
+
+    # recorta ventana
+    start_idx = 0
+    if start_seq and start_seq > 0:
+        for i, e in enumerate(events):
+            if int(e.get("seq", i + 1)) >= start_seq:
+                start_idx = i
+                break
+        else:
+            start_idx = total
+    end_idx = total
+    if end_seq is not None:
+        for i, e in enumerate(events):
+            if int(e.get("seq", i + 1)) > end_seq:
+                end_idx = i
+                break
+
+    window = events[start_idx:end_idx]
+    # recomputa contadores en ventana (no modifica salvo mode=apply)
+    steps_total = job["steps_total"]
+    steps_done = 0
+    status = job["status"]
+
+    for e in window:
+        t = (e.get("type") or "").lower()
+        if t == "plan" and isinstance(e.get("steps"), list):
+            steps_total = max(steps_total, int(len(e["steps"])))
+        elif t == "step_end":
+            steps_done = min(steps_total, steps_done + 1)
+        elif t == "status" and e.get("status"):
+            status = e["status"]
+
+    summary = {
+        "from_seq": window[0]["seq"] if window else start_seq,
+        "to_seq": window[-1]["seq"] if window else end_seq,
+        "events": len(window),
+        "steps_total": steps_total,
+        "steps_done": steps_done,
+        "status": status,
+    }
+
+    if req.mode == "apply":
+        job["steps_total"] = steps_total
+        job["steps_done"] = steps_done
+        job["status"] = status
+        job["last_event"] = "replay"
+        _append_event(job, {"type": "meta", "meta": {"replay_applied": True, **summary}})
+        _save(job)
+
+    return {"ok": True, "summary": summary, "preview": window}
+
+
 @jobs_router.post("/cancel")
 def cancel_job(job_id: str = Query(...)) -> Dict[str, Any]:
     job = _get_job(job_id)
     job["status"] = "cancelled"
     _append_event(job, {"type": "status", "status": "cancelled"})
     job["last_event"] = "status"
+    _save(job)
     return {"ok": True}

@@ -1,4 +1,4 @@
-# server.py — AGI Prototype (Fases 1–4: + Jobs, job_id en /plan/execute)
+# server.py — AGI Prototype (Fase 5: memoria + resume, planner con job_id)
 from __future__ import annotations
 
 import os
@@ -16,8 +16,7 @@ from fastapi.security import APIKeyHeader
 # ──────────────────────────────────────────────────────────────────────────────
 # Routers / Módulos internos
 # ──────────────────────────────────────────────────────────────────────────────
-# Router de Jobs (Fase 4)
-from server_jobs_router import jobs_router
+from server_jobs_router import jobs_router  # actualizado: dump/resume/replay
 
 # Memoria vectorial unificada
 from memory.unified_memory import UnifiedMemory
@@ -58,7 +57,7 @@ except Exception:
 API_KEY_HEADER_NAME = "x-api-key"
 api_key_header = APIKeyHeader(name=API_KEY_HEADER_NAME, auto_error=False)
 
-app = FastAPI(title="AGI Prototype (FAISS-CPU)", version="4.1.0")
+app = FastAPI(title="AGI Prototype (FAISS-CPU)", version="5.0.0")
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],
@@ -67,7 +66,7 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# Incluir router de Jobs (requiere API_KEY configurada para usarse)
+# Incluir router de Jobs
 app.include_router(jobs_router)
 
 # Whitelist para docs/health sin API key
@@ -104,7 +103,7 @@ def custom_openapi() -> dict:
     schema = get_openapi(
         title=app.title,
         version=app.version,
-        description="AGI endpoints (Fases 1–4, incluye /jobs/*)",
+        description="AGI endpoints (Fases 1–5, incluye /jobs/* con dump/resume/replay)",
         routes=app.routes,
     )
     schema.setdefault("components", {}).setdefault("securitySchemes", {})["ApiKeyAuth"] = {
@@ -219,7 +218,7 @@ def _p95(x: List[float]) -> Optional[float]:
 
 
 # ──────────────────────────────────────────────────────────────────────────────
-# Memoria semántica (RAM) de compatibilidad — Fase 1
+# Memoria semántica (RAM) — Fase 1
 # ──────────────────────────────────────────────────────────────────────────────
 STORE: List[Dict[str, Any]] = []
 
@@ -235,7 +234,7 @@ def _simple_score(q: str, t: str) -> float:
 
 
 # ──────────────────────────────────────────────────────────────────────────────
-# Endpoints
+# Endpoints básicos
 # ──────────────────────────────────────────────────────────────────────────────
 @app.get("/")
 def health() -> Dict[str, Any]:
@@ -426,7 +425,7 @@ async def vector_search(payload: Dict[str, Any] = Body(...)) -> Dict[str, Any]:
         _record_latency("vec_search", t0)
 
 
-# ----------------------------- Razonamiento ----------------------------------#
+# ------------------------------ Razonamiento ----------------------------------#
 @app.post("/reason/execute")
 async def reason_execute(payload: Dict[str, Any] = Body(...)) -> Dict[str, Any]:
     t0 = perf_counter()
@@ -452,7 +451,6 @@ def _normalize_goal_text(goal: Any) -> str:
 
 
 def _solve_goal_to_plan(goal: Any, context: Dict[str, Any]) -> HTNPlan:
-    # Heurística simple compatible con tu Fase 3
     goal_str = _normalize_goal_text(goal)
     gl = goal_str.lower()
     if "buscar" in gl:
@@ -506,8 +504,7 @@ from pydantic import BaseModel, Field
 class PlanExecuteRequest(BaseModel):
     plan: HTNPlan = Field(...)
     context: Dict[str, Any] = Field(default_factory=dict)
-    # NUEVO: permitir que el cliente encadene el job_id (para checkpoints automáticos)
-    job_id: Optional[str] = None
+    job_id: Optional[str] = None  # para checkpoints automáticos
 
 
 class PlanExecuteResponse(BaseModel):
@@ -540,7 +537,7 @@ async def plan_execute(req: PlanExecuteRequest) -> Dict[str, Any]:
     try:
         COUNTERS["total_requests"] += 1
         COUNTERS["plan_requests"] += 1
-        # Propaga job_id al planner para que emita checkpoints (plan/step_start/step_end/status)
+        # Propaga job_id al planner para que emita checkpoints (/jobs/checkpoint)
         return PLANNER.execute_plan(req.plan, context=req.context, job_id=req.job_id)
     finally:
         _record_latency("plan", t0)
@@ -567,7 +564,6 @@ if __name__ == "__main__":
     import uvicorn
 
     port = int(os.environ.get("PORT", "8010"))
-    # Log rápido: API key enmascarada
     ak = (os.getenv("API_KEY") or "")
     mask = ("*" * (len(ak) - 4) + ak[-4:]) if ak else "(none)"
     print(f"[server] API_KEY={mask}  http://127.0.0.1:{port}")

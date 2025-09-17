@@ -7,9 +7,9 @@ import shutil
 from typing import Any, Dict, List, Optional
 from datetime import datetime, timezone
 
-# -----------------------------------------------------------------------------
+# -----------------------------------------------------------------------------  # (resto igual que tu versión)
 # Config dinámica (se lee en cada operación para permitir monkeypatch en tests)
-# -----------------------------------------------------------------------------
+# ----------------------------------------------------------------------------- 
 def _cfg_jobs_dir() -> str:
     return os.getenv("JOBS_DIR", "data/jobs")
 
@@ -40,10 +40,9 @@ def _index_path() -> str:
 def _trash_dir() -> str:
     return os.path.join(_cfg_jobs_dir(), "trash")
 
-
-# -----------------------------------------------------------------------------
+# ----------------------------------------------------------------------------- 
 # Tiempo / utilidades
-# -----------------------------------------------------------------------------
+# ----------------------------------------------------------------------------- 
 def _now_iso() -> str:
     return datetime.now(timezone.utc).isoformat().replace("+00:00", "Z")
 
@@ -56,20 +55,18 @@ def _parse_iso(ts: str) -> datetime:
     except Exception:
         return datetime.now(timezone.utc)
 
-
-# -----------------------------------------------------------------------------
+# ----------------------------------------------------------------------------- 
 # Carga/guardado atómico de JSON
-# -----------------------------------------------------------------------------
+# ----------------------------------------------------------------------------- 
 def _atomic_write(path: str, data: Dict[str, Any]) -> None:
     tmp = path + ".tmp"
     with open(tmp, "w", encoding="utf-8") as f:
         json.dump(data, f, ensure_ascii=False, indent=2)
     os.replace(tmp, path)
 
-
-# -----------------------------------------------------------------------------
+# ----------------------------------------------------------------------------- 
 # Estructura del índice en memoria
-# -----------------------------------------------------------------------------
+# ----------------------------------------------------------------------------- 
 _INDEX: Dict[str, Any] = {
     "schema_version": 1,
     "jobs": {},                 # job_id -> meta
@@ -87,11 +84,9 @@ def load_index() -> Dict[str, Any]:
             data = json.load(f)
         if not isinstance(data, dict):
             raise ValueError("index.json corrupto")
-        # actualiza _INDEX en caliente
         _INDEX.clear()
         _INDEX.update(data)
     except Exception:
-        # reconstruye limpio
         _INDEX.clear()
         _INDEX.update({"schema_version": 1, "jobs": {}, "purged_jobs_total": 0})
         save_index()
@@ -108,7 +103,6 @@ def index_get(job_id: str) -> Optional[Dict[str, Any]]:
 def index_all() -> List[Dict[str, Any]]:
     load_index()
     jobs = list((_INDEX.get("jobs") or {}).values())
-    # orden: más recientes primero
     jobs.sort(key=lambda x: x.get("updated_at", ""), reverse=True)
     return jobs
 
@@ -116,7 +110,6 @@ def _job_file(job_id: str) -> str:
     return os.path.join(_cfg_jobs_dir(), f"{job_id}.json")
 
 def index_add_or_update(job_snapshot: Dict[str, Any]) -> None:
-    """Actualiza metadatos mínimos del índice basado en el snapshot del job."""
     load_index()
     job_id = job_snapshot.get("job_id")
     if not job_id:
@@ -138,15 +131,12 @@ def index_add_or_update(job_snapshot: Dict[str, Any]) -> None:
     save_index()
 
 def index_remove(job_id: str, *, soft_delete: bool = False) -> bool:
-    """Elimina del índice y borra/mueve el archivo; devuelve True si existía."""
     load_index()
     existed = False
     if job_id in (_INDEX.get("jobs") or {}):
         existed = True
         _INDEX["jobs"].pop(job_id, None)
         save_index()
-
-    # Archivo en disco
     p = _job_file(job_id)
     if os.path.exists(p):
         if soft_delete:
@@ -158,7 +148,6 @@ def index_remove(job_id: str, *, soft_delete: bool = False) -> bool:
     return existed
 
 def rotate_if_needed() -> List[str]:
-    """Aplica rotación por TTL y/o MAX. Devuelve lista de job_ids purgados."""
     load_index()
     purged: List[str] = []
 
@@ -187,7 +176,6 @@ def rotate_if_needed() -> List[str]:
             if jid:
                 index_remove(jid, soft_delete=False)
                 purged.append(jid)
-        # re-sync lista en memoria (por si removimos)
         load_index()
 
     if purged:
@@ -218,3 +206,11 @@ def get_persistence_metrics() -> Dict[str, Any]:
         "purged_jobs_total": int(_INDEX.get("purged_jobs_total", 0)),
         "jobs_disk_usage_bytes": disk_usage_bytes(),
     }
+
+# NUEVO: permite sumar purgas desde el router TTL (para mantener coherencia del contador)
+def record_purged_jobs(n: int) -> None:
+    if n <= 0:
+        return
+    load_index()
+    _INDEX["purged_jobs_total"] = int(_INDEX.get("purged_jobs_total", 0)) + int(n)
+    save_index()

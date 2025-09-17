@@ -13,7 +13,7 @@ from fastapi.openapi.utils import get_openapi
 from fastapi.responses import JSONResponse
 from fastapi.security import APIKeyHeader
 
-from server_jobs_router import jobs_router  # incluye endpoints Fase 6
+from server_jobs_router import jobs_router  # Endpoints de Fase 6 (/jobs)
 
 # ------------------------ Fallbacks seguros (por si faltan módulos) ----------#
 try:
@@ -263,10 +263,13 @@ def status_alias() -> Dict[str, Any]:
 
 @app.get("/get_status")
 def get_status() -> Dict[str, Any]:
+    # 1) Estado del backend vectorial (robusto)
     try:
         um_status = UM.get_status() if hasattr(UM, "get_status") else {}
     except Exception as e:  # pragma: no cover
         um_status = {"ok": False, "error": type(e).__name__, "msg": str(e)}
+
+    # Derivar tamaño del índice vectorial aún si get_status devuelve lista/tupla
     index_size_vec = 0
     if isinstance(um_status, dict):
         for k in ("index_size", "ntotal", "size", "count"):
@@ -274,8 +277,10 @@ def get_status() -> Dict[str, Any]:
             if isinstance(v, (int, float)):
                 index_size_vec = int(v)
                 break
+    elif isinstance(um_status, (list, tuple)):
+        index_size_vec = len(um_status)
 
-    # Métricas de persistencia (Fase 6)
+    # 2) Métricas de persistencia (Fase 6)
     persist = get_persistence_metrics()
 
     return {

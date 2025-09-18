@@ -1,0 +1,13 @@
+version: "3.9"
+services:
+  agi:
+    build: .
+    ports:
+      - "8010:8010"
+    environment:
+      ALLOW_TEST_NO_AUTH: "1"
+      JOBS_DIR: /app/data/jobs
+      JOBS_TTL_SECONDS: "86400"
+      JOBS_TTL_SWEEP_INTERVAL_SECONDS: "300"
+    volumes:
+      - ./data/jobs:/app/data/jobs

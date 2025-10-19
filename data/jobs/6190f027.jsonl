@@ -1,0 +1,3 @@
+{"type": "job_meta", "status": "running", "meta": {"goal": "smoke", "params": {}}, "ts": "2025-09-15T16:04:15.018325Z"}
+{"step_id": null, "status": "running", "analysis": null, "result": null, "error": null, "meta": null, "type": "plan", "steps": [{"inputs": {"query": "demo", "k": 3}, "name": "memory_search", "id": "s1", "kind": "action"}, {"inputs": {"code": "result = 40+2"}, "name": "python_exec", "id": "s2", "kind": "action"}], "ts": "2025-09-15T16:04:15.162978Z"}
+{"step_id": "s1", "status": "completed", "analysis": null, "result": {"ok": true}, "error": null, "meta": null, "type": "step_end", "steps": null, "ts": "2025-09-15T16:04:15.200923Z"}

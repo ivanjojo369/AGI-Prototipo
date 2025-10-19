@@ -1,0 +1,1 @@
+{"job_id": "3b8d02c6", "updated_at": "2025-09-15T18:08:53.755809Z", "status": "paused", "steps_total": 2, "steps_done": 2, "last_event": "step_end", "meta": {"status": "completed", "steps_total": 2, "steps_done": 1, "goal": "smoke", "params": {}}}

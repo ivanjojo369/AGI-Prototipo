@@ -1,0 +1,26 @@
+{
+  "job_id": "5286d066",
+  "updated_at": "2025-09-13T17:45:10.635001Z",
+  "status": "completed",
+  "steps_total": 0,
+  "steps_done": 1,
+  "last_event": {
+    "step_id": "s1",
+    "status": "completed",
+    "analysis": null,
+    "result": {
+      "ok": true
+    },
+    "error": null,
+    "meta": null,
+    "type": "step_end",
+    "ts": "2025-09-13T17:45:10.632972Z"
+  },
+  "meta": {
+    "status": "completed",
+    "steps_total": 0,
+    "steps_done": 1,
+    "goal": "smoke",
+    "params": {}
+  }
+}

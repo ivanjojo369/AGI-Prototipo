@@ -1,0 +1,37 @@
+{
+  "job_id": "92a99a29",
+  "goal": "list-A",
+  "status": "running",
+  "created_at": "2025-09-17T21:22:36.615950Z",
+  "updated_at": "2025-09-17T21:22:36.642468Z",
+  "steps_total": 0,
+  "steps_done": 0,
+  "last_event": "status",
+  "meta": {},
+  "state": {},
+  "cursor": 2,
+  "events": [
+    {
+      "type": "job_meta",
+      "status": "running",
+      "meta": "",
+      "ts": "2025-09-17T21:22:36.615950Z",
+      "seq": 1
+    },
+    {
+      "job_id": "92a99a29",
+      "type": "status",
+      "step_id": null,
+      "steps": null,
+      "status": "running",
+      "result": null,
+      "error": null,
+      "analysis": null,
+      "meta": {},
+      "state": null,
+      "ts": "2025-09-17T21:22:36.642468Z",
+      "seq": 2
+    }
+  ],
+  "schema_version": 1
+}

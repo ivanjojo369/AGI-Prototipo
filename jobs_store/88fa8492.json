@@ -1,0 +1,22 @@
+{
+  "job_id": "88fa8492",
+  "goal": "demo job",
+  "status": "running",
+  "created_at": "2025-09-16T18:54:39.735100Z",
+  "updated_at": "2025-09-16T18:54:39.735100Z",
+  "steps_total": 0,
+  "steps_done": 0,
+  "last_event": "",
+  "meta": {},
+  "state": {},
+  "cursor": 1,
+  "events": [
+    {
+      "type": "job_meta",
+      "status": "running",
+      "meta": "",
+      "ts": "2025-09-16T18:54:39.735100Z",
+      "seq": 1
+    }
+  ]
+}

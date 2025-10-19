@@ -1,0 +1,29 @@
+{
+  "job_id": "ae76a1c4",
+  "goal": "demo",
+  "status": "running",
+  "created_at": "2025-09-16T18:33:05.742718Z",
+  "updated_at": "2025-09-16T18:33:05.791716Z",
+  "steps_total": 0,
+  "steps_done": 0,
+  "last_event": "",
+  "meta": {},
+  "state": {},
+  "cursor": 2,
+  "events": [
+    {
+      "type": "job_meta",
+      "status": "running",
+      "meta": "",
+      "ts": "2025-09-16T18:33:05.742718Z",
+      "seq": 1
+    },
+    {
+      "type": "status",
+      "status": "running",
+      "meta": {},
+      "ts": "2025-09-16T18:33:05.791716Z",
+      "seq": 2
+    }
+  ]
+}

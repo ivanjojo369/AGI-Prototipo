@@ -1,0 +1,23 @@
+{
+  "job_id": "47c63175",
+  "goal": "demo",
+  "status": "running",
+  "created_at": "2025-09-17T21:22:37.828122Z",
+  "updated_at": "2025-09-17T21:22:37.828122Z",
+  "steps_total": 0,
+  "steps_done": 0,
+  "last_event": "",
+  "meta": {},
+  "state": {},
+  "cursor": 1,
+  "events": [
+    {
+      "type": "job_meta",
+      "status": "running",
+      "meta": "",
+      "ts": "2025-09-17T21:22:37.828122Z",
+      "seq": 1
+    }
+  ],
+  "schema_version": 1
+}

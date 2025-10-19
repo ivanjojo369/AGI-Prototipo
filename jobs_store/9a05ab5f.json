@@ -1,0 +1,40 @@
+{
+  "job_id": "9a05ab5f",
+  "goal": "demo",
+  "status": "running",
+  "created_at": "2025-09-16T18:44:58.686189Z",
+  "updated_at": "2025-09-16T18:44:58.732068Z",
+  "steps_total": 0,
+  "steps_done": 0,
+  "last_event": "",
+  "meta": {},
+  "state": {},
+  "cursor": 3,
+  "events": [
+    {
+      "type": "job_meta",
+      "status": "running",
+      "meta": "",
+      "ts": "2025-09-16T18:44:58.686189Z",
+      "seq": 1
+    },
+    {
+      "type": "cmd",
+      "cmd": "resume",
+      "args": {
+        "mode": "continue",
+        "from_step": "s2",
+        "meta": {}
+      },
+      "ts": "2025-09-16T18:44:58.732068Z",
+      "seq": 2
+    },
+    {
+      "type": "status",
+      "status": "running",
+      "meta": {},
+      "ts": "2025-09-16T18:44:58.732068Z",
+      "seq": 3
+    }
+  ]
+}

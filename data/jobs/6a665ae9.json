@@ -1,0 +1,72 @@
+{
+  "job_id": "6a665ae9",
+  "goal": "persist-rehydrate",
+  "status": "running",
+  "created_at": "2025-09-17T22:38:36.152653Z",
+  "updated_at": "2025-09-17T22:38:36.193721Z",
+  "steps_total": 2,
+  "steps_done": 1,
+  "last_event": "status",
+  "meta": {},
+  "state": {},
+  "cursor": 4,
+  "events": [
+    {
+      "type": "job_meta",
+      "status": "running",
+      "meta": "",
+      "ts": "2025-09-17T22:38:36.152653Z",
+      "seq": 1
+    },
+    {
+      "job_id": "6a665ae9",
+      "type": "plan",
+      "step_id": null,
+      "steps": [
+        {
+          "id": "s1"
+        },
+        {
+          "id": "s2"
+        }
+      ],
+      "status": null,
+      "result": null,
+      "error": null,
+      "analysis": null,
+      "meta": {},
+      "state": null,
+      "ts": "2025-09-17T22:38:36.166590Z",
+      "seq": 2
+    },
+    {
+      "job_id": "6a665ae9",
+      "type": "step_end",
+      "step_id": "s1",
+      "steps": null,
+      "status": null,
+      "result": null,
+      "error": null,
+      "analysis": null,
+      "meta": {},
+      "state": null,
+      "ts": "2025-09-17T22:38:36.181345Z",
+      "seq": 3
+    },
+    {
+      "job_id": "6a665ae9",
+      "type": "status",
+      "step_id": null,
+      "steps": null,
+      "status": "running",
+      "result": null,
+      "error": null,
+      "analysis": null,
+      "meta": {},
+      "state": null,
+      "ts": "2025-09-17T22:38:36.193721Z",
+      "seq": 4
+    }
+  ],
+  "schema_version": 1
+}

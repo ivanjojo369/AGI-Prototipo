@@ -37,3 +37,6 @@ models/
 *.bin
 *.onnx
 *.safetensors
+eval/results/
+__pycache__/
+*.pyc

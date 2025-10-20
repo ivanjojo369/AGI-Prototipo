@@ -43,3 +43,7 @@ __pycache__/
 eval/results/
 __pycache__/
 *.pyc
+eval/results/
+__pycache__/
+*.pyc
+llama-cpp-python/

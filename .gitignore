@@ -1,93 +1,39 @@
-# =========================
 # Python
-# =========================
 __pycache__/
 *.py[cod]
-*.pyo
-*.pyd
 *.egg-info/
-
-# =========================
-# Entornos
-# =========================
 .env
 .env.*
-.env/
 .venv/
 venv/
 
-# =========================
 # Tests / coverage / cache
-# =========================
 .pytest_cache/
 .coverage*
-.coverage
 htmlcov/
 
-# =========================
-# IDE / editor
-# =========================
+# IDE/editor
 .vscode/
-.vs/
 .idea/
 
-# =========================
-# Datos / runtime (generados)
-# =========================
-sessions/
-flask_session/
-temp_memory/
-tests/temp_memory*/
-memory_store/
-clipboard_exports/
-chroma_db/
-backup_chroma_db/
-
-# Bases locales / índices
-*.db
-*.sqlite*
-*.sqlite3
-*.index
+# Datos y runtime
+logs/
 *.log
+flask_session/
+sessions/
+chroma_db/
+clipboard_exports/
+tests/temp_memory*/
+temp_memory/
+memory_store/
+*.sqlite*
+*.bin
+*.index
 
-# =========================
-# Modelos y artefactos grandes
-# =========================
+# Modelos grandes (no conviene versionarlos)
 models/
 *.gguf
 *.pt
 *.bin
 *.onnx
 *.safetensors
-
-# =========================
-# Vendor embebido (no versionar)
-# =========================
-llama-cpp-python/
-
-# =========================
-# LOGS: permitir solo los CSV de métricas
-# =========================
-# Ignora todo en logs/
-logs/*
-
-# Re-habilita la carpeta logs/ (necesario para "designorar" después)
-!logs/
-
-# Permite benchmarks y sólo sus CSV
-!logs/benchmarks/
-!logs/benchmarks/*.csv
-
-# Ruido de runs y otros formatos en benchmarks (seguir ignorando)
-logs/benchmarks/agent_run_*/
-logs/benchmarks/*.json
-
-# Ignora todo en logs
-logs/*
-!logs/
-
-# Ignora TODO dentro de logs/benchmarks...
-logs/benchmarks/*
-
-# ...pero permite solo los CSV de métricas
-!logs/benchmarks/*.csv

@@ -47,3 +47,34 @@ eval/results/
 __pycache__/
 *.pyc
 llama-cpp-python/
+node_modules
+
+# Private archived Quipu files
+archive/Quipu_private_archive/
+
+
+# Visual Studio y archivos temporales
+.vs/
+.ab/
+**/.next/
+
+# Datos privados y respaldos
+data/
+root/data/
+secrets/
+vpn_profiles/
+backups/
+
+# Bases de datos locales
+*.db
+*.db-shm
+*.db-wal
+*.sqlite
+*.sqlite3
+
+# Diagnosticos y archivos temporales
+factual_debug_latest.json
+req.json
+test_output.txt
+*.zip
+*.bak

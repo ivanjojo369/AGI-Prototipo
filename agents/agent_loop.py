@@ -121,58 +121,218 @@ def reflect_quick(draft: str, observations: List[str], max_tokens: int = 60) -> 
     return out or draft
 
 # =================== Agent loop ===================
-def run_goal(goal: str, max_steps: int = 6, reflect_tokens: int = 60, timebox_sec: int = 90) -> str:
+def run_goal(
+    goal: str,
+    max_steps: int = 6,
+    reflect_tokens: int = 60,
+    timebox_sec: int = 90,
+    *,
+    llm_call: Optional[
+        Callable[[List[Dict[str, str]], int, float, bool], str]
+    ] = None,
+    tool_impl: Optional[
+        Dict[str, Callable[[Dict[str, Any]], str]]
+    ] = None,
+    tool_specs: Optional[
+        Dict[str, Dict[str, Any]]
+    ] = None,
+    debug: Optional[bool] = None,
+) -> str:
+    """
+    Agent loop 3.0-compatible.
+
+    Sin inyección conserva el comportamiento legacy.
+    Con llm_call/tool_impl puede ser ejecutado desde Quipu sin depender
+    del endpoint 127.0.0.1:8010.
+    """
     t0 = time.time()
-    messages: List[Dict[str,str]] = [
-        {"role":"system","content": SYS},
-        {"role":"system","content": f"Herramientas disponibles:\n{tool_catalog_str()}"},
-        {"role":"user",  "content": f"Meta: {goal}"}
+    active_tools = (
+        tool_impl
+        if tool_impl is not None
+        else TOOL_IMPL
+    )
+    active_specs = (
+        tool_specs
+        if tool_specs is not None
+        else TOOLS
+    )
+    debug_enabled = (
+        DEBUG
+        if debug is None
+        else bool(debug)
+    )
+
+    def call_model(
+        messages: List[
+            Dict[str, str]
+        ],
+        max_tokens: int,
+        temperature: float,
+    ) -> str:
+        if llm_call is None:
+            return call_llm(
+                messages,
+                max_new_tokens=max_tokens,
+                temperature=temperature,
+                stream=False,
+            )
+
+        return llm_call(
+            messages,
+            max_tokens,
+            temperature,
+            False,
+        )
+
+    catalog_lines = []
+
+    for name, spec in (
+        active_specs.items()
+    ):
+        catalog_lines.append(
+            f"- {name}: "
+            f"{spec.get('desc', '')} "
+            f"(schema: "
+            f"{json.dumps(spec.get('schema') or {})})"
+        )
+
+    messages: List[
+        Dict[str, str]
+    ] = [
+        {
+            "role": "system",
+            "content": SYS,
+        },
+        {
+            "role": "system",
+            "content":
+                "Herramientas disponibles:\n"
+                + "\n".join(
+                    catalog_lines
+                ),
+        },
+        {
+            "role": "user",
+            "content":
+                f"Meta: {goal}",
+        },
     ]
+
     observations: List[str] = []
 
-    for step in range(1, max_steps+1):
-        if time.time() - t0 > timebox_sec:
-            if DEBUG: print("[timebox] agotado")
+    for step in range(
+        1,
+        max_steps + 1,
+    ):
+        if (
+            time.time() - t0
+            > timebox_sec
+        ):
+            if debug_enabled:
+                print(
+                    "[timebox] agotado"
+                )
             break
 
-        resp = call_llm(messages, max_new_tokens=110, temperature=0.55, stream=False)
-        obj  = extract_json(resp)
-        if obj is None:
-            if DEBUG: print("[warn] respuesta no JSON, intento reflexión")
-            return reflect_quick(resp, observations, max_tokens=reflect_tokens)
+        response = call_model(
+            messages,
+            110,
+            0.55,
+        )
+        obj = extract_json(
+            response
+        )
 
-        # tool
+        if obj is None:
+            if debug_enabled:
+                print(
+                    "[warn] respuesta no JSON"
+                )
+            return response.strip()
+
         if "tool" in obj:
-            name = obj.get("tool")
-            args = obj.get("args") or {}
-            if DEBUG: print(f"[tool] {name} args={args}")
-            if name not in TOOL_IMPL:
-                observations.append(f"[error] herramienta '{name}' desconocida")
-                messages.append({"role":"assistant","content":json.dumps(obj, ensure_ascii=False)})
-                messages.append({"role":"user","content": f"Observación: herramienta '{name}' no existe. Reintenta con otra."})
-                continue
-            try:
-                out = TOOL_IMPL[name](args)
-            except Exception as e:
-                out = f"[error] excepción en herramienta {name}: {e}"
-            obs = f"[{name}] {str(out)[:600]}"
-            if DEBUG: print(f"[obs] {obs}")
-            observations.append(obs)
-            messages.append({"role":"assistant","content":json.dumps(obj, ensure_ascii=False)})
-            messages.append({"role":"user","content": f"Observación: {obs}"})
+            name = str(
+                obj.get(
+                    "tool"
+                )
+                or ""
+            )
+            args = obj.get(
+                "args"
+            ) or {}
+
+            if debug_enabled:
+                print(
+                    f"[tool] {name} "
+                    f"args={args}"
+                )
+
+            if name not in active_tools:
+                observation = (
+                    f"[error] herramienta "
+                    f"'{name}' desconocida"
+                )
+            else:
+                try:
+                    output = (
+                        active_tools[
+                            name
+                        ](
+                            args
+                        )
+                    )
+                    observation = (
+                        f"[{name}] "
+                        f"{str(output)[:600]}"
+                    )
+                except Exception as exc:
+                    observation = (
+                        f"[error] excepción "
+                        f"en {name}: {exc}"
+                    )
+
+            observations.append(
+                observation
+            )
+            messages.append(
+                {
+                    "role":
+                        "assistant",
+                    "content":
+                        json.dumps(
+                            obj,
+                            ensure_ascii=False,
+                        ),
+                }
+            )
+            messages.append(
+                {
+                    "role":
+                        "user",
+                    "content":
+                        "Observación: "
+                        + observation,
+                }
+            )
             continue
 
-        # final
         if "final" in obj:
-            if DEBUG: print(f"[final] {obj['final']}")
-            return str(obj["final"]).strip()
+            return str(
+                obj["final"]
+            ).strip()
 
-        # formato inesperado → reflexión
-        if DEBUG: print("[warn] objeto sin 'tool' ni 'final', reflexión")
-        return reflect_quick(json.dumps(obj, ensure_ascii=False), observations, max_tokens=reflect_tokens)
+        return str(
+            obj
+        ).strip()
 
-    # si salió por tope de pasos o timebox
-    return reflect_quick("(sin final)", observations, max_tokens=reflect_tokens)
+    if observations:
+        return (
+            " | ".join(
+                observations[-3:]
+            )
+        )
+
+    return "(sin final)"
 
 # =================== CLI ===================
 if __name__ == "__main__":

@@ -1,6 +1,19 @@
 # adapters/model_interface.py
 import random
-from typing import Optional
+from typing import Dict, List, Optional
+
+class ModelAdapter:
+    """Contrato mínimo que QuipuLoop espera de cualquier adaptador de modelo."""
+
+    def generate(
+        self,
+        messages: List[Dict[str, str]],
+        max_tokens: int = 512,
+        temperature: float = 0.7,
+        stream: bool = False,
+        stop: Optional[List[str]] = None,
+    ) -> str:
+        raise NotImplementedError("El adaptador debe implementar generate().")
 
 class DummyModel:
     """

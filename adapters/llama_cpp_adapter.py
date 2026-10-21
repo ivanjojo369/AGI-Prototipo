@@ -8,10 +8,13 @@ Adaptador del runtime llama.cpp (llama_cpp_python) con interfaz de chat.
 
 from __future__ import annotations
 import os
+import json
+import urllib.request
+import urllib.error
 from typing import Dict, Iterable, List, Optional, Union, Generator, Any
 
 from llama_cpp import Llama
-
+from adapters.model_interface import ModelAdapter
 
 def _env_int(name: str, default: int) -> int:
     try:
@@ -170,3 +173,102 @@ class LlamaCppChat:
 
     def stream_chat(self, messages: List[Dict[str, str]], **kw) -> Generator[str, None, None]:
         return self.stream(messages, **kw)
+
+class LlamaCppAdapter(ModelAdapter):
+    """
+    Adaptador HTTP para QuipuLoop.
+
+    No carga otra copia del GGUF.
+    Utiliza llama_cpp.server ya activo mediante su API OpenAI-compatible.
+    """
+
+    def __init__(
+        self,
+        model_path: Optional[str] = None,
+        base_url: Optional[str] = None,
+        model_id: Optional[str] = None,
+    ) -> None:
+        # model_path se conserva por compatibilidad con QuipuLoop,
+        # pero deliberadamente no se carga aquí.
+        self.model_path = model_path
+
+        self.base_url = (
+            base_url
+            or os.getenv("LLAMA_SERVER_URL")
+            or os.getenv("BACKEND_URL")
+            or "http://127.0.0.1:8123/v1"
+        ).rstrip("/")
+
+        self.model_id = (
+            model_id
+            or os.getenv("LLAMA_MODEL_ID")
+            or "qwen2.5-3b-instruct"
+        )
+
+        self.api_key = (
+            os.getenv("LLAMA_API_KEY")
+            or os.getenv("AGI_API_KEY")
+            or os.getenv("API_KEY")
+        )
+
+    def generate(
+        self,
+        messages: List[Dict[str, str]],
+        max_tokens: int = 512,
+        temperature: float = 0.7,
+        stream: bool = False,
+        stop: Optional[List[str]] = None,
+    ) -> str:
+        if stream:
+            raise NotImplementedError(
+                "QuipuLoop usa actualmente generación no-stream."
+            )
+
+        payload: Dict[str, Any] = {
+            "model": self.model_id,
+            "messages": messages,
+            "max_tokens": max_tokens,
+            "temperature": temperature,
+        }
+
+        if stop:
+            payload["stop"] = stop
+
+        headers = {
+            "Content-Type": "application/json",
+            "Accept": "application/json",
+        }
+
+        if self.api_key:
+            headers["Authorization"] = f"Bearer {self.api_key}"
+            headers["x-api-key"] = self.api_key
+
+        req = urllib.request.Request(
+            url=f"{self.base_url}/chat/completions",
+            data=json.dumps(payload).encode("utf-8"),
+            headers=headers,
+            method="POST",
+        )
+
+        try:
+            with urllib.request.urlopen(req, timeout=120) as response:
+                raw = response.read().decode("utf-8")
+        except urllib.error.HTTPError as exc:
+            detail = exc.read().decode("utf-8", errors="replace")
+            raise RuntimeError(
+                f"llama_cpp.server respondió HTTP {exc.code}: {detail}"
+            ) from exc
+        except urllib.error.URLError as exc:
+            raise RuntimeError(
+                f"No se pudo conectar con llama_cpp.server en {self.base_url}: {exc}"
+            ) from exc
+
+        data = json.loads(raw)
+
+        try:
+            return data["choices"][0]["message"]["content"].strip()
+        except (KeyError, IndexError, TypeError, AttributeError) as exc:
+            raise RuntimeError(
+                f"Respuesta inesperada de llama_cpp.server: {data}"
+            ) from exc
+        

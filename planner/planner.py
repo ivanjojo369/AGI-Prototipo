@@ -1,95 +1,87 @@
+"""Planificador de Quipu Core 4.0 - adaptador de produccion.
+
+Contrato del nucleo:
+    Planner().plan(goal, llm_call=funcion) -> {"subgoals": [...]}
+
+La unica autoridad para descomponer metas es planner.htn_simple.plan.
+No se descubren backends legacy ni se realizan llamadas HTTP implicitas.
+"""
 from __future__ import annotations
 
 from dataclasses import dataclass
-from inspect import signature
-from typing import Any, Dict, List, Optional, Callable
+from typing import Any, Callable, Dict, List, Optional
 
-# Intentamos encontrar un backend de planificación existente en tu repo
-_BACKEND_FN: Optional[Callable[..., Any]] = None
-_BACKEND_NAME = None
-
-# 1) task_planner.plan (o plan_task) — preferente si existe
-try:
-    from .task_planner import plan as _tp_plan  # type: ignore
-    _BACKEND_FN = _tp_plan
-    _BACKEND_NAME = "task_planner.plan"
-except Exception:
-    try:
-        from .task_planner import plan_task as _tp_plan_task  # type: ignore
-        _BACKEND_FN = _tp_plan_task
-        _BACKEND_NAME = "task_planner.plan_task"
-    except Exception:
-        pass
-
-# 2) htn_simple.plan — alternativa
-if _BACKEND_FN is None:
-    try:
-        from .htn_simple import plan as _htn_plan  # type: ignore
-        _BACKEND_FN = _htn_plan
-        _BACKEND_NAME = "htn_simple.plan"
-    except Exception:
-        pass
+from .htn_simple import plan as htn_plan
 
 
-def _call_backend(fn: Callable[..., Any], **kwargs) -> Any:
-    """Llama al backend filtrando kwargs desconocidos para evitar TypeError."""
-    params = {k for k in signature(fn).parameters.keys()}
-    safe_kwargs = {k: v for k, v in kwargs.items() if k in params}
-    return fn(**safe_kwargs)
+PlannerLLM = Callable[[List[Dict[str, str]], int, float], str]
+
+
+def _without_llm(
+    messages: List[Dict[str, str]],
+    max_tokens: int,
+    temperature: float,
+) -> str:
+    """Solicita el fallback local de htn_simple sin consultar APIs legacy."""
+    return ""
 
 
 @dataclass
 class PlannerConfig:
-    max_depth: int = 3
-    max_steps: int = 20
+    max_depth: int = 3       # Compatibilidad con llamadores existentes.
+    max_steps: int = 5       # htn_simple admite como maximo cinco subobjetivos.
     temperature: float = 0.0
 
 
 class Planner:
-    """
-    Shim unificado. Expone .plan() y delega al backend encontrado.
-    Evita romper importaciones en tests y en agents/meta_agent.py.
-    """
+    """Fachada estable de Core 4.0 para un unico backend HTN."""
 
-    def __init__(self, config: Optional[PlannerConfig] = None):
-        if _BACKEND_FN is None:
-            raise ImportError(
-                "No se encontró backend de planificación. "
-                "Asegúrate de tener task_planner.py o htn_simple.py con una función 'plan' o 'plan_task'."
-            )
+    VERSION = "3.1.1"
+
+    def __init__(
+        self,
+        config: Optional[PlannerConfig] = None,
+        *,
+        llm_call: Optional[PlannerLLM] = None,
+    ) -> None:
+        if llm_call is not None and not callable(llm_call):
+            raise TypeError("llm_call debe ser una funcion o None")
         self.config = config or PlannerConfig()
-        self._backend = _BACKEND_FN
-        self.backend_name = _BACKEND_NAME
+        self.llm_call = llm_call
+        self.backend_name = "htn_simple.plan"
 
     def plan(
         self,
         goal: str,
         context: Optional[Dict[str, Any]] = None,
-        **kw: Any,
-    ) -> List[Dict[str, Any]]:
-        """
-        Devuelve una lista de pasos/acciones (estructura la define el backend).
-        """
-        if self._backend is None:
-            raise RuntimeError("Backend no inicializado")
-        context = context or {}
-        return _call_backend(
-            self._backend,
-            goal=goal,
-            context=context,
-            max_depth=self.config.max_depth,
-            max_steps=self.config.max_steps,
-            temperature=self.config.temperature,
-            **kw,
+        *,
+        llm_call: Optional[PlannerLLM] = None,
+        **_: Any,
+    ) -> Dict[str, List[Dict[str, str]]]:
+        # Se conserva context por compatibilidad. El backend no lo utiliza aun.
+        del context
+        if llm_call is not None and not callable(llm_call):
+            raise TypeError("llm_call debe ser una funcion o None")
+        active_llm = llm_call or self.llm_call or _without_llm
+        max_subgoals = max(1, min(5, int(self.config.max_steps)))
+
+        result = htn_plan(
+            goal=str(goal or ""),
+            max_subgoals=max_subgoals,
+            llm_call=active_llm,
         )
+        if not isinstance(result, dict) or not isinstance(result.get("subgoals"), list):
+            raise RuntimeError("htn_simple.plan devolvio un formato inesperado")
+        return result
 
 
-# API en español que esperan los tests y meta_agent
-def planificar_tarea(objetivo: str, contexto: Optional[Dict[str, Any]] = None, **kw: Any):
-    """
-    Atajo a Planner().plan() para mantener compatibilidad con importaciones existentes.
-    """
-    return Planner().plan(goal=objetivo, context=contexto or {}, **kw)
+def planificar_tarea(
+    objetivo: str,
+    contexto: Optional[Dict[str, Any]] = None,
+    **kw: Any,
+) -> Dict[str, List[Dict[str, str]]]:
+    """API historica en espanol conservada para compatibilidad."""
+    return Planner().plan(goal=objetivo, context=contexto, **kw)
 
 
 __all__ = ["Planner", "PlannerConfig", "planificar_tarea"]

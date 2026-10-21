@@ -1,7 +1,7 @@
 # planner/htn_simple.py
 from __future__ import annotations
 import os, re, json, requests
-from typing import List, Dict, Any
+from typing import Any, Callable, Dict, List, Optional
 
 API      = os.getenv("AGI_API", "http://127.0.0.1:8010")
 API_KEY  = os.getenv("DEMO_KEY", "")
@@ -66,38 +66,117 @@ def _call_llm(messages: List[Dict[str, str]], max_tokens=160, temperature=0.4) -
     data = r.json()
     return (data.get("text") or data.get("content") or "").strip()
 
-def plan(goal: str, max_subgoals: int = 5) -> Dict[str, List[Dict[str, str]]]:
+def plan(
+    goal: str,
+    max_subgoals: int = 5,
+    *,
+    llm_call: Optional[
+        Callable[[List[Dict[str, str]], int, float], str]
+    ] = None,
+) -> Dict[str, List[Dict[str, str]]]:
+    """
+    Devuelve SIEMPRE:
+        {"subgoals": [{"desc": "...", "done_when": "..."}]}
+
+    Orchestrator 3.0 puede inyectar su propio LLM y evitar depender del
+    endpoint legacy 127.0.0.1:8010. Si no se inyecta, conserva el comportamiento
+    anterior para compatibilidad.
+    """
     msgs = [
         {"role": "system", "content": SYS},
-        {"role": "user",   "content": f"Meta: {goal}"},
+        {"role": "user", "content": f"Meta: {goal}"},
     ]
-    out = _call_llm(msgs, max_tokens=140, temperature=0.35)
+
+    if llm_call is None:
+        # Quipu Core 4: no existe dependencia implícita del endpoint legacy
+        # :8010. Sólo se conserva bajo opt-in explícito para compatibilidad.
+        legacy_enabled = str(
+            os.getenv("QUIPU_ENABLE_LEGACY_PLANNER_HTTP", "")
+        ).strip().lower() in ("1", "true", "yes", "on")
+        if legacy_enabled:
+            out = _call_llm(
+                msgs,
+                max_tokens=140,
+                temperature=0.35,
+            )
+        else:
+            out = ""
+    else:
+        out = llm_call(
+            msgs,
+            140,
+            0.35,
+        )
 
     obj = _extract_json(out) or {}
     subs = obj.get("subgoals") or []
 
     clean: List[Dict[str, str]] = []
+
     for sg in subs[:max_subgoals]:
-        desc = str(sg.get("desc", "")).strip()
-        done = str(sg.get("done_when", "resultado obtenido")).strip()
+        if not isinstance(sg, dict):
+            continue
+
+        desc = str(
+            sg.get("desc", "")
+        ).strip()
+        done = str(
+            sg.get(
+                "done_when",
+                "resultado obtenido",
+            )
+        ).strip()
+
         if not desc:
             continue
+
         words = desc.split()
         if len(words) > 18:
             desc = " ".join(words[:18])
-        clean.append({"desc": desc, "done_when": done or "resultado obtenido"})
 
-    # Fallback si el modelo no dio nada utilizable
+        clean.append(
+            {
+                "desc": desc,
+                "done_when": (
+                    done
+                    or "resultado obtenido"
+                ),
+            }
+        )
+
     if not clean:
-        parts = re.split(r"(?:\d+\)|\d+\.)|[;•\n\r]+", goal)
-        parts = [p.strip() for p in parts if p and p.strip()]
-        for p in parts[:max_subgoals]:
-            clean.append({"desc": p, "done_when": "sub-tarea ejecutada"})
-        if not clean:
-            clean = [{"desc": "Analizar la meta y preparar pasos breves",
-                      "done_when": "lista de pasos creada"}]
+        parts = re.split(
+            r"(?:\d+\)|\d+\.)|[;•\n\r]+",
+            goal,
+        )
+        parts = [
+            p.strip()
+            for p in parts
+            if p and p.strip()
+        ]
 
-    return {"subgoals": clean}
+        for part in parts[:max_subgoals]:
+            clean.append(
+                {
+                    "desc": part,
+                    "done_when":
+                        "sub-tarea ejecutada",
+                }
+            )
+
+        if not clean:
+            clean = [
+                {
+                    "desc":
+                        "Analizar la meta y preparar pasos breves",
+                    "done_when":
+                        "lista de pasos creada",
+                }
+            ]
+
+    return {
+        "subgoals": clean
+    }
 
 if __name__ == "__main__":
     import sys

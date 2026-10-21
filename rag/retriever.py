@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 """
 RAG Retriever actualizado
-- Carga índice en data/semantic_store.json (lista de dicts con text/meta/vec).
+- Carga índice documental en data/rag_store.json (lista de dicts con text/meta/vec).
 - Compatibilidad con índice legado dict + (opcional) CORPUS_FILE.
 - Umbral de score + re-ranking MMR.
 - Embeddings compartidos con Memoria (n-gram stub).
@@ -12,8 +12,12 @@ import json, os
 from typing import List, Dict, Any, Tuple, Optional
 
 from root.settings import (
-    SEMANTIC_STORE_JSON, EMBED_DIM,
-    RAG_TOPK_DEFAULT, RAG_MAX_CHUNK_LEN, RAG_SCORE_THRESHOLD, RAG_MMR_LAMBDA
+    RAG_STORE_JSON,
+    EMBED_DIM,
+    RAG_TOPK_DEFAULT,
+    RAG_MAX_CHUNK_LEN,
+    RAG_SCORE_THRESHOLD,
+    RAG_MMR_LAMBDA,
 )
 
 # Fallback para settings legado (si existiera)
@@ -28,10 +32,10 @@ from memory.episodic_memory import embed_text  # mismo stub que memoria
 # ---------------- Utilidades internas ----------------
 
 def _load_index() -> List[Dict[str, Any]]:
-    if not os.path.exists(SEMANTIC_STORE_JSON):
+    if not os.path.exists(RAG_STORE_JSON):
         return []
     try:
-        with open(SEMANTIC_STORE_JSON, "r", encoding="utf-8") as f:
+        with open(RAG_STORE_JSON, "r", encoding="utf-8") as f:
             data = json.load(f)
     except Exception:
         return []
@@ -135,7 +139,8 @@ def search(query: str,
         if sc < float(min_score):
             continue
         txt = it.get("text", "")
-        if len(txt) > int(max_chunk_len):
+        # max_chunk_len <= 0: preserve complete source for factual citation checks.
+        if max_chunk_len is not None and int(max_chunk_len) > 0 and len(txt) > int(max_chunk_len):
             txt = txt[:int(max_chunk_len)] + " …[truncado]"
         scored.append((sc, {**it, "text": txt, "score": float(round(sc, 6))}))
 
@@ -168,8 +173,8 @@ def rag_answer(query: str,
     """
     hits = search(query=query, top_k=top_k, min_score=min_score)
     if not hits:
-        text = ("No se encontró contexto relevante. Indexa con "
-                "`python -m scripts.index_folder --path ./docs --ext .md,.py --mode fresh`.")
+        text = ("No se encontró contexto relevante en el índice RAG. Indexa con "
+                "`python -m rag.indexer --path ./knowledge --ext .md,.txt,.json,.rst --mode fresh`.")
         return text, []
 
     snips: List[str] = []
@@ -183,10 +188,10 @@ def rag_answer(query: str,
 
 
 def repair() -> Dict[str, Any]:
-    if not os.path.exists(SEMANTIC_STORE_JSON):
+    if not os.path.exists(RAG_STORE_JSON):
         return {"ok": True, "fixed": 0, "reason": "no-index"}
     try:
-        with open(SEMANTIC_STORE_JSON, "r", encoding="utf-8") as f:
+        with open(RAG_STORE_JSON, "r", encoding="utf-8") as f:
             data = json.load(f)
     except Exception as e:
         return {"ok": False, "error": f"load-error: {e}"}
@@ -225,7 +230,7 @@ def repair() -> Dict[str, Any]:
     else:
         return {"ok": False, "error": "unknown-index-format"}
 
-    with open(SEMANTIC_STORE_JSON, "w", encoding="utf-8") as f:
+    with open(RAG_STORE_JSON, "w", encoding="utf-8") as f:
         json.dump(fixed, f, ensure_ascii=False, indent=2)
     return {"ok": True, "fixed": len(fixed)}
 

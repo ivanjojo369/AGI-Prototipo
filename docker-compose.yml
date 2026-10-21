@@ -1,13 +1,31 @@
-version: "3.9"
+version: '3.8'
+
 services:
-  agi:
-    build: .
-    ports:
-      - "8010:8010"
-    environment:
-      ALLOW_TEST_NO_AUTH: "1"
-      JOBS_DIR: /app/data/jobs
-      JOBS_TTL_SECONDS: "86400"
-      JOBS_TTL_SWEEP_INTERVAL_SECONDS: "300"
+  aegisforge-agent:
+    image: python:3.10-slim
+    container_name: aegisforge_purple_agent
     volumes:
-      - ./data/jobs:/app/data/jobs
+      # Monta tu repositorio local dentro del contenedor de pruebas
+      - ./:/workspace
+    working_dir: /workspace
+    environment:
+      - PYTHONUNBUFFERED=1
+      - PYTHONPATH=/workspace:/workspace/src
+      # Variables de entorno requeridas por el runtime de AgentX / AgentBeats
+      - AGENTBEATS_ID=AF-77-PURPLE
+      - SPRINT_STAGE=Sprint4
+      - EXECUTION_MODE=benchmark_step
+    ports:
+      # Puerto estándar para la API del servidor A2A de Berkeley RDI
+      - "8000:8000"
+    command: >
+      bash -c "pip install --no-cache-dir -r requirements.txt &&
+               python -m src.aegisforge.agent --track crmarena"
+    restart: unless-stopped
+    networks:
+      - agentbeats-net
+
+networks:
+  agentbeats-net:
+    driver: bridge
+    

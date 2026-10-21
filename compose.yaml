@@ -1,0 +1,32 @@
+name: aegisforge-sprint4
+
+services:
+  agent:
+    image: python:3.10-slim
+    container_name: aegisforge_purple_agent
+    volumes:
+      # Monta tu código local dentro del contenedor para desarrollo en tiempo real
+      - ./:/workspace
+    working_dir: /workspace
+    environment:
+      - PYTHONUNBUFFERED=1
+      - PYTHONPATH=/workspace:/workspace/src
+      # Variables de entorno requeridas por la arquitectura de tu agent.py
+      - AGENTBEATS_ID=AF-77-PURPLE
+      - EXECUTION_MODE=benchmark_step
+      - SPRINT_STAGE=Sprint4
+    ports:
+      # Expone el puerto para la comunicación A2A (Agent-to-Agent)
+      - "8000:8000"
+    command: >
+      bash -c "pip install --no-cache-dir -r requirements.txt &&
+               python -m src.aegisforge.agent"
+    restart: unless-stopped
+    networks:
+      - agentbeats-network
+
+networks:
+  agentbeats-network:
+    name: agentbeats_shared_net
+    driver: bridge
+    

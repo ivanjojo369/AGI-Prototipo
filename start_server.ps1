@@ -1,18 +1,44 @@
+# Quipu - punto de entrada para iniciar el LLM local Qwen mediante llama.cpp.
+# Este archivo reemplaza el antiguo arranque de OpenChat/puerto 8010.
+# No incluye claves de API, rutas absolutas del equipo ni procesos legacy.
+
+[CmdletBinding()]
 param(
-  [string]$ModelPath   = 'C:\RUTA\AL\MODELO\openchat-3.5.Q5_K_S.gguf',
-  [int]$N_CTX          = 8192,
-  [int]$N_THREADS      = 8,
-  [int]$N_BATCH        = 256,
-  [int]$N_GPU_LAYERS   = 0,
-  [string]$ApiKey      = 'CUKJMXoqkHYS2Zapxfl0tD85wyPnueOLE4sQARNr'
+    [ValidateRange(1, 65535)]
+    [int]$Port = 8123,
+
+    [ValidateRange(256, 262144)]
+    [int]$NCtx = 8192,
+
+    [ValidateRange(-1, 4096)]
+    [int]$NGpuLayers = 35,
+
+    [string]$ModelPath = ""
 )
 
-$env:MODEL_PATH   = $ModelPath
-$env:N_CTX        = "$N_CTX"
-$env:N_THREADS    = "$N_THREADS"
-$env:N_BATCH      = "$N_BATCH"
-$env:N_GPU_LAYERS = "$N_GPU_LAYERS"
-$env:REQUIRE_API_KEY = '1'
-$env:DEMO_KEY        = $ApiKey
+$ErrorActionPreference = "Stop"
+$ProjectRoot = $PSScriptRoot
+$Launcher = Join-Path $ProjectRoot "scripts\run_llama_server.ps1"
 
-uvicorn llama_server:app --host 127.0.0.1 --port 8010 --reload
+if (-not (Test-Path -LiteralPath $Launcher -PathType Leaf)) {
+    throw "No se encontro el lanzador de llama.cpp: $Launcher"
+}
+
+# Las credenciales, si se usan, se leen por el lanzador desde LLAMA_API_KEY.
+# No guardes claves en este archivo ni las pases como argumentos de consola.
+$LaunchParams = @{
+    Port       = $Port
+    NCtx       = $NCtx
+    NGpuLayers = $NGpuLayers
+}
+
+# Si no se indica una ruta, el lanzador usa su modelo Qwen GGUF predeterminado.
+if (-not [string]::IsNullOrWhiteSpace($ModelPath)) {
+    $LaunchParams.ModelPath = $ModelPath
+}
+
+Write-Host "Quipu: iniciando Qwen mediante scripts\run_llama_server.ps1..."
+Write-Host "Servidor local: http://127.0.0.1:$Port/v1"
+Write-Host "Deja esta ventana abierta. Para detener el servidor: Ctrl+C."
+
+& $Launcher @LaunchParams

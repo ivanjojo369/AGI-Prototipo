@@ -1,0 +1,39 @@
+MEMORY 3.0 — ORCHESTRATION FINAL
+
+REEMPLAZAR:
+  reasoner\orchestrator.py
+  planner\htn_simple.py
+  agents\project_runner.py
+  agents\agent_loop.py
+  quipu_loop.py
+
+OPCIONAL (si reasoner\__init__.py es antiguo):
+  reasoner\__init__.py
+
+NO REEMPLAZAR:
+  memory\unified_memory.py
+  memory\advanced_memory.py
+  memory\episodic_memory.py
+  memory\semantic_memory.py
+  memory\relational_memory.py
+  memory\associative_memory.py
+  tools\verification.py
+  src\aegisforge\orchestration\*.py
+
+CAMBIOS PRINCIPALES:
+  - Orchestrator 3.0 deja de forzar toda consulta hacia memory_search.
+  - Selección explícita entre chat, memoria, cálculo, archivo, plan de proyecto y web.
+  - Cálculo seguro puede resolverse de forma determinista sin gastar una inferencia.
+  - Lectura de archivos queda confinada a la raíz del proyecto.
+  - Web NO finge acceso: si no hay proveedor conectado, lo declara.
+  - Project planner usa el adaptador actual de Quipu, no depende de :8010.
+  - project_runner corrige el bug de contrato: plan() devuelve {"subgoals": [...]}.
+  - agent_loop y HTN aceptan dependencias inyectadas para el stack moderno.
+  - AegisForge ExecutionLoop se reutiliza opcionalmente si está importable.
+  - UnifiedMemory 2.9.1 sigue siendo autoridad sobre memoria.
+  - Verifier 2.9.1 sigue siendo la autoridad final de validación.
+
+RUTAS:
+  8123 -> llama.cpp
+  8130 -> Quipu HTTP
+  3000 -> interfaz web

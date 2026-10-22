@@ -1,0 +1,3 @@
+Quipu utiliza varias capas de memoria.
+La memoria semántica conserva conocimiento factual.
+La memoria relacional conecta entidades.

@@ -1,0 +1,123 @@
+{
+  "corpus_id": "quipu_science_v1",
+  "version": "1.0.0",
+  "language": "es",
+  "created": "2026-10-05",
+  "purpose": "Corpus científico inicial para evidencia de FactualVerifier.",
+  "index_target": "data/rag_store.json",
+  "semantic_memory_target": "data/semantic_store.json",
+  "do_not_mix_stores": true,
+  "documents": [
+    {
+      "path": "physics/speed_of_light_and_si.md",
+      "domain": "physics",
+      "title": "Velocidad de la luz y constantes definitorias del SI",
+      "source_org": "NIST",
+      "source_type": "official_metrology_agency",
+      "curation_authority_score": 0.99,
+      "source_urls": [
+        "https://www.nist.gov/si-redefinition/meet-constants",
+        "https://physics.nist.gov/cuu/Constants/Value/c.html",
+        "https://www.nist.gov/pml/special-publication-330/sp-330-section-2"
+      ]
+    },
+    {
+      "path": "astronomy/black_holes_event_horizon.md",
+      "domain": "astronomy",
+      "title": "Agujeros negros, horizonte de sucesos y singularidad",
+      "source_org": "NASA",
+      "source_type": "official_space_science_agency",
+      "curation_authority_score": 0.98,
+      "source_urls": [
+        "https://science.nasa.gov/universe/black-holes/anatomy/",
+        "https://science.nasa.gov/universe/glossary/",
+        "https://imagine.gsfc.nasa.gov/science/objects/black_holes2.html"
+      ]
+    },
+    {
+      "path": "astronomy/stars_and_fusion.md",
+      "domain": "astronomy",
+      "title": "Estrellas y fusión nuclear",
+      "source_org": "NASA",
+      "source_type": "official_space_science_agency",
+      "curation_authority_score": 0.98,
+      "source_urls": [
+        "https://science.nasa.gov/universe/stars/",
+        "https://science.nasa.gov/universe/stars/types/",
+        "https://science.nasa.gov/universe/glossary/"
+      ]
+    },
+    {
+      "path": "chemistry/atoms_and_molecules.md",
+      "domain": "chemistry",
+      "title": "Átomos y moléculas",
+      "source_org": "IUPAC",
+      "source_type": "international_scientific_union",
+      "curation_authority_score": 0.99,
+      "source_urls": [
+        "https://goldbook.iupac.org/terms/view/A00493",
+        "https://goldbook.iupac.org/terms/view/M04002"
+      ]
+    },
+    {
+      "path": "chemistry/water_h2o.md",
+      "domain": "chemistry",
+      "title": "Agua — fórmula y datos químicos básicos",
+      "source_org": "NIST",
+      "source_type": "official_metrology_and_reference_data_agency",
+      "curation_authority_score": 0.99,
+      "source_urls": [
+        "https://webbook.nist.gov/cgi/cbook.cgi?Name=water&cTG=on"
+      ]
+    },
+    {
+      "path": "biology/dna_and_genome.md",
+      "domain": "biology",
+      "title": "ADN, genes y genoma",
+      "source_org": "NHGRI",
+      "source_type": "official_genomics_research_institute",
+      "curation_authority_score": 0.98,
+      "source_urls": [
+        "https://www.genome.gov/about-genomics/fact-sheets/Deoxyribonucleic-Acid-Fact-Sheet",
+        "https://www.genome.gov/genetics-glossary/Genome",
+        "https://www.genome.gov/About-Genomics/Introduction-to-Genomics"
+      ]
+    },
+    {
+      "path": "biology/chromosomes.md",
+      "domain": "biology",
+      "title": "Cromosomas humanos",
+      "source_org": "NHGRI",
+      "source_type": "official_genomics_research_institute",
+      "curation_authority_score": 0.98,
+      "source_urls": [
+        "https://www.genome.gov/about-genomics/fact-sheets/Chromosomes-Fact-Sheet",
+        "https://www.genome.gov/genetics-glossary/Chromosome"
+      ]
+    },
+    {
+      "path": "geology/earthquakes_and_plate_tectonics.md",
+      "domain": "geology",
+      "title": "Terremotos y tectónica de placas",
+      "source_org": "USGS",
+      "source_type": "official_geological_science_agency",
+      "curation_authority_score": 0.98,
+      "source_urls": [
+        "https://www.usgs.gov/programs/earthquake-hazards/science-earthquakes",
+        "https://www.usgs.gov/faqs/what-earthquake-and-what-causes-them-happen"
+      ]
+    },
+    {
+      "path": "geology/earth_structure_and_dynamic_surface.md",
+      "domain": "geology",
+      "title": "Estructura general y superficie dinámica de la Tierra",
+      "source_org": "USGS",
+      "source_type": "official_geological_science_agency",
+      "curation_authority_score": 0.98,
+      "source_urls": [
+        "https://www.usgs.gov/programs/earthquake-hazards/science-earthquakes",
+        "https://www.usgs.gov/science/science-explorer/natural-hazards/how-the-earth-moves"
+      ]
+    }
+  ]
+}

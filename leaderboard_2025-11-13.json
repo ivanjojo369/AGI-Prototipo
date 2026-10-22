@@ -1,0 +1,510 @@
+{
+  "summary": {
+    "num_tasks": 18,
+    "avg_score": 0.148734,
+    "p50_lat_ms": 1751.0,
+    "p95_lat_ms": 3755.35,
+    "avg_tokens_per_s": 122.94,
+    "no_answer_rate": 0.5,
+    "elapsed_s": 38.4
+  },
+  "results": [
+    {
+      "task": "t1",
+      "question": "¿Qué familia de modelos se menciona en el contexto?",
+      "gold": [
+        "qwen",
+        "qwen2.5"
+      ],
+      "allowed_docs": [
+        "doc_demo",
+        "doc_qwen"
+      ],
+      "answer": "[doc_qwen]",
+      "lat_ms": 3676,
+      "tok_in": 244,
+      "tok_out": 5,
+      "tokens_per_s": 67.737,
+      "f1": 0.666667,
+      "score": 0.8,
+      "citations": [
+        "doc_qwen"
+      ],
+      "citations_valid": [
+        "doc_qwen"
+      ],
+      "citations_invalid": [],
+      "citations_ok": true,
+      "no_answer": false,
+      "finish_reason": "stop",
+      "conversation_id": "task_t1_88f37154"
+    },
+    {
+      "task": "t2",
+      "question": "¿Qué mecanismo central usan los Transformers para modelar dependencias?",
+      "gold": [
+        "atención",
+        "autoatención",
+        "self-attention"
+      ],
+      "allowed_docs": [
+        "doc_transformers",
+        "doc_attention"
+      ],
+      "answer": "[doc_transformers]",
+      "lat_ms": 2116,
+      "tok_in": 252,
+      "tok_out": 5,
+      "tokens_per_s": 121.456,
+      "f1": 0.0,
+      "score": 0.0,
+      "citations": [
+        "doc_transformers"
+      ],
+      "citations_valid": [
+        "doc_transformers"
+      ],
+      "citations_invalid": [],
+      "citations_ok": true,
+      "no_answer": false,
+      "finish_reason": "stop",
+      "conversation_id": "task_t2_f4227079"
+    },
+    {
+      "task": "t3",
+      "question": "Según el corpus, ¿qué técnica combina recuperación de documentos con generación?",
+      "gold": [
+        "rag",
+        "retrieval-augmented generation"
+      ],
+      "allowed_docs": [
+        "doc_rag"
+      ],
+      "answer": "[doc_rag]",
+      "lat_ms": 1690,
+      "tok_in": 224,
+      "tok_out": 5,
+      "tokens_per_s": 135.503,
+      "f1": 0.666667,
+      "score": 0.8,
+      "citations": [
+        "doc_rag"
+      ],
+      "citations_valid": [
+        "doc_rag"
+      ],
+      "citations_invalid": [],
+      "citations_ok": true,
+      "no_answer": false,
+      "finish_reason": "stop",
+      "conversation_id": "task_t3_8779ebc4"
+    },
+    {
+      "task": "t4",
+      "question": "Da la fórmula de la media armónica entre a y b.",
+      "gold": [
+        "2ab/(a+b)",
+        "2ab sobre (a+b)",
+        "dos a b sobre a más b"
+      ],
+      "allowed_docs": [
+        "doc_eval2",
+        "doc_eval"
+      ],
+      "answer": "[doc_eval2]",
+      "lat_ms": 1982,
+      "tok_in": 248,
+      "tok_out": 5,
+      "tokens_per_s": 127.649,
+      "f1": 0.0,
+      "score": 0.0,
+      "citations": [
+        "doc_eval2"
+      ],
+      "citations_valid": [
+        "doc_eval2"
+      ],
+      "citations_invalid": [],
+      "citations_ok": true,
+      "no_answer": false,
+      "finish_reason": "stop",
+      "conversation_id": "task_t4_8e2def9c"
+    },
+    {
+      "task": "t5",
+      "question": "Cuando no hay evidencia suficiente en el contexto, ¿qué debe responder el agente exactamente?",
+      "gold": [
+        "no-answer"
+      ],
+      "allowed_docs": [
+        "doc_agent"
+      ],
+      "answer": "no-answer",
+      "lat_ms": 1689,
+      "tok_in": 238,
+      "tok_out": 2,
+      "tokens_per_s": 142.096,
+      "f1": 1.0,
+      "score": 0.0,
+      "citations": [],
+      "citations_valid": [],
+      "citations_invalid": [],
+      "citations_ok": false,
+      "no_answer": true,
+      "finish_reason": "stop",
+      "conversation_id": "task_t5_8dd0823e"
+    },
+    {
+      "task": "t6",
+      "question": "¿Qué formato exacto de cita debe usarse para referir una fuente?",
+      "gold": [
+        "[doc_id]",
+        "corchetes con doc_id"
+      ],
+      "allowed_docs": [
+        "doc_citation"
+      ],
+      "answer": "no-answer",
+      "lat_ms": 1549,
+      "tok_in": 226,
+      "tok_out": 2,
+      "tokens_per_s": 147.192,
+      "f1": 0.0,
+      "score": 0.0,
+      "citations": [],
+      "citations_valid": [],
+      "citations_invalid": [],
+      "citations_ok": false,
+      "no_answer": true,
+      "finish_reason": "stop",
+      "conversation_id": "task_t6_a96033db"
+    },
+    {
+      "task": "t7",
+      "question": "¿Qué endpoint HTTP se usa para conversar con el modelo en este proyecto?",
+      "gold": [
+        "/v1/chat/completions",
+        "v1 chat completions"
+      ],
+      "allowed_docs": [
+        "doc_models"
+      ],
+      "answer": "[doc_models]",
+      "lat_ms": 1755,
+      "tok_in": 232,
+      "tok_out": 4,
+      "tokens_per_s": 134.473,
+      "f1": 0.0,
+      "score": 0.0,
+      "citations": [
+        "doc_models"
+      ],
+      "citations_valid": [
+        "doc_models"
+      ],
+      "citations_invalid": [],
+      "citations_ok": true,
+      "no_answer": false,
+      "finish_reason": "stop",
+      "conversation_id": "task_t7_2fda9595"
+    },
+    {
+      "task": "t8",
+      "question": "¿Qué relación describe F1 a alto nivel?",
+      "gold": [
+        "media armónica de precisión y recall",
+        "harmonic mean de precision y recall",
+        "media armónica precision recall"
+      ],
+      "allowed_docs": [
+        "doc_eval"
+      ],
+      "answer": "[doc_eval] F1 es la media armónica de precisión (precision) y exhaustividad (recall): F1 = 2*P*R/(P+R).",
+      "lat_ms": 3608,
+      "tok_in": 210,
+      "tok_out": 36,
+      "tokens_per_s": 68.182,
+      "f1": 0.48,
+      "score": 0.648649,
+      "citations": [
+        "doc_eval"
+      ],
+      "citations_valid": [
+        "doc_eval"
+      ],
+      "citations_invalid": [],
+      "citations_ok": true,
+      "no_answer": false,
+      "finish_reason": "stop",
+      "conversation_id": "task_t8_120af1b4"
+    },
+    {
+      "task": "t9",
+      "question": "Si el servidor no devuelve uso de tokens, ¿qué heurística simple se aplica para estimarlos?",
+      "gold": [
+        "1 token cada 4 caracteres",
+        "aprox 1 por 4 caracteres",
+        "unos 4 caracteres por token"
+      ],
+      "allowed_docs": [
+        "doc_tokens"
+      ],
+      "answer": "no-answer",
+      "lat_ms": 1468,
+      "tok_in": 219,
+      "tok_out": 2,
+      "tokens_per_s": 150.545,
+      "f1": 0.0,
+      "score": 0.0,
+      "citations": [],
+      "citations_valid": [],
+      "citations_invalid": [],
+      "citations_ok": false,
+      "no_answer": true,
+      "finish_reason": "stop",
+      "conversation_id": "task_t9_7986434a"
+    },
+    {
+      "task": "t10",
+      "question": "¿Qué métrica de rendimiento registramos para el throughput del modelo?",
+      "gold": [
+        "tokens/s",
+        "tokens por segundo"
+      ],
+      "allowed_docs": [
+        "doc_latency",
+        "doc_metrics"
+      ],
+      "answer": "no-answer",
+      "lat_ms": 1991,
+      "tok_in": 262,
+      "tok_out": 2,
+      "tokens_per_s": 132.597,
+      "f1": 0.0,
+      "score": 0.0,
+      "citations": [],
+      "citations_valid": [],
+      "citations_invalid": [],
+      "citations_ok": false,
+      "no_answer": true,
+      "finish_reason": "stop",
+      "conversation_id": "task_t10_b51ca40a"
+    },
+    {
+      "task": "t11",
+      "question": "¿Qué GPU se menciona en el entorno base de referencia?",
+      "gold": [
+        "nvidia geforce rtx 5060",
+        "rtx 5060",
+        "geforce rtx 5060"
+      ],
+      "allowed_docs": [
+        "doc_cuda"
+      ],
+      "answer": "[doc_cuda]",
+      "lat_ms": 1526,
+      "tok_in": 207,
+      "tok_out": 4,
+      "tokens_per_s": 138.27,
+      "f1": 0.0,
+      "score": 0.0,
+      "citations": [
+        "doc_cuda"
+      ],
+      "citations_valid": [
+        "doc_cuda"
+      ],
+      "citations_invalid": [],
+      "citations_ok": true,
+      "no_answer": false,
+      "finish_reason": "stop",
+      "conversation_id": "task_t11_8c0563e0"
+    },
+    {
+      "task": "t12",
+      "question": "¿Cuál es el único número primo par?",
+      "gold": [
+        "2",
+        "dos"
+      ],
+      "allowed_docs": [
+        "doc_math"
+      ],
+      "answer": "[doc_math]",
+      "lat_ms": 1464,
+      "tok_in": 196,
+      "tok_out": 4,
+      "tokens_per_s": 136.612,
+      "f1": 0.0,
+      "score": 0.0,
+      "citations": [
+        "doc_math"
+      ],
+      "citations_valid": [
+        "doc_math"
+      ],
+      "citations_invalid": [],
+      "citations_ok": true,
+      "no_answer": false,
+      "finish_reason": "stop",
+      "conversation_id": "task_t12_9578de7e"
+    },
+    {
+      "task": "t13",
+      "question": "Nombra dos formatos de archivo que exporta el MetricsLogger para las métricas.",
+      "gold": [
+        "csv y jsonl",
+        "csv jsonl",
+        "jsonl y csv"
+      ],
+      "allowed_docs": [
+        "doc_json",
+        "doc_metrics"
+      ],
+      "answer": "[doc_metrics] run.csv y run.jsonl son los formatos de archivo que exporta el MetricsLogger para las métricas.",
+      "lat_ms": 4205,
+      "tok_in": 246,
+      "tok_out": 28,
+      "tokens_per_s": 65.161,
+      "f1": 0.272727,
+      "score": 0.428571,
+      "citations": [
+        "doc_metrics"
+      ],
+      "citations_valid": [
+        "doc_metrics"
+      ],
+      "citations_invalid": [],
+      "citations_ok": true,
+      "no_answer": false,
+      "finish_reason": "stop",
+      "conversation_id": "task_t13_e0d11324"
+    },
+    {
+      "task": "t14",
+      "question": "¿Qué codificación de texto se recomienda en Windows PowerShell para estos archivos del bench?",
+      "gold": [
+        "utf-8 sin bom",
+        "utf8 sin bom",
+        "utf-8 no bom"
+      ],
+      "allowed_docs": [
+        "doc_python"
+      ],
+      "answer": "no-answer",
+      "lat_ms": 2338,
+      "tok_in": 241,
+      "tok_out": 2,
+      "tokens_per_s": 103.935,
+      "f1": 0.333333,
+      "score": 0.0,
+      "citations": [],
+      "citations_valid": [],
+      "citations_invalid": [],
+      "citations_ok": false,
+      "no_answer": true,
+      "finish_reason": "stop",
+      "conversation_id": "task_t14_03350888"
+    },
+    {
+      "task": "t15",
+      "question": "Para reducir alucinación: si la respuesta no está en el contexto, ¿qué acción específica debe tomar el agente?",
+      "gold": [
+        "responder no-answer",
+        "decir no-answer"
+      ],
+      "allowed_docs": [
+        "doc_agent",
+        "doc_citation"
+      ],
+      "answer": "no-answer",
+      "lat_ms": 2625,
+      "tok_in": 292,
+      "tok_out": 2,
+      "tokens_per_s": 112.0,
+      "f1": 0.8,
+      "score": 0.0,
+      "citations": [],
+      "citations_valid": [],
+      "citations_invalid": [],
+      "citations_ok": false,
+      "no_answer": true,
+      "finish_reason": "stop",
+      "conversation_id": "task_t15_8675cad3"
+    },
+    {
+      "task": "t16",
+      "question": "¿Cuál es la capital de Francia según el contexto proporcionado?",
+      "gold": [
+        "no-answer"
+      ],
+      "allowed_docs": [
+        "doc_math"
+      ],
+      "answer": "no-answer",
+      "lat_ms": 1299,
+      "tok_in": 201,
+      "tok_out": 2,
+      "tokens_per_s": 156.274,
+      "f1": 1.0,
+      "score": 0.0,
+      "citations": [],
+      "citations_valid": [],
+      "citations_invalid": [],
+      "citations_ok": false,
+      "no_answer": true,
+      "finish_reason": "stop",
+      "conversation_id": "task_t16_839d1048"
+    },
+    {
+      "task": "t17",
+      "question": "¿Qué cabecera de autenticación se envía por defecto en las peticiones?",
+      "gold": [
+        "authorization: bearer <key>",
+        "authorization bearer"
+      ],
+      "allowed_docs": [
+        "doc_models"
+      ],
+      "answer": "no-answer",
+      "lat_ms": 1747,
+      "tok_in": 236,
+      "tok_out": 2,
+      "tokens_per_s": 136.234,
+      "f1": 0.0,
+      "score": 0.0,
+      "citations": [],
+      "citations_valid": [],
+      "citations_invalid": [],
+      "citations_ok": false,
+      "no_answer": true,
+      "finish_reason": "stop",
+      "conversation_id": "task_t17_756029dd"
+    },
+    {
+      "task": "t18",
+      "question": "¿Cómo debe citar correctamente múltiples fuentes en una misma referencia?",
+      "gold": [
+        "[doc_a; doc_b]",
+        "corchetes con ids separados por ;"
+      ],
+      "allowed_docs": [
+        "doc_citation"
+      ],
+      "answer": "no-answer",
+      "lat_ms": 1657,
+      "tok_in": 225,
+      "tok_out": 2,
+      "tokens_per_s": 136.995,
+      "f1": 0.0,
+      "score": 0.0,
+      "citations": [],
+      "citations_valid": [],
+      "citations_invalid": [],
+      "citations_ok": false,
+      "no_answer": true,
+      "finish_reason": "stop",
+      "conversation_id": "task_t18_fcc4df36"
+    }
+  ]
+}
